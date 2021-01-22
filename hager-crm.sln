@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hager-crm", "hager-crm\hager-crm.csproj", "{65E30799-C20B-4863-98C3-28BF61FD0317}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hager-crm", "hager-crm\hager-crm.csproj", "{72579CCD-6AA3-4601-A786-0364D429942C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{65E30799-C20B-4863-98C3-28BF61FD0317}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65E30799-C20B-4863-98C3-28BF61FD0317}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65E30799-C20B-4863-98C3-28BF61FD0317}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65E30799-C20B-4863-98C3-28BF61FD0317}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72579CCD-6AA3-4601-A786-0364D429942C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72579CCD-6AA3-4601-A786-0364D429942C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72579CCD-6AA3-4601-A786-0364D429942C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72579CCD-6AA3-4601-A786-0364D429942C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
