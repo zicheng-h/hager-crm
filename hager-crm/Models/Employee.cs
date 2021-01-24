@@ -96,8 +96,7 @@ namespace hager_crm.Models
         [StringLength(200)]
         public string Notes { get; set; }
         public bool IsUser { get; set; }
-        //May need to change this User Roles, didn't have Ba Bihn's code.
-        public UserRole UserRole { get; set; }
+        public string UserId { get; set; }
 
         [Display(Name = "Employee")]
         public string FullName
