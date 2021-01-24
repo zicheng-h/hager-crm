@@ -8,6 +8,7 @@ namespace hager_crm.Models
 {
     public class ContactCategories
     {
+        public int ContactCategoriesID { get; set; }
         [Required(ErrorMessage = "Please select a Categories.")]
         [Display(Name = "Categories")]
         public int CategoriesID { get; set; }

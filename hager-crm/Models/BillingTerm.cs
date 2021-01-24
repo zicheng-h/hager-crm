@@ -12,7 +12,7 @@ namespace hager_crm.Models
         {
             Companies = new HashSet<Company>();
         }
-        public int BillingID { get; set; }
+        public int BillingTermID { get; set; }
         [Display(Name = "Billing Terms")]
         [StringLength(50, ErrorMessage = "Please enter a Term with less than 50 characters")]
         public string Terms { get; set; }

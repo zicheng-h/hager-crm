@@ -31,11 +31,11 @@ namespace hager_crm
             //Bluong4: Change to SQLite
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("IdentityConnection")));
 
-            //services.AddDbContext<HagerIndustriesContext>(options =>
-            //    options.UseSqlite(
-            //        Configuration.GetConnectionString("HagerIndustriesContext")));
+            services.AddDbContext<HagerContext>(options =>
+                options.UseSqlite(
+                    Configuration.GetConnectionString("HagerContext")));
 
             //Bluong4: change RequireconfirmAccount to false and Add role
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
