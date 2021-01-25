@@ -4,16 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using hager_crm.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using hager_crm.Utils;
 
 namespace hager_crm.Data
 {
     public class HagerContext : DbContext
     {
+        private DatabaseExceptionHandler dbExcHandler;
+
         public HagerContext (DbContextOptions<HagerContext> options)
             : base(options)
         {
-
+            dbExcHandler = new DatabaseExceptionHandler(this);
         }
+
+        public void HandleDatabaseException(Exception dex, ModelStateDictionary modelState)
+            => dbExcHandler.HandleDatabaseException(dex, modelState);
 
         public DbSet<BillingTerm> BillingTerms { get; set; }
         public DbSet<Categories> Categories { get; set; }
@@ -34,6 +41,8 @@ namespace hager_crm.Data
         {
             //Default Schema
             modelBuilder.HasDefaultSchema("HG");
+
+            modelBuilder.Entity<Employee>().HasIndex(e => e.Email).IsUnique();
 
             //Prevent Cascading Delete
             //From Company to Contacts.

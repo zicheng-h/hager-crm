@@ -4,21 +4,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>@ViewData["Title"] - hager_crm</title>
+    <title>@ViewData["Title"] - Hager CRM</title>
 
     @* Bootstrap and CSS*@
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/style2.css">
 </head>
 <body>
     <div class="wrapper">
         @* Sidebar *@
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>Hanger Industries</h3>
+                <div>
+                    <img src="~/assets/AppLogo.png" alt="Application Logo"/>
+                </div>
+                <button type="button" id="sidebarCollapse" class="btn">
+                    <i class="fas fa-align-left"></i>
+                    <span>≡</span>
+                </button>
             </div>
+            
 
             @* The menu and links *@
             <ul class="list-unstyled components">
@@ -46,7 +52,7 @@
                     <a href="#">Example 1</a>
                 </li>
                 <li>
-                    <a href="#">Example 2</a>
+                    <a asp-controller="Employees" asp-action="Index">Employees</a>
                 </li>
             </ul>
         </nav>
@@ -55,10 +61,6 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <div class="navbar-brand">
-                    <button type="button" id="sidebarCollapse" class="btn btn-info">
-                        <i class="fas fa-align-left"></i>
-                        <span>Toggle Sidebar</span>
-                    </button>
                     <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <i class="fas fa-align-justify"></i>
                     </button>
@@ -101,13 +103,33 @@
     @* Toggle collapse button with JS*@
     <script type="text/javascript">
         $(document).ready(function () {
+            let localStorage = window.localStorage;
+            if (localStorage.getItem('menuHidden') === null)
+                localStorage.setItem('menuHidden', '');
+
+            if (!!localStorage.getItem('menuHidden')) {
+                let $elements = $('#sidebar, #content, .footer, .navbar');
+                $elements.addClass('notransition');
+                $elements.addClass('active');
+                $('.collapse.in').addClass('in');
+                $elements[0].offsetHeight; // Cool trick, force browser to flush css transitions
+                $elements.removeClass('notransition');
+            }
+
             $("#sidebar").mCustomScrollbar({
                 theme: "minimal"
             });
 
             $('#sidebarCollapse').on('click', function () {
-                $('#sidebar, #content, .footer, .navbar').toggleClass('active');
-                $('.collapse.in').toggleClass('in');
+                if (!!localStorage.getItem('menuHidden')) {
+                    $('#sidebar, #content, .footer, .navbar').removeClass('active');
+                    $('.collapse.in').removeClass('in');
+                    localStorage.setItem('menuHidden', '');
+                } else {
+                    $('#sidebar, #content, .footer, .navbar').addClass('active');
+                    $('.collapse.in').addClass('in');
+                    localStorage.setItem('menuHidden', '1');
+                }
                 $('a[aria-expanded=true]').attr('aria-expanded', 'false');
             });
         });
