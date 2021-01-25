@@ -2,11 +2,15 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 /* Global variables */
+
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+
 html{
     --sidebar-width: 250px;
     --content-width: calc(100% - var(--sidebar-width));
     --navbar-height: 78px;
-    --footer-height: 60px;
+    --footer-height: 64px;
 }
 
 
@@ -80,20 +84,24 @@ body {
     width: var(--content-width);
     white-space: nowrap;
     line-height: 60px; /* Vertically center the text there */
+    height: var(--footer-height);
 }
 
 .footer.active {
     width: 100%;
 }
 
-/*
-    DEMO STYLE
-*/
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+.notransition {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+}
 
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif !important;
     background: #fafafa;
 }
 
@@ -105,7 +113,7 @@ p {
     color: #999;
 }
 
-a, a:hover, a:focus {
+#sidebar a, #sidebar a:hover, #sidebar a:focus {
     color: inherit;
     text-decoration: none;
     transition: all 0.3s;
@@ -118,11 +126,12 @@ a, a:hover, a:focus {
     right: 0;
     height: var(--navbar-height);
     width: var(--content-width);
-    padding: 15px 10px;
+    padding: 15px 10px 15px 45px;
     background: #fff;
     border: none;
     border-radius: 0;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .navbar.active {
@@ -145,6 +154,11 @@ a, a:hover, a:focus {
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
+
+#sidebarCollapse {
+    
+}
+
 #sidebar {
     width: var(--sidebar-width);
     position: fixed;
@@ -162,13 +176,35 @@ a, a:hover, a:focus {
     }
 
     #sidebar .sidebar-header {
-        padding: 20px;
+        display: flex;
+        height: var(--navbar-height);
+        justify-content: space-between;
         background: #6d7fcc;
     }
 
+    #sidebar .sidebar-header div {
+        padding: 10px;
+        width: 100%;
+    }
+
+    #sidebar .sidebar-header div img{
+        height: 100%;
+    }
+
+    #sidebar .sidebar-header button {
+        height: var(--navbar-height);
+        position: absolute;
+        right: -37px;
+        background: #6d7fcc;
+    }
+
+        #sidebar .sidebar-header button span {
+            font-size: 24px;
+            color: #fafafa;
+        }
+
     #sidebar ul.components {
         padding: 20px 0;
-        border-bottom: 1px solid #47748b;
     }
 
     #sidebar ul p {
@@ -243,10 +279,13 @@ a.article, a.article:hover {
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
+
 #content {
+    overflow-y: auto;
+    overflow-x: hidden;
     width: var(--content-width);
-    padding: 40px;
-    min-height: 92vh;
+    padding: 40px 20px 0 20px;
+    height: calc(100vh - var(--navbar-height) - var(--footer-height));
     transition: all 0.3s;
     position: absolute;
     top: var(--navbar-height);

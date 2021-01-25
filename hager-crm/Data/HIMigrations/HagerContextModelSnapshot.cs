@@ -360,9 +360,6 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("IsUser")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("JobPositionID")
                         .HasColumnType("INTEGER");
 

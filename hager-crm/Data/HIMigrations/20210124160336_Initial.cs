@@ -178,7 +178,6 @@ namespace hager_crm.Data.HIMigrations
                     EmergencyContactPhone = table.Column<long>(nullable: false),
                     Active = table.Column<bool>(nullable: false),
                     Notes = table.Column<string>(maxLength: 200, nullable: true),
-                    IsUser = table.Column<bool>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
