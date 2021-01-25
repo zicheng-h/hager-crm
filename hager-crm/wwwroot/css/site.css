@@ -2,7 +2,6 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 /* Global variables */
-
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
 
@@ -12,7 +11,6 @@ html{
     --navbar-height: 78px;
     --footer-height: 64px;
 }
-
 
 a.navbar-brand {
   white-space: normal;
@@ -36,6 +34,7 @@ a {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
 
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -64,18 +63,22 @@ button.accept-policy {
   font-size: 1rem;
   line-height: inherit;
 }
-
 /* Sticky footer styles
 -------------------------------------------------- */
+
+
 html {
   position: relative;
   min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    background: #fafafa;
+    font-family: 'Poppins', sans-serif !important;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
+
 .footer {
     transition: all 0.3s;
     position: absolute;
@@ -99,11 +102,6 @@ body {
     transition: none !important;
 }
 
-
-body {
-    font-family: 'Poppins', sans-serif !important;
-    background: #fafafa;
-}
 
 p {
     font-family: 'Poppins', sans-serif;
@@ -151,6 +149,7 @@ p {
     margin: 40px 0;
 }
 
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -171,62 +170,62 @@ p {
     transition: all 0.3s;
 }
 
-    #sidebar.active {
-        margin-left: -250px;
-    }
+#sidebar.active {
+    margin-left: -250px;
+}
 
-    #sidebar .sidebar-header {
-        display: flex;
-        height: var(--navbar-height);
-        justify-content: space-between;
-        background: #6d7fcc;
-    }
+#sidebar .sidebar-header {
+    display: flex;
+    height: var(--navbar-height);
+    justify-content: space-between;
+    background: #6d7fcc;
+}
 
-    #sidebar .sidebar-header div {
-        padding: 10px;
-        width: 100%;
-    }
+#sidebar .sidebar-header div {
+    padding: 10px;
+    width: 100%;
+}
 
-    #sidebar .sidebar-header div img{
-        height: 100%;
-    }
+#sidebar .sidebar-header div img{
+    height: 100%;
+}
 
-    #sidebar .sidebar-header button {
-        height: var(--navbar-height);
-        position: absolute;
-        right: -37px;
-        background: #6d7fcc;
-    }
+#sidebar .sidebar-header button {
+    height: var(--navbar-height);
+    position: absolute;
+    right: -37px;
+    background: #6d7fcc;
+}
 
-        #sidebar .sidebar-header button span {
-            font-size: 24px;
-            color: #fafafa;
-        }
+#sidebar .sidebar-header button span {
+    font-size: 24px;
+    color: #fafafa;
+}
 
-    #sidebar ul.components {
-        padding: 20px 0;
-    }
+#sidebar ul.components {
+    padding: 20px 0;
+}
 
-    #sidebar ul p {
-        color: #fff;
-        padding: 10px;
-    }
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
 
-    #sidebar ul li a {
-        padding: 10px;
-        font-size: 1.1em;
-        display: block;
-    }
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
 
-        #sidebar ul li a:hover {
-            color: #7386D5;
-            background: #fff;
-        }
+#sidebar ul li a:hover {
+    color: #7386D5;
+    background: #fff;
+}
 
-    #sidebar ul li.active > a, a[aria-expanded="true"] {
-        color: #fff;
-        background: #6d7fcc;
-    }
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+    color: #fff;
+    background: #6d7fcc;
+}
 
 
 a[data-toggle="collapse"] {
@@ -314,7 +313,7 @@ a.article, a.article:hover {
     }
 
     #content.active {
-        width: var(--content-width;
+        width: var(--content-width);
     }
 
     #sidebarCollapse span {
