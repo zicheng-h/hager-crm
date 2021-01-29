@@ -24,6 +24,7 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Terms")
+                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
@@ -261,6 +262,7 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CountryName")
+                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
 
@@ -388,6 +390,9 @@ namespace hager_crm.Data.HIMigrations
 
                     b.HasKey("EmployeeID");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("EmployeeCountryID");
 
                     b.HasIndex("EmployeeProvinceID");
@@ -435,7 +440,11 @@ namespace hager_crm.Data.HIMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CountryID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ProvinceName")
+                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(30);
 

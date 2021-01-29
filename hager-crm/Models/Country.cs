@@ -15,6 +15,7 @@ namespace hager_crm.Models
         }
         public int CountryID { get; set; }
         [Display(Name = "Country")]
+        [Required(ErrorMessage = "Please enter the Country name")]
         [StringLength(40, ErrorMessage = "Please enter a Country with less than 40 characters")]
         public string CountryName { get; set; }
         public ICollection<Company> Companies { get; set; }

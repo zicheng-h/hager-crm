@@ -15,9 +15,16 @@ namespace hager_crm.Models
         }
 
         public int ProvinceID { get; set; }
+
         [Display(Name = "Province")]
+        [Required(ErrorMessage = "Please enter the Province name")]
         [StringLength(30, ErrorMessage = "Please enter a Province with less than 30 characters")]
         public string ProvinceName { get; set; }
+
+        [Display(Name = "Country")]
+        [Required(ErrorMessage = "Please select the Country")]
+        public int CountryID { get; set; }
+
         public ICollection<Company> Companies { get; set; }
         public ICollection<Employee> Employees { get; set; }
     }

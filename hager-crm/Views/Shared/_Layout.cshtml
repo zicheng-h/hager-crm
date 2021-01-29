@@ -23,36 +23,47 @@
                     <span>≡</span>
                 </button>
             </div>
-            
 
             @* The menu and links *@
             <ul class="list-unstyled components">
-                <p>Menu</p>
-                <li class="active">
-
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-                    <ul class="collapse list-unstyled" id="homeSubmenu">
-                        <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a href="#">Home 2</a></li>
-                        <li><a href="#">Home 3</a></li>
+                <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li>
+                    <a href="#companiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Companies</a>
+                    <ul class="collapse list-unstyled" id="companiesSubmenu">
+                        <li><a href="#">All Companies</a></li>
+                        <li><a href="#">Customers</a></li>
+                        <li><a href="#">Vendors</a></li>
+                        <li><a href="#">Contractors</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li><a href="#">Page 1</a></li>
-                        <li><a href="#">Page 2</a></li>
-                        <li><a href="#">Page 3</a></li>
+                    <a href="#contactsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Contacts</a>
+                    <ul class="collapse list-unstyled" id="contactsSubmenu">
+                        <li><a href="#">All Contacts</a></li>
+                        <li><a href="#">Customer Contacts</a></li>
+                        <li><a href="#">Vendor Contacts</a></li>
+                        <li><a href="#">Contractor Contacts</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#">Example 1</a>
-                </li>
-                <li>
-                    <a asp-controller="Employees" asp-action="Index">Employees</a>
-                </li>
+                @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                {
+                    <li>
+                        <a href="#managementSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Management</a>
+                        <ul class="collapse list-unstyled" id="managementSubmenu">
+                            <li><a asp-controller="Employees" asp-action="Index">Employees</a></li>
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Admin Options</a>
+                        <ul class="collapse list-unstyled" id="adminSubmenu">
+                            <li><a asp-controller="Configuration" asp-action="Index">Configuration</a></li>
+                        </ul>
+                    </li>
+                }
+                
             </ul>
         </nav>
 
@@ -74,8 +85,8 @@
                 </div>
             </div>
         </nav>
-        @* Page Content *@
 
+        @* Page Content *@
         <div id="content">
             <div class="container">
                 <main role="main" class="pb-3">
@@ -83,6 +94,7 @@
                 </main>
             </div>
         </div>
+
         @* Page foot *@
         <footer class="border-top footer text-muted">
             <div class="container">

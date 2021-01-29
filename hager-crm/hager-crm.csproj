@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Databases\**" />
     <Compile Remove="Data\Migrations\**" />
+    <Content Remove="Data\Databases\**" />
     <Content Remove="Data\Migrations\**" />
+    <EmbeddedResource Remove="Data\Databases\**" />
     <EmbeddedResource Remove="Data\Migrations\**" />
+    <None Remove="Data\Databases\**" />
     <None Remove="Data\Migrations\**" />
   </ItemGroup>
 
@@ -29,11 +33,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Databases\" />
-    <Folder Include="Data\HIMigrations\" />
   </ItemGroup>
 
 </Project>

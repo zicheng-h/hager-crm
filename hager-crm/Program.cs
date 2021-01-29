@@ -28,6 +28,10 @@ namespace hager_crm
                     identityContext.Database.Migrate();
                     ApplicationSeedData.SeedAsync(identityContext, services).Wait();
 
+                    var hagerContext = new HagerContext(
+                        services.GetRequiredService<DbContextOptions<HagerContext>>());
+                    hagerContext.Database.Migrate();
+                    HagerSeedData.SeedAsync(hagerContext);
                 }
                 catch (Exception ex)
                 {

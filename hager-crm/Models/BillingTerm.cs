@@ -14,6 +14,7 @@ namespace hager_crm.Models
         }
         public int BillingTermID { get; set; }
         [Display(Name = "Billing Terms")]
+        [Required(ErrorMessage = "Please enter a Term")]
         [StringLength(50, ErrorMessage = "Please enter a Term with less than 50 characters")]
         public string Terms { get; set; }
         public ICollection<Company> Companies { get; set; }

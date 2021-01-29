@@ -7,10 +7,15 @@ namespace hager_crm.ViewModels
 {
     public class RoleVM
     {
+        public RoleVM()
+        {
+            Employees = new List<EmployeeVM>();
+        }
+
         public string RoleId { get; set; }
 
         public string RoleName { get; set; }
 
-        public bool Assigned { get; set; }
+        public List<EmployeeVM> Employees { get; set; }
     }
 }

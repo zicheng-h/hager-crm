@@ -1,0 +1,81 @@
+﻿@model List<hager_crm.ViewModels.RoleVM>
+<br />
+<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#rolesModal" onclick="newRole()">
+    Create Role
+</a>
+<br />
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>Role</th>
+            <th>Users</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.RoleName
+                </td>
+                <td>
+                    <a href="#" data-toggle="modal" data-target="#rolesModal" onclick="showUsers('@item.RoleName')">
+                        @switch (item.Employees.Count)
+                        {
+                            case 0:
+                                @:(None)
+                                break;
+                            case 1:
+                                @item.Employees[0].Fullname
+                                break;
+                            default:
+                                @(item.Employees[0].Fullname + "...")
+                                break;
+                        }
+                    </a>
+                </td>
+                <td>
+                    @if (item.RoleName != "Unassigned")
+                    {
+                        <a href="#" onclick="deleteRole('@item.RoleId')">Delete Role</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="modal fade" id="rolesModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function showUsers(role) {
+        switch (role) {
+            @foreach (var item in Model)
+            {
+                @:case '@item.RoleName': $('.modal-content').load('/Configuration/GetUsers?role=@item.RoleName');
+                    @:break;
+            }
+            default: break;
+        };
+        return;
+    };
+    function deleteRole(RoleId) {
+        $.post("/Configuration/DeleteRole",
+            {
+                roleId: RoleId
+            },
+            function () {
+                $('#roles-panel').load('/Configuration/GetRoles');
+            }
+        );
+    }
+    function newRole() {
+        $('.modal-content').load('/Configuration/NewRole');
+    }
+</script>
