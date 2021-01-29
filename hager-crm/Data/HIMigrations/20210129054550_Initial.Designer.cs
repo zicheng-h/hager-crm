@@ -9,7 +9,7 @@ using hager_crm.Data;
 namespace hager_crm.Data.HIMigrations
 {
     [DbContext(typeof(HagerContext))]
-    [Migration("20210124160336_Initial")]
+    [Migration("20210129054550_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,7 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Terms")
+                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
@@ -263,6 +264,7 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CountryName")
+                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
 
@@ -362,9 +364,6 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("IsUser")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("JobPositionID")
                         .HasColumnType("INTEGER");
 
@@ -392,6 +391,9 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("EmployeeID");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("EmployeeCountryID");
 
@@ -440,7 +442,11 @@ namespace hager_crm.Data.HIMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CountryID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ProvinceName")
+                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(30);
 

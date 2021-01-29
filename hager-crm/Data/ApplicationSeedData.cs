@@ -69,18 +69,6 @@ namespace hager_crm.Data
                     userManager.AddToRoleAsync(user, "Employee").Wait();
                 }
             }
-
-            if (userManager.FindByEmailAsync("user1@outlook.com").Result == null)
-            {
-                IdentityUser user = new IdentityUser
-                {
-                    UserName = "user1@outlook.com",
-                    Email = "user1@outlook.com"
-                };
-
-                IdentityResult result = userManager.CreateAsync(user, "password").Result;
-                //Not have role
-            }
         }
     }
 }

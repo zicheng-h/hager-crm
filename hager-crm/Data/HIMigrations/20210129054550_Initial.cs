@@ -17,7 +17,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     BillingTermID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Terms = table.Column<string>(maxLength: 50, nullable: true)
+                    Terms = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,7 +59,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     CountryID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    CountryName = table.Column<string>(maxLength: 40, nullable: true)
+                    CountryName = table.Column<string>(maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,7 +129,8 @@ namespace hager_crm.Data.HIMigrations
                 {
                     ProvinceID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ProvinceName = table.Column<string>(maxLength: 30, nullable: true)
+                    ProvinceName = table.Column<string>(maxLength: 30, nullable: false),
+                    CountryID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -444,6 +445,13 @@ namespace hager_crm.Data.HIMigrations
                 schema: "HG",
                 table: "Contacts",
                 column: "CompanyID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_Email",
+                schema: "HG",
+                table: "Employees",
+                column: "Email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_EmployeeCountryID",
