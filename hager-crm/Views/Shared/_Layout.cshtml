@@ -45,18 +45,25 @@
                         <li><a href="#">Contractor Contacts</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#managementSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Management</a>
-                    <ul class="collapse list-unstyled" id="managementSubmenu">
-                        <li><a asp-controller="Employees" asp-action="Index">Employees</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Admin Options</a>
-                    <ul class="collapse list-unstyled" id="adminSubmenu">
-                        <li><a asp-controller="Configuration" asp-action="Index">Configuration</a></li>
-                    </ul>
-                </li>
+                @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                {
+                    <li>
+                        <a href="#managementSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Management</a>
+                        <ul class="collapse list-unstyled" id="managementSubmenu">
+                            <li><a asp-controller="Employees" asp-action="Index">Employees</a></li>
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Admin Options</a>
+                        <ul class="collapse list-unstyled" id="adminSubmenu">
+                            <li><a asp-controller="Configuration" asp-action="Index">Configuration</a></li>
+                        </ul>
+                    </li>
+                }
+                
             </ul>
         </nav>
 

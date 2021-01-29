@@ -10,9 +10,11 @@ using hager_crm.Models;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using hager_crm.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace hager_crm.Controllers
 {
+    [Authorize(Roles = "Admin, Supervisor")]
     public class EmployeesController : Controller
     {
         private readonly HagerContext _context;
