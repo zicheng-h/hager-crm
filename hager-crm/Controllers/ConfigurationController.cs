@@ -138,6 +138,46 @@ namespace hager_crm.Controllers
             return PartialView("~/Views/Configuration/Roles/_NewRole.cshtml");
         }
 
+        public async Task<PartialViewResult> GetLookups()
+        {
+            var lookups = new List<LookupVM>();
+            foreach (var lookup in _hContext.GetLookups())
+            {
+                lookups.Add(new LookupVM {LookupName = lookup.GetLookupName(), Items = await lookup.GetAll(_hContext)});
+            }
+            return PartialView("~/Views/Configuration/Lookups/_Lookups.cshtml", lookups);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddLookup(string lookupName, string displayName)
+        {
+            var lookup = _hContext.GetLookups().Find(i => i.GetLookupName() == lookupName);
+            if (lookup == null)
+                return NotFound();
+            int lookupId = await lookup.AddLookup(_hContext, displayName);
+            return Json(new {lookupId});
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> UpdateLookup(string lookupName, string displayName, int lookupId)
+        {
+            var lookup = _hContext.GetLookups().Find(i => i.GetLookupName() == lookupName);
+            if (lookup == null)
+                return NotFound();
+            bool result = await lookup.UpdateLookup(_hContext, lookupId, displayName);
+            return Json(new {result});
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> DeleteLookup(string lookupName, int lookupId)
+        {
+            var lookup = _hContext.GetLookups().Find(i => i.GetLookupName() == lookupName);
+            if (lookup == null)
+                return NotFound();
+            bool result = await lookup.DeleteLookup(_hContext, lookupId);
+            return Json(new {result});
+        }
+        
         [HttpPost]
         public async void AddUserAsync(string userId, string roleName)
         {
