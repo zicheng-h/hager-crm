@@ -35,6 +35,9 @@ a {
   border-color: #1861ac;
 }
 
+.hide {
+    display: none !important;
+}
 
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -147,6 +150,14 @@ p {
     height: 1px;
     border-bottom: 1px dashed #ddd;
     margin: 40px 0;
+}
+
+.lookup-list-item .lookup-actions {
+    display: none;
+}
+
+.lookup-list-item:hover .lookup-actions {
+    display: flex;
 }
 
 

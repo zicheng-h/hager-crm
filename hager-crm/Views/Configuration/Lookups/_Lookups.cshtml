@@ -1,0 +1,145 @@
+﻿@model List<hager_crm.ViewModels.LookupVM>
+
+<div class="row">
+    @foreach (var lookup in Model)
+    {
+        <div class="col-xl-4 col-md-6 col-12 p-4">
+            <div class="card">
+                <div class="card-header">
+                    @lookup.GetHumanLookupName()
+                </div>
+                <div class="card-body">
+                    <div class="list-group" data-lookup-name="@lookup.LookupName" style="overflow-y: auto; max-height: 355px;">
+                        @foreach (var item in lookup.Items)
+                        {
+                            <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
+                                 data-item-id="@item.GetId()"
+                                 href="#">
+                                <div class="display-name d-flex m-auto">@item.DisplayName</div>
+                                <div class="edit-lookup-name input-group hide input-group-sm mr-3">
+                                    <input type="text" class="form-control" required placeholder="Enter new name...">
+                                    <div class="input-group-append">
+                                        <button class="add-lookup btn btn-outline-success" 
+                                                type="button" onclick="editLookup(this)">✓</button>
+                                    </div>
+                                </div>
+                                <div class="lookup-actions btn-group" role="group" aria-label="List Item Actions">
+                                    <button class="update-lookup btn btn-sm btn-outline-secondary"
+                                            onclick="updateLookup(this)">
+                                        🖉
+                                    </button>
+                                    <button class="delete-lookup btn btn-sm btn-outline-danger"
+                                            onclick="deleteLookup(this)">
+                                        &times;
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="input-group mt-2">
+                        <input type="text" class="form-control" placeholder="Add new list item...">
+                        <div class="input-group-append">
+                            <button class="add-lookup btn btn-outline-success" 
+                                    type="button" onclick="addLookup(this)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    function deleteLookup(item) {
+        let $item = $(item).closest('.lookup-list-item');
+        let $lookupList = $item.closest('.list-group');
+        $.post("/Configuration/DeleteLookup",
+            {
+                lookupName: $lookupList.data('lookup-name'),
+                lookupId: $item.data('item-id')
+            },
+            function (response) {
+                if (!response['result'])
+                    return;
+                $item.closest('.list-group-item').remove();
+            }
+        );
+    }
+    function editLookup(item) {
+        let $item = $(item);
+        let $listItem = $item.closest('.lookup-list-item');
+        let $lookupList = $item.closest('.list-group');
+        let displayName = $item.parent().siblings('input').val();
+        if (!displayName){
+            updateLookup(item);
+            return ;
+        }
+        
+        $item.parent().siblings('input').val('');
+        $.post("/Configuration/UpdateLookup",
+            {
+                lookupName: $lookupList.data('lookup-name'),
+                lookupId: $listItem.data('item-id'),
+                displayName: displayName,
+            },
+            function (response) {
+                updateLookup(item);
+                $listItem.find('.display-name').text(displayName);
+
+            }
+        );
+    }
+    function updateLookup(item) {
+        console.log(item);
+        let $list = $(item).closest('.lookup-list-item');
+        $list.find('.display-name').toggleClass('hide');
+        $list.find('.edit-lookup-name').toggleClass('hide');
+    }
+    function addLookup(item) {
+        let $item = $(item);
+        let $lookupList = $item.closest('.card-body').find('.list-group');
+        let displayName = $item.parent().siblings('input').val();
+        if (!displayName)
+            return;
+        $item.parent().siblings('input').val('');
+        $.post("/Configuration/AddLookup",
+            {
+                lookupName: $lookupList.data('lookup-name'),
+                displayName: displayName,
+            },
+            function (response) {
+                let $list = $item.closest('.card-body').find('.list-group');
+                let $listItemCopy = $($.parseHTML(getNewListItem()));
+                $listItemCopy.find('.display-name').text(displayName);
+                $listItemCopy.data('item-id', response['lookupId']);
+                $list.append($listItemCopy);
+            }
+        );
+    }
+    
+    function getNewListItem(){
+        return `
+            <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
+                 data-item-id=""
+                 href="#">
+                <div class="display-name d-flex m-auto"></div>
+                <div class="edit-lookup-name input-group hide input-group-sm mr-3">
+                    <input type="text" class="form-control" required placeholder="Enter new name...">
+                    <div class="input-group-append">
+                        <button class="add-lookup btn btn-outline-success" 
+                                type="button" onclick="editLookup(this)">✓</button>
+                    </div>
+                </div>
+                <div class="lookup-actions btn-group" role="group" aria-label="List Item Actions">
+                    <button class="update-lookup btn btn-sm btn-outline-secondary"
+                            onclick="updateLookup(this)">
+                        🖉
+                    </button>
+                    <button class="delete-lookup btn btn-sm btn-outline-danger"
+                            onclick="deleteLookup(this)">
+                        &times;
+                    </button>
+                </div>
+            </div>
+        `;    
+    }
+</script>

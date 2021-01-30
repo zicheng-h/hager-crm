@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using hager_crm.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using hager_crm.Utils;
+using hager_crm.ViewModels;
 
 namespace hager_crm.Data
 {
@@ -37,6 +38,16 @@ namespace hager_crm.Data
         public DbSet<Province> Provinces { get; set; }
         public DbSet<VendorType> VendorTypes { get; set; }
 
+        public List<ILookupManage> GetLookups() => new List<ILookupManage>
+        {
+            new EmploymentType(),
+            new CustomerType(),
+            new ContractorType(),
+            new JobPosition(),
+            new Currency()
+        };
+        
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Default Schema
