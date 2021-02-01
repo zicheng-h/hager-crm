@@ -8,7 +8,7 @@ namespace hager_crm.Data
 {
     public static class HagerSeedData
     {
-        public static void SeedAsync(HagerContext context)
+        public static void Seed(HagerContext context, ApplicationDbContext idcontext)
         {
             #region LookUpValues
             if (!context.CustomerTypes.Any())
@@ -500,6 +500,16 @@ namespace hager_crm.Data
                         Active = true
                     }
                 );
+                
+                context.SaveChanges();
+                
+                foreach (var employee in context.Employees)
+                {
+                    var identity = idcontext.Users.FirstOrDefault(u => u.Email == employee.Email);
+                    if (identity != null)
+                        employee.UserId = identity.Id;
+                }
+                
                 context.SaveChanges();
             }
             #endregion

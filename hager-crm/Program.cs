@@ -24,6 +24,7 @@ namespace hager_crm
 
                 try
                 {
+                    #region Order is important. Identity should always come before main context
                     var identityContext = services.GetRequiredService<ApplicationDbContext>();
                     identityContext.Database.Migrate();
                     ApplicationSeedData.SeedAsync(identityContext, services).Wait();
@@ -31,7 +32,9 @@ namespace hager_crm
                     var hagerContext = new HagerContext(
                         services.GetRequiredService<DbContextOptions<HagerContext>>());
                     hagerContext.Database.Migrate();
-                    HagerSeedData.SeedAsync(hagerContext);
+                    HagerSeedData.Seed(hagerContext, identityContext);
+                    #endregion
+                    
                 }
                 catch (Exception ex)
                 {
