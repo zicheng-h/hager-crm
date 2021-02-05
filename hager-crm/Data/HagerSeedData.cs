@@ -288,7 +288,7 @@ namespace hager_crm.Data
                     },
                     new JobPosition
                     {
-                        Position = "Mechanical Estimator / Purchaser"
+                        Position = "Mechanical Estimator/Purchaser"
                     },
                     new JobPosition
                     {
@@ -307,11 +307,11 @@ namespace hager_crm.Data
                 context.EmploymentTypes.AddRange(
                     new EmploymentType
                     {
-                        Type = "Full-time"
+                        Type = "Full-Time"
                     },
                     new EmploymentType
                     {
-                        Type = "Part-time"
+                        Type = "Part-Time"
                     },
                     new EmploymentType
                     {
@@ -441,7 +441,7 @@ namespace hager_crm.Data
                         FirstName = "President",
                         LastName = "Surname",
                         JobPositionID = context.JobPositions.FirstOrDefault(p => p.Position == "President").JobPositionID,
-                        EmploymentTypeID = context.EmploymentTypes.FirstOrDefault(t => t.Type == "Full-time").EmploymentTypeID,
+                        EmploymentTypeID = context.EmploymentTypes.FirstOrDefault(t => t.Type == "Full-Time").EmploymentTypeID,
                         EmployeeAddress1 = "100 This St",
                         EmployeeProvinceID = context.Provinces.FirstOrDefault(p => p.ProvinceName == "Ontario").ProvinceID,
                         EmployeePostalCode = "A1B2C3",
@@ -462,7 +462,7 @@ namespace hager_crm.Data
                         FirstName = "Vice",
                         LastName = "President",
                         JobPositionID = context.JobPositions.FirstOrDefault(p => p.Position == "Vice President").JobPositionID,
-                        EmploymentTypeID = context.EmploymentTypes.FirstOrDefault(t => t.Type == "Full-time").EmploymentTypeID,
+                        EmploymentTypeID = context.EmploymentTypes.FirstOrDefault(t => t.Type == "Full-Time").EmploymentTypeID,
                         EmployeeAddress1 = "100 This St",
                         EmployeeProvinceID = context.Provinces.FirstOrDefault(p => p.ProvinceName == "Ontario").ProvinceID,
                         EmployeePostalCode = "A1B2C3",
@@ -483,7 +483,7 @@ namespace hager_crm.Data
                         FirstName = "Sales",
                         LastName = "Manager",
                         JobPositionID = context.JobPositions.FirstOrDefault(p => p.Position == "Sales Manager").JobPositionID,
-                        EmploymentTypeID = context.EmploymentTypes.FirstOrDefault(t => t.Type == "Full-time").EmploymentTypeID,
+                        EmploymentTypeID = context.EmploymentTypes.FirstOrDefault(t => t.Type == "Full-Time").EmploymentTypeID,
                         EmployeeAddress1 = "100 This St",
                         EmployeeProvinceID = context.Provinces.FirstOrDefault(p => p.ProvinceName == "Ontario").ProvinceID,
                         EmployeePostalCode = "A1B2C3",

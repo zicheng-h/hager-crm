@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using hager_crm.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using OfficeOpenXml;
+using System.IO;
 
 namespace hager_crm.Controllers
 {
@@ -286,6 +289,80 @@ namespace hager_crm.Controllers
             var user = new IdentityUser { Email = email, UserName = email };
             var result = await _userManager.CreateAsync(user, password);
             return result.Succeeded ? user.Id : null;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InsertFromExcel(IFormFile theExcel)
+        {
+            if(theExcel == null)
+            {
+                ModelState.AddModelError("No files selected", "Please select a file");
+                return RedirectToAction(nameof(Index));
+            }
+            ExcelPackage excel;
+            using (var memoryStream = new MemoryStream())
+            {
+                await theExcel.CopyToAsync(memoryStream);
+                excel = new ExcelPackage(memoryStream);
+            }
+            var workSheet = excel.Workbook.Worksheets[0];
+            var start = workSheet.Dimension.Start;
+            var end = workSheet.Dimension.End;
+
+            //Start a new list to hold imported objects
+            List<Employee> employees = new List<Employee>();
+
+            for (int row = start.Row +1; row <= end.Row; row++)
+            {
+                //Check if employee exist in database already
+                string emailCompare = workSheet.Cells[row, 3].Text;
+                //string tempName = _context.Employees.FirstOrDefault(p => p.Email == emailCompare).Email;
+                if (_context.Employees.FirstOrDefault(p => p.Email == emailCompare) == null)
+                {
+                    try
+                    {
+                        Employee a = new Employee
+                        {
+                            FirstName = workSheet.Cells[row, 1].Text,
+                            LastName = workSheet.Cells[row, 2].Text,
+                            JobPositionID = _context.JobPositions.FirstOrDefault(p => p.Position == workSheet.Cells[row, 15].Text).JobPositionID,
+                            EmploymentTypeID = _context.EmploymentTypes.FirstOrDefault(t => t.Type == workSheet.Cells[row, 16].Text).EmploymentTypeID,
+                            EmployeeAddress1 = workSheet.Cells[row, 9].Text,
+                            EmployeeAddress2 = workSheet.Cells[row, 10].Text,
+                            EmployeeProvinceID = _context.Provinces.FirstOrDefault(p => p.ProvinceName == workSheet.Cells[row, 13].Text).ProvinceID,
+                            EmployeePostalCode = workSheet.Cells[row, 12].Text,
+                            EmployeeCountryID = _context.Countries.FirstOrDefault(c => c.CountryName == workSheet.Cells[row, 14].Text).CountryID,
+                            CellPhone = (workSheet.Cells[row, 5].Text != "") ? Convert.ToInt64(workSheet.Cells[row, 5].Text.Replace(")", "").Replace("(", "").Replace("-", "").Replace(" ", "")) : Convert.ToInt64("0"),
+                            WorkPhone = (workSheet.Cells[row, 5].Text != "") ? Convert.ToInt64(workSheet.Cells[row, 5].Text.Replace(")","").Replace("(","").Replace("-","").Replace(" ","")): Convert.ToInt64("0"),
+                            Email = (workSheet.Cells[row, 3].Text == "")?(workSheet.Cells[row, 1].Text+ workSheet.Cells[row, 2].Text+ "@hagerindustries.com") : workSheet.Cells[row, 3].Text,
+                            DOB = DateTime.Parse((workSheet.Cells[row, 6].Text == "")? "1900-01-01": workSheet.Cells[row, 6].Text),
+                            Notes = workSheet.Cells[row, 6].Text,
+                            Wage = Convert.ToDecimal((workSheet.Cells[row, 7].Text == "")?"0": (workSheet.Cells[row, 7].Text)),
+                            Expense = Convert.ToDecimal((workSheet.Cells[row, 8].Text == "")?"0": workSheet.Cells[row, 8].Text),
+                            DateJoined = DateTime.Parse(workSheet.Cells[row, 17].Text),
+                            KeyFob = int.Parse(workSheet.Cells[row, 24].Text),
+                            EmergencyContactName = workSheet.Cells[row, 22].Text,
+                            EmergencyContactPhone = (workSheet.Cells[row, 23].Text != "")?Convert.ToInt64(workSheet.Cells[row, 23].Text.Replace(")", "").Replace("(", "").Replace("-", "").Replace(" ", "")): Convert.ToInt64("0"),
+                            Active = (workSheet.Cells[row, 20].Text == "1") ? true : false
+
+
+
+                        };
+                        employees.Add(a);
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+                    
+                }
+                
+            }
+            _context.Employees.AddRange(employees);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
