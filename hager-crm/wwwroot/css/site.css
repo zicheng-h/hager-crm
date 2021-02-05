@@ -165,10 +165,6 @@ p {
     SIDEBAR STYLE
 ----------------------------------------------------- */
 
-#sidebarCollapse {
-    
-}
-
 #sidebar {
     width: var(--sidebar-width);
     position: fixed;
@@ -285,6 +281,14 @@ p {
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;
+    }
+
+    .navbar{
+        height: 100px;
+    }
+
+    #sidebarCollapse.btn {
+        height: 100px !important;
     }
 
     #sidebar.active {
