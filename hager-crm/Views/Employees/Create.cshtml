@@ -8,7 +8,7 @@
 <h1>Create</h1>
 
 <h4>Employee</h4>
-<hr />
+<hr/>
 <div class="row justify-content-center">
     <div class="col-lg-10 col-12">
         <form asp-action="Create">
@@ -17,112 +17,120 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" class="form-control" />
+                        <input asp-for="FirstName" class="form-control"/>
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" class="form-control" />
+                        <input asp-for="LastName" class="form-control"/>
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="JobPositionID" class="control-label"></label>
-                        <select asp-for="JobPositionID" class="form-control" asp-items="ViewBag.JobPositionID"></select>
+                        <select asp-for="JobPositionID" class="form-control" asp-items="ViewBag.JobPositionID">
+                            <option value="">--Select Job Postition--</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label asp-for="EmploymentTypeID" class="control-label"></label>
-                        <select asp-for="EmploymentTypeID" class="form-control" asp-items="ViewBag.EmploymentTypeID"></select>
+                        <select asp-for="EmploymentTypeID" class="form-control" asp-items="ViewBag.EmploymentTypeID">
+                            <option value="">--Select Employment Type--</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label asp-for="EmployeeAddress1" class="control-label"></label>
-                        <input asp-for="EmployeeAddress1" class="form-control" />
+                        <input asp-for="EmployeeAddress1" class="form-control"/>
                         <span asp-validation-for="EmployeeAddress1" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="EmployeeAddress2" class="control-label"></label>
-                        <input asp-for="EmployeeAddress2" class="form-control" />
+                        <input asp-for="EmployeeAddress2" class="form-control"/>
                         <span asp-validation-for="EmployeeAddress2" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="EmployeeProvinceID" class="control-label"></label>
-                        <select asp-for="EmployeeProvinceID" class="form-control" asp-items="ViewBag.EmployeeProvinceID"></select>
+                        <select asp-for="EmployeeProvinceID" class="form-control" asp-items="ViewBag.EmployeeProvinceID">
+                            <option value="">--Select Employee Province--</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label asp-for="EmployeePostalCode" class="control-label"></label>
-                        <input asp-for="EmployeePostalCode" class="form-control" />
+                        <input asp-for="EmployeePostalCode" class="form-control"/>
                         <span asp-validation-for="EmployeePostalCode" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="EmployeeCountryID" class="control-label"></label>
-                        <select asp-for="EmployeeCountryID" class="form-control" asp-items="ViewBag.EmployeeCountryID"></select>
+                        <select asp-for="EmployeeCountryID" class="form-control" asp-items="ViewBag.EmployeeCountryID">
+                            <option value="">--Select Employee Country--</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label asp-for="CellPhone" class="control-label"></label>
-                        <input asp-for="CellPhone" class="form-control" />
+                        <input asp-for="CellPhone" class="form-control"/>
                         <span asp-validation-for="CellPhone" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="WorkPhone" class="control-label"></label>
-                        <input asp-for="WorkPhone" class="form-control" />
+                        <input asp-for="WorkPhone" class="form-control"/>
                         <span asp-validation-for="WorkPhone" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" class="form-control" />
+                        <input asp-for="Email" class="form-control"/>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label asp-for="DOB" class="control-label"></label>
-                        <input asp-for="DOB" class="form-control" />
+                        <input asp-for="DOB" class="form-control"/>
                         <span asp-validation-for="DOB" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Wage" class="control-label"></label>
-                        <input asp-for="Wage" class="form-control" />
+                        <input asp-for="Wage" class="form-control"/>
                         <span asp-validation-for="Wage" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Expense" class="control-label"></label>
-                        <input asp-for="Expense" class="form-control" />
+                        <input asp-for="Expense" class="form-control"/>
                         <span asp-validation-for="Expense" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="DateJoined" class="control-label"></label>
-                        <input asp-for="DateJoined" class="form-control" />
+                        <input asp-for="DateJoined" class="form-control"/>
                         <span asp-validation-for="DateJoined" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="KeyFob" class="control-label"></label>
-                        <input asp-for="KeyFob" class="form-control" />
+                        <input asp-for="KeyFob" class="form-control"/>
                         <span asp-validation-for="KeyFob" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="EmergencyContactName" class="control-label"></label>
-                        <input asp-for="EmergencyContactName" class="form-control" />
+                        <input asp-for="EmergencyContactName" class="form-control"/>
                         <span asp-validation-for="EmergencyContactName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="EmergencyContactPhone" class="control-label"></label>
-                        <input asp-for="EmergencyContactPhone" class="form-control" />
+                        <input asp-for="EmergencyContactPhone" class="form-control"/>
                         <span asp-validation-for="EmergencyContactPhone" class="text-danger"></span>
                     </div>
                     <div class="form-group form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                            <input class="form-check-input" asp-for="Active"/> @Html.DisplayNameFor(model => model.Active)
                         </label>
                     </div>
                     <div class="form-group">
                         <label asp-for="Notes" class="control-label"></label>
-                        <input asp-for="Notes" class="form-control" />
+                        <input asp-for="Notes" class="form-control"/>
                         <span asp-validation-for="Notes" class="text-danger"></span>
                     </div>
                     <div class="form-group form-check">
                         <label class="form-check-label" data-toggle="collapse" data-target="#userAccountSetup" aria-expanded="false" aria-controls="userAccountSetup">
                             @* Weird kludge from aspnet *@
-                            <input id="isUser" type="checkbox" class="form-check-input" value="true" name="isUser" /> Is User
-                            <input type="hidden" value="false" name="isUser" />
+                            <input id="isUser" type="checkbox" class="form-check-input" value="true" name="isUser"/> Is User
+                            <input type="hidden" value="false" name="isUser"/>
                         </label>
                     </div>
                     <div id="userAccountSetup" class="form-group collapse">
@@ -143,7 +151,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input type="submit" value="Create" class="btn btn-primary"/>
                     </div>
                     <div>
                         <a asp-action="Index">Back to List</a>
@@ -155,5 +163,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

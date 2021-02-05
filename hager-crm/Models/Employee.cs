@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace hager_crm.Models
 {
@@ -55,7 +57,7 @@ namespace hager_crm.Models
         [RegularExpression("^[A-Z][0-9][A-Z][0-9][A-Z][0-9]$", ErrorMessage = "Please enter a proper Postal Code.")]
         public string EmployeePostalCode { get; set; }
 
-        [Required(ErrorMessage = "Please select a Employee Country")]
+        [Required(ErrorMessage = "Please select an Employee Country")]
         [Display(Name = "Employee Country")]
         public int EmployeeCountryID { get; set; }
 
@@ -63,10 +65,10 @@ namespace hager_crm.Models
         public Country EmployeeCountry { get; set; }
 
         [Display(Name = "Cell Phone")]
-        [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a proper Phone number with 10 digits without spaces.")]
+        [RegularExpression("^$|^\\d{10}$", ErrorMessage = "Please enter a proper Phone number with 10 digits without spaces.")]
         [DataType(DataType.PhoneNumber)]
         [DisplayFormat(DataFormatString = "{0:(###) ###-####}", ApplyFormatInEditMode = false)]
-        public Int64 CellPhone { get; set; }
+        public Int64? CellPhone { get; set; }
 
         [Display(Name = "Work Phone")]
         [Required(ErrorMessage = "Please enter a Work Phone Number.")]
@@ -103,9 +105,9 @@ namespace hager_crm.Models
 
         [Display(Name = "Key Fob #")]
         [Required(ErrorMessage = "Please enter the Key Fob #.")]
+        [RegularExpression("^\\d{7}$", ErrorMessage = "Please enter a proper key fob number with 7 digits without spaces.")]
         [DisplayFormat(DataFormatString = "{0:###:####}", ApplyFormatInEditMode = false)]
-        [StringLength(7, ErrorMessage = "Please enter a Key Fob with just 7 characters.")]
-        public string KeyFob { get; set; }
+        public Int32 KeyFob { get; set; }
 
         [Display(Name = "Emergency Contact Name")]
         [Required(ErrorMessage = "Please enter an Emergency Contact Name.")]
@@ -123,6 +125,7 @@ namespace hager_crm.Models
         [StringLength(200)]
         public string Notes { get; set; }
 
+        [Display(Name = "Is User")]
         public bool IsUser => !string.IsNullOrEmpty(UserId);
 
         public string UserId { get; set; }

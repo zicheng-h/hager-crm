@@ -27,9 +27,6 @@
                     @Html.DisplayNameFor(model => model.Email)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Wage)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.KeyFob)
                 </th>
                 <th>
@@ -37,6 +34,9 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.IsUser)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmergencyContactPhone)
                 </th>
                 <th></th>
             </tr>
@@ -58,9 +58,6 @@
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Wage)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.KeyFob)
                     </td>
                     <td>
@@ -68,6 +65,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.IsUser)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmergencyContactPhone)
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.EmployeeID">Edit</a> |

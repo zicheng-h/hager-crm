@@ -452,7 +452,7 @@ namespace hager_crm.Data
                         Wage = 200000m,
                         Expense = 0m,
                         DateJoined = DateTime.Now,
-                        KeyFob = "123:4567",
+                        KeyFob = 1234567,
                         EmergencyContactName = "Emergency",
                         EmergencyContactPhone = 1234567899,
                         Active = true
@@ -473,7 +473,7 @@ namespace hager_crm.Data
                         Wage = 200000m,
                         Expense = 0m,
                         DateJoined = DateTime.Now,
-                        KeyFob = "123:4567",
+                        KeyFob = 1234567,
                         EmergencyContactName = "Emergency",
                         EmergencyContactPhone = 1234567899,
                         Active = true
@@ -494,7 +494,7 @@ namespace hager_crm.Data
                         Wage = 200000m,
                         Expense = 0m,
                         DateJoined = DateTime.Now,
-                        KeyFob = "123:4567",
+                        KeyFob = 1234567,
                         EmergencyContactName = "Emergency",
                         EmergencyContactPhone = 1234567899,
                         Active = true

@@ -310,7 +310,7 @@ namespace hager_crm.Data.HIMigrations
                     b.Property<bool>("Active")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("CellPhone")
+                    b.Property<long?>("CellPhone")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DOB")
@@ -365,9 +365,9 @@ namespace hager_crm.Data.HIMigrations
                     b.Property<int>("JobPositionID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("KeyFob")
+                    b.Property<int?>("KeyFob")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("INTEGER")
                         .HasMaxLength(7);
 
                     b.Property<string>("LastName")
