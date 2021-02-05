@@ -10,6 +10,24 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<div  class="card-body">
+    <br />
+    <form asp-action="InsertFromExcel" asp-controller="Employees" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label class="control-label">Upload Excel File:</label>
+            <input type="file" class="" name="theExcel" /><br />
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="submit" value="Upload Data" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 <div class="overflow-auto">
     <table class="table">
         <thead>
