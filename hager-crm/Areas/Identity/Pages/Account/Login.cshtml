@@ -2,33 +2,46 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    Layout = string.Empty;
 }
 
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <title>Log In - Hager CRM</title>
 
-<div id="wrapper-out" class="container">
-    <div id="wrapper-in" class="row align-items-center justify-content-sm-center">
-        <form id="frmLogin" class="col-lg-4 rounded-lg" method="post">
-            <br />
-            <h1 id="title">@ViewData["Title"]</h1>
+    @* Bootstrap and CSS*@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<div class="container d-flex h-100">
+    <div class="row align-items-center justify-content-center">
+        <form id="frmLogin" class="d-flex flex-column col-10 col-sm-10 col-md-8 col-lg-4 rounded" method="post">
+            <div style="padding: 0 20px 20px 20px;">
+                <img width="100%" src="~/assets/AppLogo.png" alt="Application Logo"/>
+            </div>
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
+                <input asp-for="Input.Email" class="form-control"/>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
+                <input asp-for="Input.Password" class="form-control"/>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label asp-for="Input.RememberMe">
-                        <input asp-for="Input.RememberMe" />
+                        <input asp-for="Input.RememberMe"/>
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                 </div>
+            </div>
+            <div class="form-group">
+                <div asp-validation-summary="All" class="text-danger"></div>
             </div>
             <button type="submit" ID="btnLogin" CssClass="btn btn-primary rounded-pill" class="btn btn-primary">Log in</button>
         </form>
