@@ -9,6 +9,7 @@ namespace hager_crm.ViewModels
     public class CreateUserVM
     {
         [StringLength(255)]
+        [Required(ErrorMessage = "Email address is required when creating or editing employee with a user")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 

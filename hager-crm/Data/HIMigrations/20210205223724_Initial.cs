@@ -169,7 +169,7 @@ namespace hager_crm.Data.HIMigrations
                     EmployeeCountryID = table.Column<int>(nullable: false),
                     CellPhone = table.Column<long>(nullable: true),
                     WorkPhone = table.Column<long>(nullable: false),
-                    Email = table.Column<string>(maxLength: 255, nullable: false),
+                    Email = table.Column<string>(maxLength: 255, nullable: true),
                     DOB = table.Column<DateTime>(nullable: false),
                     Wage = table.Column<decimal>(nullable: false),
                     Expense = table.Column<decimal>(nullable: false),

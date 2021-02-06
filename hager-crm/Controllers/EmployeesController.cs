@@ -1,4 +1,4 @@
-﻿﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -185,16 +185,20 @@ namespace hager_crm.Controllers
             {
                 try
                 {
+                    bool pwdRes = true;
                     if (isUser && !employee.IsUser)
                         employee.UserId = await HandleIdentityCreation(employee.Email, userPassword, userRepeatPassword);
                     else if (!string.IsNullOrEmpty(userPassword))
-                        await HandleIdentityPasswordChange(employee.UserId, userPassword, userRepeatPassword);
+                         pwdRes = await HandleIdentityPasswordChange(employee.Email, employee.UserId, userPassword, userRepeatPassword);
                         
-                    if (!(isUser && string.IsNullOrEmpty(employee.UserId)))
+                    if (!(isUser && string.IsNullOrEmpty(employee.UserId)) && pwdRes)
                     {
-                        await HandleIdentityEmailChange(employee.UserId, employee.Email);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                        var res = await HandleIdentityEmailChange(employee.UserId, employee.Email);
+                        if (res)
+                        {
+                            await _context.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
+                        }
                     }
                         
                 }
@@ -257,21 +261,27 @@ namespace hager_crm.Controllers
             return isValid;
         }
 
-        private async Task HandleIdentityPasswordChange(string userId, string password, string repeatPassword)
+        private async Task<bool> HandleIdentityPasswordChange(string email, string userId, string password, string repeatPassword)
         {
-            var isValid = ValidateCreateUserVM("", password, repeatPassword);
+            var isValid = ValidateCreateUserVM(email, password, repeatPassword);
             if (!isValid)
-                return;
+                return false;
             var identity = await _userManager.FindByIdAsync(userId);
             if (identity != null)
             {
                 await _userManager.RemovePasswordAsync(identity);
                 await _userManager.AddPasswordAsync(identity, password);
             }
+            return true;
         }
 
-        private async Task HandleIdentityEmailChange(string userId, string email)
+        private async Task<bool> HandleIdentityEmailChange(string userId, string email)
         {
+            if (string.IsNullOrEmpty(email))
+            {
+                ModelState.AddModelError("Email", "Email address is required when creating or editing employee with a user");
+                return false;
+            }
             var identity = await _userManager.FindByIdAsync(userId);
             if (identity != null)
             {
@@ -279,6 +289,7 @@ namespace hager_crm.Controllers
                 identity.UserName = email;
                 await _userManager.UpdateAsync(identity);
             }
+            return true;
         }
 
         private async Task<string> HandleIdentityCreation(string email, string password, string repeatPassword)
@@ -343,21 +354,16 @@ namespace hager_crm.Controllers
                             KeyFob = int.Parse(workSheet.Cells[row, 24].Text),
                             EmergencyContactName = workSheet.Cells[row, 22].Text,
                             EmergencyContactPhone = (workSheet.Cells[row, 23].Text != "")?Convert.ToInt64(workSheet.Cells[row, 23].Text.Replace(")", "").Replace("(", "").Replace("-", "").Replace(" ", "")): Convert.ToInt64("0"),
-                            Active = (workSheet.Cells[row, 20].Text == "1") ? true : false
-
-
-
+                            Active = workSheet.Cells[row, 20].Text == "1"
                         };
                         employees.Add(a);
                     }
                     catch (Exception)
                     {
-
-                        throw;
+                        ModelState.AddModelError("Error", "Error while parsing the file");
+                        return RedirectToAction(nameof(Index));
                     }
-                    
                 }
-                
             }
             _context.Employees.AddRange(employees);
             _context.SaveChanges();

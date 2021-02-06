@@ -77,7 +77,6 @@ namespace hager_crm.Models
         [DisplayFormat(DataFormatString = "{0:(###) ###-####}", ApplyFormatInEditMode = false)]
         public Int64 WorkPhone { get; set; }
 
-        [Required(ErrorMessage = "Please enter an e-mail address.")]
         [StringLength(255)]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email Address")]
