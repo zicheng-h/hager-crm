@@ -44,9 +44,6 @@
                     @Html.DisplayNameFor(model => model.KeyFob)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.IsUser)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.EmergencyContactPhone)
                 </th>
                 <th></th>
@@ -72,15 +69,12 @@
                         @Html.DisplayFor(modelItem => item.KeyFob)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.IsUser)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.EmergencyContactPhone)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.EmployeeID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.EmployeeID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.EmployeeID">Delete</a>
+                        <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.EmployeeID">Edit</a>
+                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.EmployeeID">Details</a>
+                        <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.EmployeeID">Delete</a>
                     </td>
                 </tr>
             }
