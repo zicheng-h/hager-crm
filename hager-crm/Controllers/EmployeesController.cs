@@ -72,6 +72,7 @@ namespace hager_crm.Controllers
         }
 
         // GET: Employees/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["EmployeeCountryID"] = GetCountriesSelectList();
@@ -86,6 +87,7 @@ namespace hager_crm.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(
             [Bind("FirstName,LastName,JobPositionID,EmploymentTypeID,EmployeeAddress1,EmployeeAddress2,EmployeeProvinceID,EmployeePostalCode,EmployeeCountryID,CellPhone,WorkPhone,Email,DOB,Wage,Expense,DateJoined,KeyFob,EmergencyContactName,EmergencyContactPhone,Active,Notes,UserId")] Employee employee,
             string userPassword,
@@ -118,6 +120,7 @@ namespace hager_crm.Controllers
         }
 
         // GET: Employees/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -142,6 +145,7 @@ namespace hager_crm.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(
             int? id, 
             string userPassword,
@@ -215,6 +219,7 @@ namespace hager_crm.Controllers
         }
 
         // GET: Employees/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -239,6 +244,7 @@ namespace hager_crm.Controllers
         // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
@@ -303,6 +309,7 @@ namespace hager_crm.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> InsertFromExcel(IFormFile theExcel)
         {
             if(theExcel == null)
