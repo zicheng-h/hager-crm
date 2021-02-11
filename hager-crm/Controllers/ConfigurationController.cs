@@ -133,11 +133,6 @@ namespace hager_crm.Controllers
             return PartialView("~/Views/Configuration/Roles/_Users.cshtml", users);
         }
 
-        public PartialViewResult NewRole()
-        {
-            return PartialView("~/Views/Configuration/Roles/_NewRole.cshtml");
-        }
-
         public async Task<PartialViewResult> GetLookups()
         {
             var lookups = new List<LookupVM>();
@@ -207,27 +202,6 @@ namespace hager_crm.Controllers
 
             _hContext.Employees.FirstOrDefault(e => e.UserId == userId).UserId = String.Empty;
             await _hContext.SaveChangesAsync();
-
-            return;
-        }
-
-        [HttpPost]
-        public async void DeleteRoleAsync(string roleId)
-        {
-            var role = await _roleManager.FindByIdAsync(roleId);
-
-            await _roleManager.DeleteAsync(role);
-
-            return;
-        }
-
-        [HttpPost]
-        public async void CreateRoleAsync(string roleName)
-        {
-            var roleExist = await _roleManager.RoleExistsAsync(roleName);
-
-            if (!roleExist)
-                await _roleManager.CreateAsync(new IdentityRole(roleName));
 
             return;
         }
