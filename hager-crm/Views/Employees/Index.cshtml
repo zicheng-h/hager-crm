@@ -72,9 +72,12 @@
                         @Html.DisplayFor(modelItem => item.EmergencyContactPhone)
                     </td>
                     <td>
-                        <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.EmployeeID">Edit</a>
                         <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.EmployeeID">Details</a>
-                        <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.EmployeeID">Delete</a>
+                        <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.EmployeeID">Edit</a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.EmployeeID">Delete</a>
+                        }
                     </td>
                 </tr>
             }

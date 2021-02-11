@@ -23,21 +23,18 @@ namespace hager_crm.Models
         public string LastName { get; set; }
 
         [Display(Name = "Job Position")]
-        [Required(ErrorMessage = "Please select a Job Position.")]
-        public int JobPositionID { get; set; }
+        public int? JobPositionID { get; set; }
 
         [Display(Name = "Job Position")]
         public JobPosition JobPosition { get; set; }
 
         [Display(Name = "Employment Type")]
-        [Required(ErrorMessage = "Please select an Employment Type.")]
-        public int EmploymentTypeID { get; set; }
+        public int? EmploymentTypeID { get; set; }
 
         [Display(Name = "Employment Type")]
         public EmploymentType EmploymentType { get; set; }
 
         [Display(Name = "Employee Address 1")]
-        [Required(ErrorMessage = "Please enter a Employee Address.")]
         [StringLength(100, ErrorMessage = "Please enter a Employee Address with less then 100 characters.")]
         public string EmployeeAddress1 { get; set; }
 
@@ -45,21 +42,21 @@ namespace hager_crm.Models
         [StringLength(50, ErrorMessage = "Please enter a Employee Address with less then 50 characters.")]
         public string EmployeeAddress2 { get; set; }
 
-        [Required(ErrorMessage = "Please select a Employee Province.")]
+        [Display(Name = "Employee City")]
+        public string EmployeeCity { get; set; }
+
         [Display(Name = "Employee Province")]
-        public int EmployeeProvinceID { get; set; }
+        public int? EmployeeProvinceID { get; set; }
 
         [Display(Name = "Employee Province")]
         public Province EmployeeProvince { get; set; }
 
-        [Required(ErrorMessage = "Please enter a Employee Postal Code.")]
         [Display(Name = "Postal Code")]
         [RegularExpression("^[A-Z][0-9][A-Z][0-9][A-Z][0-9]$", ErrorMessage = "Please enter a proper Postal Code.")]
         public string EmployeePostalCode { get; set; }
 
-        [Required(ErrorMessage = "Please select an Employee Country")]
         [Display(Name = "Employee Country")]
-        public int EmployeeCountryID { get; set; }
+        public int? EmployeeCountryID { get; set; }
 
         [Display(Name = "Employee Country")]
         public Country EmployeeCountry { get; set; }
@@ -71,11 +68,10 @@ namespace hager_crm.Models
         public Int64? CellPhone { get; set; }
 
         [Display(Name = "Work Phone")]
-        [Required(ErrorMessage = "Please enter a Work Phone Number.")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a proper Phone number with 10 digits without spaces.")]
         [DataType(DataType.PhoneNumber)]
         [DisplayFormat(DataFormatString = "{0:(###) ###-####}", ApplyFormatInEditMode = false)]
-        public Int64 WorkPhone { get; set; }
+        public Int64? WorkPhone { get; set; }
 
         [StringLength(255)]
         [DataType(DataType.EmailAddress)]
@@ -83,42 +79,35 @@ namespace hager_crm.Models
         public string Email { get; set; }
 
         [Display(Name = "Date of Birth")]
-        [Required(ErrorMessage = "Please enter a Date of Birth")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime DOB { get; set; }
+        public DateTime? DOB { get; set; }
 
-        [Required(ErrorMessage = "Please enter a Wage for the employee.")]
         [DataType(DataType.Currency)]
-        public decimal Wage { get; set; }
+        public decimal? Wage { get; set; }
 
-        [Required(ErrorMessage = "Please enter a Expense for the employee.")]
         [DataType(DataType.Currency)]
-        public decimal Expense { get; set; }
+        public decimal? Expense { get; set; }
 
         [Display(Name = "Date Joined")]
-        [Required(ErrorMessage = "Please enter the Date Joined")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime DateJoined { get; set; }
+        public DateTime? DateJoined { get; set; }
 
         [Display(Name = "Key Fob #")]
-        [Required(ErrorMessage = "Please enter the Key Fob #.")]
-        [RegularExpression("^\\d{7}$", ErrorMessage = "Please enter a proper key fob number with 7 digits without spaces.")]
-        [DisplayFormat(DataFormatString = "{0:###:####}", ApplyFormatInEditMode = false)]
-        public Int32 KeyFob { get; set; }
+        [RegularExpression("^\\d{9}$", ErrorMessage = "Please enter a proper key fob number with 7 digits without spaces.")]
+        [DisplayFormat(DataFormatString = "{0:####:#####}", ApplyFormatInEditMode = false)]
+        public Int32? KeyFob { get; set; }
 
         [Display(Name = "Emergency Contact Name")]
-        [Required(ErrorMessage = "Please enter an Emergency Contact Name.")]
         [StringLength(50, ErrorMessage = "Please enter a Emergency Contact Name with less than 50 characters.")]
         public string EmergencyContactName { get; set; }
 
         [Display(Name = "Emergency Contact Phone")]
-        [Required(ErrorMessage = "Please enter a Emergency Contact Phone Number.")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a proper Phone number with 10 digits without spaces.")]
         [DataType(DataType.PhoneNumber)]
         [DisplayFormat(DataFormatString = "{0:(###) ###-####}", ApplyFormatInEditMode = false)]
-        public Int64 EmergencyContactPhone { get; set; }
+        public Int64? EmergencyContactPhone { get; set; }
         public bool Active { get; set; }
 
         [StringLength(200)]
@@ -131,5 +120,6 @@ namespace hager_crm.Models
 
         [Display(Name = "Full Name")]
         public string FullName => FirstName + " " + LastName;
+
     }
 }

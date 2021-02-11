@@ -21,21 +21,18 @@ namespace hager_crm.Models
         [StringLength(50, ErrorMessage = "Please enter a Last Name with less than 50 characters.")]
         public string LastName { get; set; }
         [Display(Name = "Job Title")]
-        [Required(ErrorMessage = "Please enter a Job Title for the contact.")]
         [StringLength(50, ErrorMessage = "Please enter a Job Title with less than 50 characters.")]
         public string JobTitle { get; set; }
         [Display(Name = "Cell Phone")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a proper Phone number with 10 digits without spaces.")]
         [DataType(DataType.PhoneNumber)]
         [DisplayFormat(DataFormatString = "{0:(###) ###-####}", ApplyFormatInEditMode = false)]
-        public Int64 CellPhone { get; set; }
+        public Int64? CellPhone { get; set; }
         [Display(Name = "Work Phone")]
-        [Required(ErrorMessage = "Please enter a Work Phone Number.")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a proper Phone number with 10 digits without spaces.")]
         [DataType(DataType.PhoneNumber)]
         [DisplayFormat(DataFormatString = "{0:(###) ###-####}", ApplyFormatInEditMode = false)]
-        public Int64 WorkPhone { get; set; }
-        [Required(ErrorMessage = "Please enter an e-mail address.")]
+        public Int64? WorkPhone { get; set; }
         [StringLength(255)]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email Address")]
@@ -44,7 +41,6 @@ namespace hager_crm.Models
         public bool Active { get; set; }
         [StringLength(200)]
         public string Notes { get; set; }
-        [Required(ErrorMessage = "Please assign a Company to this Contact.")]
         public int CompanyID { get; set; }
         public Company Company { get; set; }
 
