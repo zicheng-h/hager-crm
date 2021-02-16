@@ -1,10 +1,5 @@
 ﻿@model List<hager_crm.ViewModels.RoleVM>
 <br />
-<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#rolesModal" onclick="newRole()">
-    Create Role
-</a>
-<br />
-<br />
 <table class="table">
     <thead>
         <tr>
@@ -36,12 +31,6 @@
                         }
                     </a>
                 </td>
-                <td>
-                    @if (item.RoleName != "Unassigned")
-                    {
-                        <a href="#" onclick="deleteRole('@item.RoleId')">Delete Role</a>
-                    }
-                </td>
             </tr>
         }
     </tbody>
@@ -65,17 +54,4 @@
         };
         return;
     };
-    function deleteRole(RoleId) {
-        $.post("/Configuration/DeleteRole",
-            {
-                roleId: RoleId
-            },
-            function () {
-                $('#roles-panel').load('/Configuration/GetRoles');
-            }
-        );
-    }
-    function newRole() {
-        $('.modal-content').load('/Configuration/NewRole');
-    }
 </script>
