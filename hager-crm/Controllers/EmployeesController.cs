@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using System.IO;
+using hager_crm.Models.FilterConfig;
+using hager_crm.Utils;
 
 namespace hager_crm.Controllers
 {
@@ -22,11 +24,13 @@ namespace hager_crm.Controllers
     {
         private readonly HagerContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly GridFilter<Employee> _gridFilter;
 
         public EmployeesController(HagerContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
+            _gridFilter = new GridFilter<Employee>(new EmployeeConfig(), 5);
         }
 
         private SelectList GetCountriesSelectList(object selectedValue = null) =>
@@ -41,12 +45,18 @@ namespace hager_crm.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var hagerContext = _context.Employees
+            var query = _context.Employees
                 .Include(e => e.EmployeeCountry)
                 .Include(e => e.EmployeeProvince)
                 .Include(e => e.EmploymentType)
                 .Include(e => e.JobPosition);
-            return View(await hagerContext.ToListAsync());
+            
+            _gridFilter.ParseQuery(HttpContext);
+            ViewBag.gridFilter = _gridFilter;
+            ViewData["EmploymentTypeID"] = GetEmploymentTypesSelectList();
+            ViewData["JobPositionID"] = GetPositionsSelectList();
+            
+            return View(await _gridFilter.GetFilteredData(query));
         }
 
         // GET: Employees/Details/5
