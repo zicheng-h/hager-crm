@@ -16,10 +16,12 @@ namespace hager_crm.Models
 
         [Required(ErrorMessage = "Please enter a First Name.")]
         [StringLength(50, ErrorMessage = "Please enter a First Name with less than 50 characters.")]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Please enter a Last Name.")]
         [StringLength(50, ErrorMessage = "Please enter a Last Name with less than 50 characters.")]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Display(Name = "Job Position")]
@@ -110,7 +112,8 @@ namespace hager_crm.Models
         public Int64? EmergencyContactPhone { get; set; }
         public bool Active { get; set; }
 
-        [StringLength(200)]
+        [StringLength(200, ErrorMessage = "No more than 200 characters for notes.")]
+        [DataType(DataType.MultilineText)]
         public string Notes { get; set; }
 
         [Display(Name = "Is User")]

@@ -55,6 +55,8 @@ namespace hager_crm.Data
 
             modelBuilder.Entity<Employee>().HasIndex(e => e.Email).IsUnique();
 
+            modelBuilder.Entity<ContactCategories>().HasKey(c => new { c.CategoriesID, c.ContactID });
+
             //Prevent Cascading Delete
             //From Company to Contacts.
             modelBuilder.Entity<Company>()

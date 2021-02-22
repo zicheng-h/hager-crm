@@ -35,7 +35,7 @@ namespace hager_crm.Data.HIMigrations
 
             modelBuilder.Entity("hager_crm.Models.Categories", b =>
                 {
-                    b.Property<int>("CategoriesID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -44,7 +44,7 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
 
-                    b.HasKey("CategoriesID");
+                    b.HasKey("ID");
 
                     b.ToTable("Categories");
                 });
@@ -183,7 +183,7 @@ namespace hager_crm.Data.HIMigrations
                     b.Property<long?>("CellPhone")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CompanyID")
+                    b.Property<int?>("CompanyID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
@@ -220,19 +220,13 @@ namespace hager_crm.Data.HIMigrations
 
             modelBuilder.Entity("hager_crm.Models.ContactCategories", b =>
                 {
-                    b.Property<int>("ContactCategoriesID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("CategoriesID")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ContactID")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ContactCategoriesID");
-
-                    b.HasIndex("CategoriesID");
+                    b.HasKey("CategoriesID", "ContactID");
 
                     b.HasIndex("ContactID");
 
@@ -514,8 +508,7 @@ namespace hager_crm.Data.HIMigrations
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("Contacts")
                         .HasForeignKey("CompanyID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("hager_crm.Models.ContactCategories", b =>
