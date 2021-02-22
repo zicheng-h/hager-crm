@@ -19,8 +19,8 @@ namespace hager_crm.Models
         [Required(ErrorMessage = "Please enter the Company Name")]
         [StringLength(50, ErrorMessage = "Please enter a Company Name with less than 50 characters.")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Please enter the Company Name")]
-        [StringLength(50, ErrorMessage = "Please enter a Company Name with less than 50 characters.")]
+        [Required(ErrorMessage = "Please enter the Location")]
+        [StringLength(50, ErrorMessage = "Please enter a Location with less than 50 characters.")]
         public string Location { get; set; }
         [Display(Name = "Credit Check")]
         public bool CreditCheck { get; set; }

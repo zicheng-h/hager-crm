@@ -9,7 +9,7 @@ using hager_crm.Data;
 namespace hager_crm.Data.HIMigrations
 {
     [DbContext(typeof(HagerContext))]
-    [Migration("20210205223724_Initial")]
+    [Migration("20210216125020_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -322,7 +322,6 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(255);
 

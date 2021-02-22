@@ -30,10 +30,10 @@
                 <li>
                     <a href="#companiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Companies</a>
                     <ul class="collapse list-unstyled" id="companiesSubmenu">
-                        <li><a href="#">All Companies</a></li>
-                        <li><a href="#">Customers</a></li>
-                        <li><a href="#">Vendors</a></li>
-                        <li><a href="#">Contractors</a></li>
+                        <li><a asp-controller="Companies" asp-action="Index">All Companies</a></li>
+                        <li><a asp-controller="Companies" asp-action="IndexCustomer">Customers</a></li>
+                        <li><a asp-controller="Companies" asp-action="IndexVendor">Vendors</a></li>
+                        <li><a asp-controller="Companies" asp-action="IndexContractor">Contractors</a></li>
                     </ul>
                 </li>
                 <li>
