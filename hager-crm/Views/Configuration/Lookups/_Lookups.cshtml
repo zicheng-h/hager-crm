@@ -9,18 +9,23 @@
                     @lookup.GetHumanLookupName()
                 </div>
                 <div class="card-body">
-                    <div class="list-group" data-lookup-name="@lookup.LookupName" style="overflow-y: auto; height: 355px;">
+                    <div name="sortable" class="list-group" data-lookup-name="@lookup.LookupName" style="overflow-y: auto; height: 355px;">
                         @foreach (var item in lookup.Items)
                         {
                             <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
                                  data-item-id="@item.GetId()"
                                  href="#">
+                                <div name="sort-handle" class="btn-group" role="group" aria-label="List Sort Handle">
+                                    <a class="btn btn-sm btn-outline-secondary disabled">⥯</a>
+                                </div>
                                 <div class="display-name d-flex m-auto">@item.DisplayName</div>
                                 <div class="edit-lookup-name input-group hide input-group-sm mr-3">
                                     <input type="text" class="form-control" required placeholder="Enter new name...">
                                     <div class="input-group-append">
-                                        <button class="add-lookup btn btn-outline-success" 
-                                                type="button" onclick="editLookup(this)">✓</button>
+                                        <button class="add-lookup btn btn-outline-success"
+                                                type="button" onclick="editLookup(this)">
+                                            ✓
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="lookup-actions btn-group" role="group" aria-label="List Item Actions">
@@ -39,8 +44,10 @@
                     <div class="input-group mt-2">
                         <input type="text" class="form-control" placeholder="Add new list item...">
                         <div class="input-group-append">
-                            <button class="add-lookup btn btn-outline-success" 
-                                    type="button" onclick="addLookup(this)">+</button>
+                            <button class="add-lookup btn btn-outline-success"
+                                    type="button" onclick="addLookup(this)">
+                                +
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -48,6 +55,7 @@
         </div>
     }
 </div>
+<script src="~/js/jquery-ui.js"></script>
 <script type="text/javascript">
     function deleteLookup(item) {
         let $item = $(item).closest('.lookup-list-item');
@@ -69,11 +77,11 @@
         let $listItem = $item.closest('.lookup-list-item');
         let $lookupList = $item.closest('.list-group');
         let displayName = $item.parent().siblings('input').val();
-        if (!displayName){
+        if (!displayName) {
             updateLookup(item);
-            return ;
+            return;
         }
-        
+
         $item.parent().siblings('input').val('');
         $.post("/Configuration/UpdateLookup",
             {
@@ -110,22 +118,26 @@
                 let $list = $item.closest('.card-body').find('.list-group');
                 let $listItemCopy = $($.parseHTML(getNewListItem()));
                 $listItemCopy.find('.display-name').text(displayName);
-                $listItemCopy.data('item-id', response['lookupId']);
+                //$listItemCopy.data('item-id', response['lookupId']);
+                $listItemCopy.attr('data-item-id', response['lookupId']);
                 $list.append($listItemCopy);
             }
         );
     }
-    
-    function getNewListItem(){
+
+    function getNewListItem() {
         return `
             <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
                  data-item-id=""
                  href="#">
+                <div name="sort-handle" class="btn-group" role="group" aria-label="List Sort Handle">
+                    <a class="btn btn-sm btn-outline-secondary disabled">⥯</a>
+                </div>
                 <div class="display-name d-flex m-auto"></div>
                 <div class="edit-lookup-name input-group hide input-group-sm mr-3">
                     <input type="text" class="form-control" required placeholder="Enter new name...">
                     <div class="input-group-append">
-                        <button class="add-lookup btn btn-outline-success" 
+                        <button class="add-lookup btn btn-outline-success"
                                 type="button" onclick="editLookup(this)">✓</button>
                     </div>
                 </div>
@@ -140,6 +152,16 @@
                     </button>
                 </div>
             </div>
-        `;    
+        `;
     }
+
+    $(function () {
+        $("[name='sortable']").sortable({
+            stop: function (event, ui) {
+                console.log($(this).sortable("toArray", { attribute: "data-item-id" }));
+            },
+            handle: "[name='sort-handle']"
+        });
+        $("[name='sortable']").disableSelection();
+    });
 </script>
