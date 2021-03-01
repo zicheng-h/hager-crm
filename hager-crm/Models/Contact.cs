@@ -27,17 +27,16 @@ namespace hager_crm.Models
 
         public string LastName { get; set; }
         [Display(Name = "Job Title")]
-
         [StringLength(50, ErrorMessage = "Please enter a Job Title with less than 50 characters.")]
         public string JobTitle { get; set; }
-        [Display(Name = "Cell Phone")]
 
+        [Display(Name = "Cell Phone")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a proper Phone number with 10 digits without spaces.")]
         [DataType(DataType.PhoneNumber)]
         [DisplayFormat(DataFormatString = "{0:(###) ###-####}", ApplyFormatInEditMode = false)]
         public Int64? CellPhone { get; set; }
-        [Display(Name = "Work Phone")]
 
+        [Display(Name = "Work Phone")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a proper Phone number with 10 digits without spaces.")]
         [DataType(DataType.PhoneNumber)]
         [DisplayFormat(DataFormatString = "{0:(###) ###-####}", ApplyFormatInEditMode = false)]
@@ -57,7 +56,7 @@ namespace hager_crm.Models
         public string Notes { get; set; }
 
         [Display(Name = "Company")]
-        public int? CompanyID { get; set; }
+        public int CompanyID { get; set; }
         public Company Company { get; set; }
 
         [Display(Name = "Contact")]

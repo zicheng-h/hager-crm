@@ -40,9 +40,9 @@
                     <a href="#contactsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Contacts</a>
                     <ul class="collapse list-unstyled" id="contactsSubmenu">
                         <li><a asp-controller="Contacts" asp-action="Index">All Contacts</a></li>
-                        <li><a href="#">Customer Contacts</a></li>
-                        <li><a href="#">Vendor Contacts</a></li>
-                        <li><a href="#">Contractor Contacts</a></li>
+                        <li><a asp-controller="Contacts" asp-action="IndexCustomer">Customers</a></li>
+                        <li><a asp-controller="Contacts" asp-action="IndexVendor">Vendor</a></li>
+                        <li><a asp-controller="Contacts" asp-action="IndexContractor">Contractor</a></li>
                     </ul>
                 </li>
                 @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))

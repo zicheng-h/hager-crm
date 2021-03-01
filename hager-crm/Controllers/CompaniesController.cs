@@ -612,9 +612,6 @@ namespace hager_crm.Controllers
         }
 
 
-
-      
-
         // GET: Companies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -797,7 +794,6 @@ namespace hager_crm.Controllers
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "Type", company.VendorTypeID);
             return View(company);
         }
-
         // POST: Companies/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -904,7 +900,6 @@ namespace hager_crm.Controllers
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "Type", company.VendorTypeID);
             return View(company);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCustomer(int id)
@@ -983,6 +978,7 @@ namespace hager_crm.Controllers
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "VendorTypeID", companyToUpdate.VendorTypeID);
             return View(companyToUpdate);
         }
+
         // GET: Companies/Edit/5
         public async Task<IActionResult> EditVendor(int? id)
         {
@@ -1007,7 +1003,6 @@ namespace hager_crm.Controllers
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "Type", company.VendorTypeID);
             return View(company);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditVendor(int id)
@@ -1111,7 +1106,6 @@ namespace hager_crm.Controllers
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "Type", company.VendorTypeID);
             return View(company);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditContractor(int id)
