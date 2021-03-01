@@ -5,11 +5,46 @@
 }
 
 <h1>All Companies</h1>
+<div>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    <form asp-action="InsertFromExcelCompany" asp-controller="Companies" method="post" enctype="multipart/form-data">
+        <button type="button" class="btn btn-outline-primary" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Companies</button>
+        
+        <div class="collapse" id="collapseImport">
+            <br />
+            <div class="form-horizontal">
+                <div class="card card-body bg-light">
+                    <div class="row">
+                        <div class="custom-file col-md-4">
+                            <label for="theExcel" class="custom-file-label">
+                                <i class="fa fa-cloud-upload"></i> Upload Excel File:
+                            </label>
+                            <input id="theExcel" name="theExcel" type="file" class="custom-file-input">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="submit" value="Upload Data" class="btn btn-primary" />
+                            </div>
+                        </div>
+                        <div class="custom-file col-md-4">
+                            <p><a href="/TemplateFile/Companies_Import_Template_V4.xlsx" download> Click to Download Template</a></p>
+                        </div>
+                    </div>
+                </div>
 
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+<br />
 <form asp-action="Index" method="get">
     <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
     <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
@@ -42,6 +77,8 @@
     </div>
 
 
+
+
     <table class="table">
         <thead>
             <tr>
@@ -58,10 +95,10 @@
                     <input type="submit" disabled="disabled" value="Website" class="btn btn-link" />
                 </th>
                 <th>
-                    <input type="submit" name="actionButton" value="BillingProvince" class="btn btn-link" />
+                    <input type="submit" name="actionButton" value="Province" class="btn btn-link" />
                 </th>
                 <th>
-                    <input type="submit" name="actionButton" value="BillingCountry" class="btn btn-link" />
+                    <input type="submit" name="actionButton" value="Country" class="btn btn-link" />
                 </th>
 
                 <th>
@@ -81,60 +118,71 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Location)
-                </td>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Website)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Website)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.BillingProvince.ProvinceName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BillingCountry.CountryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Active)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BillingProvince.ProvinceName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BillingCountry.CountryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Active)
+                    </td>
 
-                <td>
-                    @{
-                        if (item.Customer == true)
-                        {
-                            <a class="btn btn-warning">Customer</a>
+                    <td>
+                        @{
+                            if (item.Customer == true)
+                            {
+                                <a class="btn btn-warning">Customer</a>
+                            }
+                            if (item.Vendor == true)
+                            {
+                                <a class="btn btn-success">Vendor</a>
+                            }
+                            if (item.Contractor == true)
+                            {
+                                <a class="btn btn-info">Contractor</a>
+                            }
+
                         }
-                        if (item.Vendor == true)
-                        {
-                            <a class="btn btn-success">Vendor</a>
-                        }
-                        if (item.Contractor == true)
-                        {
-                            <a class="btn btn-info">Contractor</a>
-                        }
-
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Notes)
-                </td>
-                <td>
-                    <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.CompanyID">Edit</a>
-                    <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID">Details</a>
-                    <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.CompanyID">Delete</a>
-                </td>
-            </tr>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.CompanyID">Edit</a>
+                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID">Details</a>
+                        <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.CompanyID">Delete</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
 
     <partial name="_PagingNavBar" />
 </form>
+
+
+<script type="text/javascript">
+
+    $('#theExcel').change(function () {
+        var i = $(this).prev('label').clone();
+        var file = $('#theExcel')[0].files[0].name;
+        $(this).prev('label').text(file);
+    });
+
+</script>
