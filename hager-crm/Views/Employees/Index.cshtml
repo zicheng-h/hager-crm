@@ -10,6 +10,7 @@
 }
 
 <h1>Employee List</h1>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 @if (User.IsInRole("Admin"))
 {
@@ -18,15 +19,30 @@
     </p>
     <form asp-action="InsertFromExcel" asp-controller="Employees" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="row">
-            <div class="custom-file col-md-4">
-                <label class="custom-file-label" for="theExcel">Upload Excel File:</label>
-                <input type="file" class="custom-file-input" id="theExcel" name="theExcel"/><br/>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <input type="submit" value="Upload Data" class="btn btn-primary"/>
+        <button type="button" class="btn btn-outline-primary" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Companies</button>
+
+        <div class="collapse" id="collapseImport">
+            <br />
+            <div class="form-horizontal">
+                <div class="card card-body bg-light">
+                    <div class="row">
+                        <div class="custom-file col-md-4">
+                            <label for="theExcel" class="custom-file-label">
+                                <i class="fa fa-cloud-upload"></i> Upload Excel File:
+                            </label>
+                            <input id="theExcel" name="theExcel" type="file" class="custom-file-input">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="submit" value="Upload Data" class="btn btn-primary" />
+                            </div>
+                        </div>
+                        <div class="custom-file col-md-4">
+                            <p><a href="/TemplateFile/Employee_Import_Template_V8.xlsx" download> Click to Download Template</a></p>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </form>
@@ -101,6 +117,17 @@
     }
     @Html.GeneratePagination((IGridFilterPaginatable) gridFilter)
 </div>
+
 <script>
     const FILTER_URL = "@($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}")";
+</script>
+
+<script type="text/javascript">
+
+    $('#theExcel').change(function () {
+        var i = $(this).prev('label').clone();
+        var file = $('#theExcel')[0].files[0].name;
+        $(this).prev('label').text(file);
+    });
+
 </script>

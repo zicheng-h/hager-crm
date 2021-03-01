@@ -1,0 +1,78 @@
+﻿@model IEnumerable<hager_crm.Models.Contact>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All Contact list</h1>
+<p>
+    <a asp-action="Create">Add New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Company)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactCategories)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company.Name)
+                </td>
+                <td>
+                    @{
+                        int catCount = item.ContactCategories.Count;
+                        if (catCount > 0)
+                        {
+                            string firstCat = item.ContactCategories.FirstOrDefault().Categories.Category;
+                            if (catCount > 1)
+                            {
+                                string catList = "";
+                                var a = item.ContactCategories.ToList();
+                                for (int i = 1; i < catCount; i++)
+                                {
+                                    catList += a[i].Categories.Category + " <br />";
+                                }
+                                <a class="" role="button" data-toggle="collapse" href="#collapseSum@(item.ContactID)" aria-expanded="false" aria-controls="collapseSum@(item.ContactID)">
+                                    @firstCat... <span class="badge badge-info">@catCount</span>
+                                </a>
+                                <div class="collapse" id="collapseSum@(item.ContactID)">
+                                    @Html.Raw(catList)
+                                </div>
+                            }
+                            else
+                            {
+                                @firstCat
+                            }
+                        }
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.ContactID">Details</a>
+                    <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.ContactID">Edit</a>
+                    <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.ContactID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

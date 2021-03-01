@@ -30,16 +30,16 @@
                 <li>
                     <a href="#companiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Companies</a>
                     <ul class="collapse list-unstyled" id="companiesSubmenu">
-                        <li><a href="#">All Companies</a></li>
-                        <li><a href="#">Customers</a></li>
-                        <li><a href="#">Vendors</a></li>
-                        <li><a href="#">Contractors</a></li>
+                        <li><a asp-controller="Companies" asp-action="Index">All Companies</a></li>
+                        <li><a asp-controller="Companies" asp-action="IndexCustomer">Customers</a></li>
+                        <li><a asp-controller="Companies" asp-action="IndexVendor">Vendors</a></li>
+                        <li><a asp-controller="Companies" asp-action="IndexContractor">Contractors</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#contactsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Contacts</a>
                     <ul class="collapse list-unstyled" id="contactsSubmenu">
-                        <li><a href="#">All Contacts</a></li>
+                        <li><a asp-controller="Contacts" asp-action="Index">All Contacts</a></li>
                         <li><a href="#">Customer Contacts</a></li>
                         <li><a href="#">Vendor Contacts</a></li>
                         <li><a href="#">Contractor Contacts</a></li>
