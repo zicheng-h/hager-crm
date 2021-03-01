@@ -1,16 +1,14 @@
 ﻿@model hager_crm.Models.Contact
 
 @{
-    ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Details Vendor";
 }
 
-<h1>Details</h1>
+<h1>Details Vendor</h1>
 <div>
-    <h4>Contact: @Model.FullName</h4>
+    <h4>Vendor Contact: @Model.FullName</h4>
     <hr />
 </div>
-
 <div>
     <ul class="nav nav-pills" id="myTabs" role="tablist">
         <li class="nav-item">
@@ -90,7 +88,7 @@
     </div>
     <hr />
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.ContactID">Edit</a> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="EditVendor" asp-route-id="@Model.ContactID">Edit</a> |
+        <a asp-action="IndexVendor">Back to List</a>
     </div>
 </div>

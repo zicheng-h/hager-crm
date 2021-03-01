@@ -1,14 +1,9 @@
 ﻿@model IEnumerable<hager_crm.Models.Contact>
-@using hager_crm.Utils;
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Contact Contractor";
 }
 
-<h1>All Contact list</h1>
-<p>
-    <a asp-action="Create">Add New</a>
-</p>
+<h1>Contact Contractor</h1>
 <form asp-action="Index" method="get">
     <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
     <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
@@ -54,9 +49,6 @@
                 <th>
                     <input type="submit" disabled="disabled" value="Category" class="btn btn-link" />
                 </th>
-                @*<th>
-                    <input type="submit" name="actionButton" value="Category" class="btn btn-link" />
-                </th>*@
                 <th></th>
             </tr>
         </thead>
@@ -105,13 +97,12 @@
                         }
                     </td>
                     <td>
-                        <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.ContactID">Edit</a>
-                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.ContactID">Details</a>
-                        <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.ContactID">Delete</a>
+                        <a class="btn btn-sm btn-light w-100" asp-action="EditContractor" asp-route-id="@item.ContactID">Edit</a>
+                        <a class="btn btn-sm btn-light w-100" asp-action="DetailsContractor" asp-route-id="@item.ContactID">Details</a>
+                        <a class="btn btn-sm btn-outline-danger w-100" asp-action="DeleteContractor" asp-route-id="@item.ContactID">Delete</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <partial name="_PagingNavBar" />
 </form>

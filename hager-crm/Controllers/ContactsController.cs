@@ -9,6 +9,9 @@ using hager_crm.Data;
 using hager_crm.Models;
 using hager_crm.ViewModels;
 using Microsoft.EntityFrameworkCore.Storage;
+using hager_crm.Utils;
+//Filters
+
 
 namespace hager_crm.Controllers
 {
@@ -16,22 +19,469 @@ namespace hager_crm.Controllers
     {
         private readonly HagerContext _context;
 
+
         public ContactsController(HagerContext context)
         {
             _context = context;
         }
 
         // GET: Contacts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString, int? CompanyID, int? CategoryID, int? page, int? pageSizeID, string actionButton
+            , string sortDirection = "asc", string sortField = "Name")
         {
-            var hagerContext = _context.Contacts
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(c => c.Category), "ID", "Category");
+            ViewData["Filtering"] = ""; // Assume not filtering!
+
+            CookieHelper.CookieSet(HttpContext, "PatientsURL", "", -1);
+
+            var hagerContext = from c in _context.Contacts
                 .Include(c => c.Company)
-                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories);
-            return View(await hagerContext.ToListAsync());
+                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
+                .OrderBy(c => c.FirstName)
+                select c;
+
+            //Filters
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                hagerContext = hagerContext.Where(c => c.LastName.ToUpper().Contains(SearchString.ToUpper())
+                                           || c.FirstName.ToUpper().Contains(SearchString.ToUpper()));
+                ViewData["Filtering"] = " show";
+            }
+            if (CategoryID.HasValue)
+            {
+                hagerContext = hagerContext.Where(c => c.ContactCategories.Any(c => c.CategoriesID == CategoryID));
+                ViewData["Filtering"] = " show";
+            }
+
+            //Before sorting by a specific direction
+            if (!String.IsNullOrEmpty(actionButton))
+            {
+                page = 1;
+                if (actionButton != "Filter")
+                {
+                    if (actionButton == sortField)
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;
+                }
+            }
+
+            if (sortField == "Contact")
+            {
+                if (sortDirection == "asc")
+                {
+                    hagerContext = hagerContext.OrderBy(c => c.LastName)
+                        .ThenBy(p => p.FirstName);
+                }
+                else
+                {
+                    hagerContext = hagerContext.OrderByDescending(c => c.LastName)
+                        .ThenBy(p => p.FirstName);
+                }
+            }
+            else if (sortField == "Company")
+            {
+                if (sortDirection == "asc")
+                {
+                    hagerContext = hagerContext.OrderByDescending(c => c.Company);
+                }
+                else
+                {
+                    hagerContext = hagerContext.OrderBy(c => c.Company);
+                }
+            }
+            //else if (sortField == "Category")
+            //{
+            //    if (sortDirection == "asc")
+            //    {
+            //        hagerContext = hagerContext.OrderByDescending(c => c.ContactCategories);
+            //    }
+            //    else
+            //    {
+            //        hagerContext = hagerContext.OrderBy(c => c.ContactCategories);
+            //    }
+            //}
+
+
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+            //Paginating
+            int pageSize;
+            if (pageSizeID.HasValue)
+            {
+                pageSize = pageSizeID.GetValueOrDefault();
+                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
+            }
+            else
+            {
+                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
+            }
+            pageSize = (pageSize == 0) ? 3 : pageSize;//Neither Selected or in Cookie so go with default
+            ViewData["pageSizeID"] = new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
+
+            var pagedData = await PaginatedList<Contact>.CreateAsync(hagerContext.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
+        }
+
+        public async Task<IActionResult> IndexCustomer(string SearchString, int? CompanyID, int? CategoryID, int? page, int? pageSizeID, string actionButton
+            , string sortDirection = "asc", string sortField = "Name")
+        {
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(c => c.Category), "ID", "Category");
+            ViewData["Filtering"] = ""; // Assume not filtering!
+            CookieHelper.CookieSet(HttpContext, "PatientsURL", "", -1);
+
+            var hagerContext = from c in _context.Contacts
+                .Include(c => c.Company)
+                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
+                .OrderBy(c => c.FirstName)
+                .Where(c => c.Company.Customer == true)
+                select c;
+
+            //Filters
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                hagerContext = hagerContext.Where(c => c.LastName.ToUpper().Contains(SearchString.ToUpper())
+                                           || c.FirstName.ToUpper().Contains(SearchString.ToUpper()));
+                ViewData["Filtering"] = " show";
+            }
+            if (CategoryID.HasValue)
+            {
+                hagerContext = hagerContext.Where(c => c.ContactCategories.Any(c => c.CategoriesID == CategoryID));
+                ViewData["Filtering"] = " show";
+            }
+
+            //Before sorting by a specific direction
+            if (!String.IsNullOrEmpty(actionButton))
+            {
+                page = 1;
+                if (actionButton != "Filter")
+                {
+                    if (actionButton == sortField)
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;
+                }
+            }
+
+            if (sortField == "Contact")
+            {
+                if (sortDirection == "asc")
+                {
+                    hagerContext = hagerContext.OrderBy(c => c.LastName)
+                        .ThenBy(p => p.FirstName);
+                }
+                else
+                {
+                    hagerContext = hagerContext.OrderByDescending(c => c.LastName)
+                        .ThenBy(p => p.FirstName);
+                }
+            }
+            else if (sortField == "Company")
+            {
+                if (sortDirection == "asc")
+                {
+                    hagerContext = hagerContext.OrderByDescending(c => c.Company);
+                }
+                else
+                {
+                    hagerContext = hagerContext.OrderBy(c => c.Company);
+                }
+            }
+            //else if (sortField == "Category")
+            //{
+            //    if (sortDirection == "asc")
+            //    {
+            //        hagerContext = hagerContext.OrderByDescending(c => c.ContactCategories);
+            //    }
+            //    else
+            //    {
+            //        hagerContext = hagerContext.OrderBy(c => c.ContactCategories);
+            //    }
+            //}
+
+
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+            //Paginating
+            int pageSize;
+            if (pageSizeID.HasValue)
+            {
+                pageSize = pageSizeID.GetValueOrDefault();
+                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
+            }
+            else
+            {
+                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
+            }
+            pageSize = (pageSize == 0) ? 3 : pageSize;//Neither Selected or in Cookie so go with default
+            ViewData["pageSizeID"] = new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
+
+            var pagedData = await PaginatedList<Contact>.CreateAsync(hagerContext.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
+        }
+
+        public async Task<IActionResult> IndexVendor(string SearchString, int? CompanyID, int? CategoryID, int? page, int? pageSizeID, string actionButton
+            , string sortDirection = "asc", string sortField = "Name")
+        {
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(c => c.Category), "ID", "Category");
+            ViewData["Filtering"] = ""; // Assume not filtering!
+            CookieHelper.CookieSet(HttpContext, "PatientsURL", "", -1);
+
+            var hagerContext = from c in _context.Contacts
+                .Include(c => c.Company)
+                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
+                .OrderBy(c => c.FirstName)
+                .Where(c => c.Company.Vendor == true)
+                select c;
+
+            //Filters
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                hagerContext = hagerContext.Where(c => c.LastName.ToUpper().Contains(SearchString.ToUpper())
+                                           || c.FirstName.ToUpper().Contains(SearchString.ToUpper()));
+                ViewData["Filtering"] = " show";
+            }
+            if (CategoryID.HasValue)
+            {
+                hagerContext = hagerContext.Where(c => c.ContactCategories.Any(c => c.CategoriesID == CategoryID));
+                ViewData["Filtering"] = " show";
+            }
+
+            //Before sorting by a specific direction
+            if (!String.IsNullOrEmpty(actionButton))
+            {
+                page = 1;
+                if (actionButton != "Filter")
+                {
+                    if (actionButton == sortField)
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;
+                }
+            }
+
+            if (sortField == "Contact")
+            {
+                if (sortDirection == "asc")
+                {
+                    hagerContext = hagerContext.OrderBy(c => c.LastName)
+                        .ThenBy(p => p.FirstName);
+                }
+                else
+                {
+                    hagerContext = hagerContext.OrderByDescending(c => c.LastName)
+                        .ThenBy(p => p.FirstName);
+                }
+            }
+            else if (sortField == "Company")
+            {
+                if (sortDirection == "asc")
+                {
+                    hagerContext = hagerContext.OrderByDescending(c => c.Company);
+                }
+                else
+                {
+                    hagerContext = hagerContext.OrderBy(c => c.Company);
+                }
+            }
+            //else if (sortField == "Category")
+            //{
+            //    if (sortDirection == "asc")
+            //    {
+            //        hagerContext = hagerContext.OrderByDescending(c => c.ContactCategories);
+            //    }
+            //    else
+            //    {
+            //        hagerContext = hagerContext.OrderBy(c => c.ContactCategories);
+            //    }
+            //}
+
+
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+            //Paginating
+            int pageSize;
+            if (pageSizeID.HasValue)
+            {
+                pageSize = pageSizeID.GetValueOrDefault();
+                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
+            }
+            else
+            {
+                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
+            }
+            pageSize = (pageSize == 0) ? 3 : pageSize;//Neither Selected or in Cookie so go with default
+            ViewData["pageSizeID"] = new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
+
+            var pagedData = await PaginatedList<Contact>.CreateAsync(hagerContext.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
+        }
+
+        public async Task<IActionResult> IndexContractor(string SearchString, int? CompanyID, int? CategoryID, int? page, int? pageSizeID, string actionButton
+            , string sortDirection = "asc", string sortField = "Name")
+        {
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(c => c.Category), "ID", "Category");
+            ViewData["Filtering"] = ""; // Assume not filtering!
+            CookieHelper.CookieSet(HttpContext, "PatientsURL", "", -1);
+
+            var hagerContext = from c in _context.Contacts
+                .Include(c => c.Company)
+                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
+                .OrderBy(c => c.FirstName)
+                .Where(c => c.Company.Contractor == true)
+                select c;
+
+            //Filters
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                hagerContext = hagerContext.Where(c => c.LastName.ToUpper().Contains(SearchString.ToUpper())
+                                           || c.FirstName.ToUpper().Contains(SearchString.ToUpper()));
+                ViewData["Filtering"] = " show";
+            }
+            if (CategoryID.HasValue)
+            {
+                hagerContext = hagerContext.Where(c => c.ContactCategories.Any(c => c.CategoriesID == CategoryID));
+                ViewData["Filtering"] = " show";
+            }
+
+            //Before sorting by a specific direction
+            if (!String.IsNullOrEmpty(actionButton))
+            {
+                page = 1;
+                if (actionButton != "Filter")
+                {
+                    if (actionButton == sortField)
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;
+                }
+            }
+
+            if (sortField == "Contact")
+            {
+                if (sortDirection == "asc")
+                {
+                    hagerContext = hagerContext.OrderBy(c => c.LastName)
+                        .ThenBy(p => p.FirstName);
+                }
+                else
+                {
+                    hagerContext = hagerContext.OrderByDescending(c => c.LastName)
+                        .ThenBy(p => p.FirstName);
+                }
+            }
+            else if (sortField == "Company")
+            {
+                if (sortDirection == "asc")
+                {
+                    hagerContext = hagerContext.OrderByDescending(c => c.Company);
+                }
+                else
+                {
+                    hagerContext = hagerContext.OrderBy(c => c.Company);
+                }
+            }
+            //else if (sortField == "Category")
+            //{
+            //    if (sortDirection == "asc")
+            //    {
+            //        hagerContext = hagerContext.OrderByDescending(c => c.ContactCategories);
+            //    }
+            //    else
+            //    {
+            //        hagerContext = hagerContext.OrderBy(c => c.ContactCategories);
+            //    }
+            //}
+
+
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+            //Paginating
+            int pageSize;
+            if (pageSizeID.HasValue)
+            {
+                pageSize = pageSizeID.GetValueOrDefault();
+                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
+            }
+            else
+            {
+                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
+            }
+            pageSize = (pageSize == 0) ? 3 : pageSize;//Neither Selected or in Cookie so go with default
+            ViewData["pageSizeID"] = new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
+
+            var pagedData = await PaginatedList<Contact>.CreateAsync(hagerContext.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
 
         // GET: Contacts/Details/5
         public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = await _context.Contacts
+                .Include(c => c.Company)
+                .FirstOrDefaultAsync(m => m.ContactID == id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            return View(contact);
+        }
+
+        public async Task<IActionResult> DetailsCustomer(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = await _context.Contacts
+                .Include(c => c.Company)
+                .FirstOrDefaultAsync(m => m.ContactID == id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            return View(contact);
+        }
+
+        public async Task<IActionResult> DetailsVendor(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = await _context.Contacts
+                .Include(c => c.Company)
+                .FirstOrDefaultAsync(m => m.ContactID == id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            return View(contact);
+        }
+
+        public async Task<IActionResult> DetailsContractor(int? id)
         {
             if (id == null)
             {
@@ -56,6 +506,7 @@ namespace hager_crm.Controllers
 
             var contact = new Contact();
             PopulateAssignedCategoryData(contact);
+
             return View();
         }
 
@@ -63,7 +514,6 @@ namespace hager_crm.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
             string[] selectedOptions)
@@ -122,16 +572,13 @@ namespace hager_crm.Controllers
         }
 
         // POST: Contacts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
             string[] selectedOptions)
         {
             var contactToUpdate = await _context.Contacts
-                .Include(c => c.ContactCategories)
-                .ThenInclude(c => c.Categories)
+                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
                 .SingleOrDefaultAsync(c => c.ContactID == id);
 
             if (id != contact.ContactID)
@@ -172,6 +619,214 @@ namespace hager_crm.Controllers
             return View(contactToUpdate);
         }
 
+        // GET: Contacts/Edit/Customer
+        public async Task<IActionResult> EditCustomer(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = await _context.Contacts
+                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
+                .SingleOrDefaultAsync(c => c.ContactID == id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+            ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
+            PopulateAssignedCategoryData(contact);
+            return View(contact);
+        }
+
+        // POST: Contacts/Edit/Customer
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCustomer(int id, [Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
+            string[] selectedOptions)
+        {
+            var contactToUpdate = await _context.Contacts
+                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
+                .SingleOrDefaultAsync(c => c.ContactID == id);
+
+            if (id != contact.ContactID)
+            {
+                return NotFound();
+            }
+
+            UpdateContactCategory(selectedOptions, contactToUpdate); // Updateing categories
+
+            if (await TryUpdateModelAsync<Contact>(contactToUpdate, "", c => c.FirstName, c => c.LastName, c => c.JobTitle,
+                                                    c => c.CellPhone, c => c.WorkPhone, c => c.Email, c => c.Active, c => c.CompanyID))
+            {
+                try
+                {
+                    _context.Update(contactToUpdate);
+                    await _context.SaveChangesAsync();
+                }
+                catch (RetryLimitExceededException)
+                {
+                    ModelState.AddModelError("", "Ineffectual save changes after multiple attempts. Try again. If the problem persists, please contact your system administrator.");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ContactExists(contact.ContactID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(IndexCustomer));
+            }
+
+            ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
+            PopulateAssignedCategoryData(contactToUpdate);
+            return View(contactToUpdate);
+        }
+
+        // GET: Contacts/Edit/Vendor
+        public async Task<IActionResult> EditVendor(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = await _context.Contacts
+                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
+                .SingleOrDefaultAsync(c => c.ContactID == id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+            ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
+            PopulateAssignedCategoryData(contact);
+            return View(contact);
+        }
+
+        // POST: Contacts/Edit/Vendor
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditVendor(int id, [Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
+            string[] selectedOptions)
+        {
+            var contactToUpdate = await _context.Contacts
+                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
+                .SingleOrDefaultAsync(c => c.ContactID == id);
+
+            if (id != contact.ContactID)
+            {
+                return NotFound();
+            }
+
+            UpdateContactCategory(selectedOptions, contactToUpdate); // Updateing categories
+
+            if (await TryUpdateModelAsync<Contact>(contactToUpdate, "", c => c.FirstName, c => c.LastName, c => c.JobTitle,
+                                                    c => c.CellPhone, c => c.WorkPhone, c => c.Email, c => c.Active, c => c.CompanyID))
+            {
+                try
+                {
+                    _context.Update(contactToUpdate);
+                    await _context.SaveChangesAsync();
+                }
+                catch (RetryLimitExceededException)
+                {
+                    ModelState.AddModelError("", "Ineffectual save changes after multiple attempts. Try again. If the problem persists, please contact your system administrator.");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ContactExists(contact.ContactID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(IndexVendor));
+            }
+
+            ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
+            PopulateAssignedCategoryData(contactToUpdate);
+            return View(contactToUpdate);
+        }
+
+        // GET: Contacts/Edit/Contractor
+        public async Task<IActionResult> EditContractor(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = await _context.Contacts
+                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
+                .SingleOrDefaultAsync(c => c.ContactID == id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+            ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
+            PopulateAssignedCategoryData(contact);
+            return View(contact);
+        }
+
+        // POST: Contacts/Edit/Contractor
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditContractor(int id, [Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
+            string[] selectedOptions)
+        {
+            var contactToUpdate = await _context.Contacts
+                .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
+                .SingleOrDefaultAsync(c => c.ContactID == id);
+
+            if (id != contact.ContactID)
+            {
+                return NotFound();
+            }
+
+            UpdateContactCategory(selectedOptions, contactToUpdate); // Updateing categories
+
+            if (await TryUpdateModelAsync<Contact>(contactToUpdate, "", c => c.FirstName, c => c.LastName, c => c.JobTitle,
+                                                    c => c.CellPhone, c => c.WorkPhone, c => c.Email, c => c.Active, c => c.CompanyID))
+            {
+                try
+                {
+                    _context.Update(contactToUpdate);
+                    await _context.SaveChangesAsync();
+                }
+                catch (RetryLimitExceededException)
+                {
+                    ModelState.AddModelError("", "Ineffectual save changes after multiple attempts. Try again. If the problem persists, please contact your system administrator.");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ContactExists(contact.ContactID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(IndexContractor));
+            }
+
+            ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
+            PopulateAssignedCategoryData(contactToUpdate);
+            return View(contactToUpdate);
+        }
+
+
         // GET: Contacts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -195,6 +850,96 @@ namespace hager_crm.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var contact = await _context.Contacts.FindAsync(id);
+            _context.Contacts.Remove(contact);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Contacts/Delete/Customer
+        public async Task<IActionResult> DeleteCustomer(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = await _context.Contacts
+                .Include(c => c.Company)
+                .FirstOrDefaultAsync(m => m.ContactID == id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            return View(contact);
+        }
+
+        // POST: Contacts/Delete/Customer
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCustomerConfirmed(int id)
+        {
+            var contact = await _context.Contacts.FindAsync(id);
+            _context.Contacts.Remove(contact);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Contacts/Delete/Vendor
+        public async Task<IActionResult> DeleteVendor(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = await _context.Contacts
+                .Include(c => c.Company)
+                .FirstOrDefaultAsync(m => m.ContactID == id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            return View(contact);
+        }
+
+        // POST: Contacts/Delete/Vendor
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteVendorConfirmed(int id)
+        {
+            var contact = await _context.Contacts.FindAsync(id);
+            _context.Contacts.Remove(contact);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Contacts/Delete/Contractor
+        public async Task<IActionResult> DeleteContractor(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = await _context.Contacts
+                .Include(c => c.Company)
+                .FirstOrDefaultAsync(m => m.ContactID == id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            return View(contact);
+        }
+
+        // POST: Contacts/Delete/Contractor
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteContractorConfirmed(int id)
         {
             var contact = await _context.Contacts.FindAsync(id);
             _context.Contacts.Remove(contact);
@@ -239,15 +984,15 @@ namespace hager_crm.Controllers
                 {
                     if (!contactCategoriesHS.Contains(option.ID))
                     {
-                        contactToUpdate.ContactCategories.Add(new ContactCategories{ ContactID = contactToUpdate.ContactID, CategoriesID = option.ID });
+                        contactToUpdate.ContactCategories.Add(new ContactCategories { ContactID = contactToUpdate.ContactID, CategoriesID = option.ID });
                     }
-                    else
+                }
+                else
+                {
+                    if (contactCategoriesHS.Contains(option.ID))
                     {
-                        if (contactCategoriesHS.Contains(option.ID))
-                        {
-                            ContactCategories categoryToRemove = contactToUpdate.ContactCategories.SingleOrDefault(c => c.CategoriesID == option.ID);
-                            _context.Remove(categoryToRemove);
-                        }
+                        ContactCategories categoryToRemove = contactToUpdate.ContactCategories.SingleOrDefault(c => c.CategoriesID == option.ID);
+                        _context.Remove(categoryToRemove);
                     }
                 }
             }
