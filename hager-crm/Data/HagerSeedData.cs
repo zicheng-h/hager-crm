@@ -531,42 +531,42 @@ namespace hager_crm.Data
             }
             #endregion
 
-            #region Company
+            //#region Company
 
-            #endregion
+            //#endregion
 
-            #region Contact
-            if (!context.Contacts.Any())
-            {
-                context.Contacts.AddRange(
-                    new Contact // Customer Contact
-                    {
+            //#region Contact
+            //if (!context.Contacts.Any())
+            //{
+            //    context.Contacts.AddRange(
+            //        new Contact // Customer Contact
+            //        {
                         
                         
 
 
-                    },
+            //        },
 
-                    new Contact // Vendor Contact
-                    {
+            //        new Contact // Vendor Contact
+            //        {
                         
 
 
 
-                    },
+            //        },
 
-                    new Contact // Contractor Contact
-                    {
+            //        new Contact // Contractor Contact
+            //        {
                         
 
 
 
-                    }
+            //        }
 
-                );
-                context.SaveChanges();
-            }
-            #endregion
+            //    );
+            //    context.SaveChanges();
+            //}
+            //#endregion
             #region Companies
             if (!context.Companies.Any())
             {

@@ -187,7 +187,6 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(255);
 

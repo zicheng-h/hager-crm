@@ -9,6 +9,10 @@ using hager_crm.Data;
 using hager_crm.Models;
 using hager_crm.Utils;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using OfficeOpenXml;
+using System.IO;
 
 namespace hager_crm.Controllers
 {
@@ -99,7 +103,7 @@ namespace hager_crm.Controllers
                 }
             }
 
-            else if (sortField == "BillingProvince")
+            else if (sortField == "Province")
             {
                 if (sortDirection == "asc")
                 {
@@ -111,7 +115,7 @@ namespace hager_crm.Controllers
                 }
             }
 
-            else if (sortField == "BillingCountry")
+            else if (sortField == "Country")
             {
                 if (sortDirection == "asc")
                 {
@@ -246,7 +250,7 @@ namespace hager_crm.Controllers
                 }
             }
 
-            else if (sortField == "BillingProvince")
+            else if (sortField == "Province")
             {
                 if (sortDirection == "asc")
                 {
@@ -258,7 +262,7 @@ namespace hager_crm.Controllers
                 }
             }
 
-            else if (sortField == "BillingCountry")
+            else if (sortField == "Country")
             {
                 if (sortDirection == "asc")
                 {
@@ -394,7 +398,7 @@ namespace hager_crm.Controllers
                 }
             }
 
-            else if (sortField == "BillingProvince")
+            else if (sortField == "Province")
             {
                 if (sortDirection == "asc")
                 {
@@ -406,7 +410,7 @@ namespace hager_crm.Controllers
                 }
             }
 
-            else if (sortField == "BillingCountry")
+            else if (sortField == "Country")
             {
                 if (sortDirection == "asc")
                 {
@@ -542,7 +546,7 @@ namespace hager_crm.Controllers
                 }
             }
 
-            else if (sortField == "BillingProvince")
+            else if (sortField == "Province")
             {
                 if (sortDirection == "asc")
                 {
@@ -554,7 +558,7 @@ namespace hager_crm.Controllers
                 }
             }
 
-            else if (sortField == "BillingCountry")
+            else if (sortField == "Country")
             {
                 if (sortDirection == "asc")
                 {
@@ -1354,6 +1358,91 @@ namespace hager_crm.Controllers
                          orderby c.CountryName
                          select c;
             ViewData["CountryID"] = new SelectList(cQuery, "CountryID", "CountryName", company?.BillingCountryID);
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> InsertFromExcelCompany(IFormFile theExcel)
+        {
+            if (theExcel == null)
+            {
+                ModelState.AddModelError("No files selected", "Please select a file");
+                return RedirectToAction(nameof(Index));
+            }
+            ExcelPackage excel;
+            using (var memoryStream = new MemoryStream())
+            {
+                await theExcel.CopyToAsync(memoryStream);
+                excel = new ExcelPackage(memoryStream);
+            }
+            var workSheet = excel.Workbook.Worksheets[0];
+            var start = workSheet.Dimension.Start;
+            var end = workSheet.Dimension.End;
+
+            //Start a new list to hold imported objects
+            List<Company> companies = new List<Company>();
+
+            for (int row = start.Row + 1; row <= end.Row; row++)
+            {
+                //Check if employee exist in database already
+                string nameCompare = workSheet.Cells[row, 1].Text;
+                //string tempName = _context.Employees.FirstOrDefault(p => p.Email == emailCompare).Email;
+                if (_context.Companies.FirstOrDefault(p => p.Name == nameCompare) == null)
+                {
+                    try
+                    {
+                        Company a = new Company
+                        {
+                            Name = workSheet.Cells[row, 1].Text,
+                            Location = workSheet.Cells[row, 2].Text,
+                            CreditCheck = workSheet.Cells[row, 3].Text == "1",
+                            DateChecked = DateTime.Parse((workSheet.Cells[row, 4].Text == "") ? "1900-01-01" : workSheet.Cells[row, 4].Text),
+                            BillingTermID = _context.BillingTerms.FirstOrDefault(b => b.Terms == workSheet.Cells[row, 5].Text).BillingTermID,
+                            BillingTerm = _context.BillingTerms.FirstOrDefault(b => b.Terms == workSheet.Cells[row, 5].Text),
+                            CurrencyID = _context.Currencies.FirstOrDefault(b => b.CurrencyName == workSheet.Cells[row, 6].Text).CurrencyID,
+                            Currency = _context.Currencies.FirstOrDefault(b => b.CurrencyName == workSheet.Cells[row, 6].Text),
+                            Phone = (workSheet.Cells[row, 7].Text != "") ? Convert.ToInt64(workSheet.Cells[row, 7].Text.Replace(")", "").Replace("(", "").Replace("-", "").Replace(" ", "")) : Convert.ToInt64("0"),
+                            Website = workSheet.Cells[row, 8].Text,
+                            BillingAddress1 = workSheet.Cells[row, 9].Text,
+                            BillingAddress2 = workSheet.Cells[row, 10].Text,
+                            BillingCity = workSheet.Cells[row, 11].Text,
+                            BillingProvinceID = _context.Provinces.FirstOrDefault(b => b.ProvinceName == workSheet.Cells[row, 12].Text).ProvinceID,
+                            BillingPostalCode = workSheet.Cells[row, 13].Text,
+                            BillingCountryID = _context.Countries.FirstOrDefault(b => b.CountryName == workSheet.Cells[row, 14].Text).CountryID,
+
+                            ShippingAddress1 = workSheet.Cells[row, 15].Text,
+                            ShippingAddress2 = workSheet.Cells[row, 16].Text,
+                            ShippingCity = workSheet.Cells[row, 17].Text,
+                            ShippingProvinceID = _context.Provinces.FirstOrDefault(b => b.ProvinceName == workSheet.Cells[row, 18].Text).ProvinceID,
+                            ShippingPostalCode = workSheet.Cells[row, 19].Text,
+                            ShippingCountryID = _context.Countries.FirstOrDefault(b => b.CountryName == workSheet.Cells[row, 20].Text).CountryID,
+
+                            Customer = workSheet.Cells[row, 21].Text == "1",
+                            CustomerTypeID = _context.CustomerTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 22].Text).CustomerTypeID,
+
+                            Vendor = workSheet.Cells[row, 23].Text == "1",
+                            VendorTypeID = _context.VendorTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 24].Text).VendorTypeID,
+
+                            Contractor = workSheet.Cells[row, 25].Text == "1",
+                            ContractorTypeID = _context.ContractorTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 26].Text).ContractorTypeID,
+                            Active = workSheet.Cells[row, 27].Text == "1",
+                            Notes = workSheet.Cells[row, 28].Text
+
+                        };
+                        companies.Add(a);
+                    }
+                    catch (Exception)
+                    {
+                        ModelState.AddModelError("Error", "Error while parsing the file");
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+            }
+            _context.Companies.AddRange(companies);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
         }
 
         private bool CompanyExists(int id)
