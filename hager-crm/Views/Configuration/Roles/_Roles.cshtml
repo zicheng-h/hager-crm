@@ -1,57 +1,90 @@
 ﻿@model List<hager_crm.ViewModels.RoleVM>
-<br />
-<table class="table">
-    <thead>
-        <tr>
-            <th>Role</th>
-            <th>Users</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-xl-4 col-md-6 col-12 p-4">
+            <div class="card">
+                <div class="card-header">
                     @item.RoleName
-                </td>
-                <td>
-                    <a href="#" data-toggle="modal" data-target="#rolesModal" onclick="showUsers('@item.RoleName')">
-                        @switch (item.Employees.Count)
+                </div>
+                <div class="card-body">
+                    <div class="list-group" data-role-name="@item.RoleName" style="overflow-y: auto; height: 355px;">
+                        @foreach (var emp in item.Employees)
                         {
-                            case 0:
-                                @:(None)
-                                break;
-                            case 1:
-                                @item.Employees[0].Fullname
-                                break;
-                            default:
-                                @(item.Employees[0].Fullname + "...")
-                                break;
+                            <div class="employee-list-item list-group-item d-flex justify-content-between pr-2" href="#">
+                                <div class="display-name d-flex m-auto">@emp.Fullname</div>
+                                <div class="employee-role-actions btn-group" role="group" aria-label="Employee List Actions">
+                                    @if (@item.RoleName != "Unassigned")
+                                    {
+                                        <button class="btn btn-sm btn-outline-secondary"
+                                                onclick="removeUser('@emp.UserID', '@item.RoleName')">
+                                            -
+                                        </button>
+                                    }
+                                    <button class="btn btn-sm btn-outline-danger"
+                                            onclick="deleteUser('@emp.UserID')">
+                                        &times;
+                                    </button>
+                                </div>
+                            </div>
                         }
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<div class="modal fade" id="rolesModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+                    </div>
+                    @if (@item.RoleName != "Unassigned")
+                    {
+                        <div class="input-group mt-2">
+                            <select name="usersToAdd" class="custom-select" id="usersToAdd_@item.RoleName">
+                                <option value="">Select a user...</option>
+                                @foreach (var empNoInRole in item.EmployeesNotInRole)
+                                {
+                                    <option value="@empNoInRole.UserID">@empNoInRole.Fullname</option>
+                                }
+                            </select>
+                            <div class="input-group-append">
+                                <button class="add-lookup btn btn-outline-success"
+                                    type="button" onclick="addUser($('#usersToAdd_@item.RoleName').val(), '@item.RoleName')">
+                                    Add User
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
-    </div>
+    }
 </div>
 
 <script type="text/javascript">
-    function showUsers(role) {
-        switch (role) {
-            @foreach (var item in Model)
+    function removeUser(UserId, RoleName) {
+        $.post("/Configuration/RemoveUser",
             {
-                @:case '@item.RoleName': $('.modal-content').load('/Configuration/GetUsers?role=@item.RoleName');
-                    @:break;
+                userId: UserId,
+                roleName: RoleName
+            },
+            function () {
+                $('#roles-panel').load('/Configuration/GetRoles');
             }
-            default: break;
-        };
-        return;
-    };
+        );
+    }
+    function addUser(UserId, RoleName) {
+        if (UserId == "") return;
+        $.post("/Configuration/AddUser",
+            {
+                userId: UserId,
+                roleName: RoleName
+            },
+            function () {
+                $('#roles-panel').load('/Configuration/GetRoles');
+            }
+        );
+    }
+    function deleteUser(UserId) {
+        $.post("/Configuration/DeleteUser",
+            {
+                userId: UserId
+            },
+            function () {
+                $('#roles-panel').load('/Configuration/GetRoles');
+            }
+        );
+    }
 </script>

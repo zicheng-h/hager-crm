@@ -183,7 +183,7 @@ namespace hager_crm.Data.HIMigrations
                     b.Property<long?>("CellPhone")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CompanyID")
+                    b.Property<int>("CompanyID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
@@ -239,6 +239,9 @@ namespace hager_crm.Data.HIMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("Order")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Type")
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
@@ -274,6 +277,9 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(30);
 
+                    b.Property<int?>("Order")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("CurrencyID");
 
                     b.ToTable("Currencies");
@@ -283,6 +289,9 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.Property<int>("CustomerTypeID")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Order")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Type")
@@ -400,6 +409,9 @@ namespace hager_crm.Data.HIMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("Order")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Type")
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
@@ -413,6 +425,9 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.Property<int>("JobPositionID")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Order")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Position")
@@ -508,7 +523,8 @@ namespace hager_crm.Data.HIMigrations
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("Contacts")
                         .HasForeignKey("CompanyID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("hager_crm.Models.ContactCategories", b =>

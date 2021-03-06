@@ -14,17 +14,25 @@ namespace hager_crm.Models
         
         [NotMapped]
         public abstract string DisplayName { get; set; }
+        public int? Order { get; set; }
 
         public abstract string GetLookupName();
 
         public async Task<List<ILookupManage>> GetAll(DbContext context)
         {
-            return await context.Set<TEntity>().Select(i => (ILookupManage)i).ToListAsync();
+            return await context.Set<TEntity>()
+                .Select(i => (ILookupManage)i)
+                .OrderBy(i => i.Order ?? 0)
+                .ToListAsync();
         }
         
         public async Task<int> AddLookup(DbContext context, string displayName)
         {
-            var entity = new TEntity {DisplayName = displayName};
+            var entity = new TEntity
+            {
+                DisplayName = displayName,
+                Order = context.Set<TEntity>().Count()
+            };
             await context.AddAsync(entity);
             await context.SaveChangesAsync();
             return entity.GetId();
@@ -46,6 +54,19 @@ namespace hager_crm.Models
             if (entity == null)
                 return false;
             context.Remove(entity);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateLookupOrder(DbContext context, int[] order)
+        {
+            for (int i = 0; i < order.Length; i++)
+            {
+                var entity = await context.FindAsync<TEntity>(order[i]);
+                if (entity == null)
+                    return false;
+                entity.Order = i;
+            }
             await context.SaveChangesAsync();
             return true;
         }
