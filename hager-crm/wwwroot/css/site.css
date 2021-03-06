@@ -152,11 +152,15 @@ p {
     margin: 40px 0;
 }
 
-.lookup-list-item .lookup-actions {
+.display-name {
+    margin: auto auto auto 15px !important;
+}
+
+.employee-list-item .employee-role-actions, .lookup-list-item .lookup-actions {
     display: none;
 }
 
-.lookup-list-item:hover .lookup-actions {
+.employee-list-item:hover .employee-role-actions, .lookup-list-item:hover .lookup-actions {
     display: flex;
 }
 

@@ -18,15 +18,13 @@ namespace hager_crm.Controllers
         private readonly ApplicationDbContext _iContext;
         private readonly HagerContext _hContext;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
         public ConfigurationController(ApplicationDbContext identityContext, HagerContext hagerContext,
-            UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+            UserManager<IdentityUser> userManager)
         {
             _iContext = identityContext;
             _hContext = hagerContext;
             _userManager = userManager;
-            _roleManager = roleManager;
         }
 
         [HttpGet]
@@ -35,102 +33,75 @@ namespace hager_crm.Controllers
             return View();
         }
 
-        public PartialViewResult GetRoles()
+        public async Task<PartialViewResult> GetRoles()
         {
             List<RoleVM> roles = new List<RoleVM>();
+            List<EmployeeVM> emps = new List<EmployeeVM>();
+
+            var empUsers = _hContext.Employees
+                .Where(e => !String.IsNullOrEmpty(e.UserId));
+
+            foreach (var emp in empUsers)
+                emps.Add(new EmployeeVM
+                {
+                    EmployeeID = emp.EmployeeID,
+                    Fullname = emp.FullName,
+                    UserID = emp.UserId
+                });
+
             foreach (var role in _iContext.Roles)
             {
-                var r = new RoleVM {
+                var r = new RoleVM
+                {
                     RoleId = role.Id,
                     RoleName = role.Name
                 };
 
-                var Ids = from ur in _iContext.UserRoles
-                        where ur.RoleId == r.RoleId
-                        select ur.UserId;
+                var Ids = _iContext.UserRoles
+                    .Where(ur => ur.RoleId == r.RoleId)
+                    .Select(ur => ur.UserId);
 
-                foreach (var UserId in Ids)
-                {
-                    var emp = _hContext.Employees.FirstOrDefault(e => e.UserId == UserId);
+                r.Employees = emps
+                    .Where(e => Ids.Contains(e.UserID))
+                    .OrderBy(e => e.Fullname)
+                    .ToList();
 
-                    var vm = new EmployeeVM
-                    {
-                        EmployeeID = emp.EmployeeID,
-                        Fullname = emp.FullName,
-                        UserID = UserId
-                    };
-                    vm.Roles.Add(r);
+                r.EmployeesNotInRole = emps
+                    .Where(e => !Ids.Contains(e.UserID))
+                    .OrderBy(e => e.Fullname)
+                    .ToList();
 
-                    r.Employees.Add(vm);
-                }
                 roles.Add(r);
             }
 
-            var empWithRoles = _iContext.UserRoles.Select(ur => ur.UserId).ToList();
-            var notAssigned = new RoleVM();
-            notAssigned.RoleName = "Unassigned";
-            foreach (var e in _hContext.Employees.Where(e => !(String.IsNullOrEmpty(e.UserId) || empWithRoles.Contains(e.UserId))))
-                notAssigned.Employees.Add(new EmployeeVM
-                {
-                    EmployeeID = e.EmployeeID,
-                    Fullname = e.FullName,
-                    UserID = e.UserId
-                });
-            if (notAssigned.Employees.Count > 0)
-                roles.Add(notAssigned);
-
-            return PartialView("~/Views/Configuration/Roles/_Roles.cshtml", roles);
-        }
-
-        public PartialViewResult GetUsers(string role)
-        {
-            var roleId = _iContext.Roles.SingleOrDefault(r => r.Name == role)?.Id;
-
-            if (roleId == null)
+            var userIdsWithRoles = _iContext.UserRoles.Select(ur => ur.UserId).ToList();
+            var usersWithNoRoles = empUsers.Where(e => !userIdsWithRoles.Contains(e.UserId));
+            if (usersWithNoRoles.Count() > 0)
             {
-                var empWithRoles = _iContext.UserRoles.Select(ur => ur.UserId).ToList();
-                var noRoles = new List<EmployeeVM>();
-                foreach (var e in _hContext.Employees.Where(e => !empWithRoles.Contains(e.UserId)))
-                    noRoles.Add(new EmployeeVM
+                var notAssigned = new RoleVM();
+                notAssigned.RoleName = "Unassigned";
+                foreach (var e in usersWithNoRoles)
+                    notAssigned.Employees.Add(new EmployeeVM
                     {
                         EmployeeID = e.EmployeeID,
                         Fullname = e.FullName,
                         UserID = e.UserId
                     });
-                return PartialView("~/Views/Configuration/Roles/_UsersNoRole.cshtml", noRoles);
+                roles.Add(notAssigned);
             }
 
-            var userIds = _iContext.UserRoles
-                .Where(ur => ur.RoleId == roleId)
-                .Select(e => e.UserId)
-                .ToList();
+            var orphanUserIds = _iContext.UserRoles
+                .Select(ur => ur.UserId)
+                .Where(id => !emps.Select(e => e.UserID)
+                                .Contains(id)
+                    );
+            foreach (var id in orphanUserIds)
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                await _userManager.DeleteAsync(user);
+            }
 
-            List<EmployeeVM> users = new List<EmployeeVM>();
-            List<EmployeeVM> usersNotInRole = new List<EmployeeVM>();
-
-            foreach (var emp in _hContext.Employees
-                                .OrderBy(e => e.LastName)
-                                .ThenBy(e => e.FirstName)
-                )
-                if (userIds.Contains(emp.UserId))
-                    users.Add(new EmployeeVM
-                    {
-                        EmployeeID = emp.EmployeeID,
-                        Fullname = emp.FullName,
-                        UserID = emp.UserId
-                    });
-                else if (emp.IsUser)
-                    usersNotInRole.Add(new EmployeeVM
-                    {
-                        EmployeeID = emp.EmployeeID,
-                        Fullname = emp.FullName,
-                        UserID = emp.UserId
-                    });
-
-            ViewData["UsersNotInRole"] = new SelectList(usersNotInRole, "UserID", "Fullname");
-            ViewData["Role"] = role;
-
-            return PartialView("~/Views/Configuration/Roles/_Users.cshtml", users);
+            return PartialView("~/Views/Configuration/Roles/_Roles.cshtml", roles);
         }
 
         public async Task<PartialViewResult> GetLookups()
@@ -184,36 +155,36 @@ namespace hager_crm.Controllers
         }
 
         [HttpPost]
-        public async void AddUserAsync(string userId, string roleName)
+        public async Task<IActionResult> AddUserAsync(string userId, string roleName)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
-            await _userManager.AddToRoleAsync(user, roleName);
+            var result = await _userManager.AddToRoleAsync(user, roleName);
 
-            return;
+            return Json(new { result });
         }
 
         [HttpPost]
-        public async void RemoveUserAsync(string userId, string roleName)
+        public async Task<IActionResult> RemoveUserAsync(string userId, string roleName)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
-            await _userManager.RemoveFromRoleAsync(user, roleName);
+            var result = await _userManager.RemoveFromRoleAsync(user, roleName);
 
-            return;
+            return Json(new { result });
         }
 
         [HttpPost]
-        public async void DeleteUserAsync(string userId)
+        public async Task<IActionResult> DeleteUserAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
             await _userManager.DeleteAsync(user);
 
             _hContext.Employees.FirstOrDefault(e => e.UserId == userId).UserId = String.Empty;
-            await _hContext.SaveChangesAsync();
+            var result = await _hContext.SaveChangesAsync();
 
-            return;
+            return Json(new { result });
         }
     }
 }

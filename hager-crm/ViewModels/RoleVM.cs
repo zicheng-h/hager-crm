@@ -10,6 +10,7 @@ namespace hager_crm.ViewModels
         public RoleVM()
         {
             Employees = new List<EmployeeVM>();
+            EmployeesNotInRole = new List<EmployeeVM>();
         }
 
         public string RoleId { get; set; }
@@ -17,5 +18,6 @@ namespace hager_crm.ViewModels
         public string RoleName { get; set; }
 
         public List<EmployeeVM> Employees { get; set; }
+        public List<EmployeeVM> EmployeesNotInRole { get; set; }
     }
 }
