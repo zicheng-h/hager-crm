@@ -351,3 +351,38 @@ p {
         width: var(--content-width);
     }
 }
+
+/* Filtering styles
+-------------------------------------------------- */
+
+a.data-sortable{
+    cursor: pointer;
+}
+
+
+.caret {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    position: relative;
+    border: 8px solid transparent;
+}
+
+.caret.down {
+    border-top-color: black;
+    top: 6px;
+}
+
+.caret.up {
+    border-bottom-color: black;
+    bottom: 2px;
+}
+
+.data-filter-rule {
+    align-items: baseline;
+}
+
+.data-filter-rule label {
+    min-width: 120px;
+    text-align: end;
+}

@@ -1,4 +1,6 @@
-﻿@model hager_crm.Models.Employee
+﻿
+
+@model hager_crm.Models.Employee
 
 @{
     ViewData["Title"] = "Create";
@@ -112,7 +114,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Notes" class="control-label"></label>
-                        <input asp-for="Notes" class="form-control"/>
+                        <textarea asp-for="Notes" rows="5" cols="25" class="form-control"></textarea>
                     </div>
                     <div class="form-group form-check">
                         <label class="form-check-label" data-toggle="collapse" data-target="#userAccountSetup" aria-expanded="false" aria-controls="userAccountSetup">

@@ -15,6 +15,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    "IIS Express No Browser": {
+      "commandName": "IISExpress",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
     "hager_crm": {
       "commandName": "Project",
       "launchBrowser": true,

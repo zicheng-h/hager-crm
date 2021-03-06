@@ -7,7 +7,7 @@
 
 <h1>Edit</h1>
 
-<h4>Employee</h4>
+<h4>Employee: @Model.FullName</h4>
 <hr />
 <div class="row justify-content-center">
     <div class="col-lg-10 col-12">
@@ -105,7 +105,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Notes" class="control-label"></label>
-                        <input asp-for="Notes" class="form-control" />
+                        <textarea asp-for="Notes" rows="5" cols="25" class="form-control"></textarea>
                     </div>
                     @if (!Model.IsUser)
                     {

@@ -329,7 +329,7 @@ namespace hager_crm.Data
                 context.SaveChanges();
             }
 
-            if (!context.ContactCategories.Any())
+            if (!context.Categories.Any())
             {
                 context.Categories.AddRange(
                     new Categories
@@ -430,6 +430,23 @@ namespace hager_crm.Data
                 );
                 context.SaveChanges();
             }
+
+            if(!context.Currencies.Any())
+            {
+                context.Currencies.AddRange(
+                    new Currency
+                    {
+                        CurrencyName = "CAD"
+                    },
+                    new Currency
+                    {
+                        CurrencyName = "USD"
+                    }
+                    );
+                context.SaveChanges();
+            }
+
+            
             #endregion
 
             #region Employees
@@ -510,6 +527,436 @@ namespace hager_crm.Data
                         employee.UserId = identity.Id;
                 }
                 
+                context.SaveChanges();
+            }
+            #endregion
+
+            //#region Company
+
+            //#endregion
+
+            //#region Contact
+            //if (!context.Contacts.Any())
+            //{
+            //    context.Contacts.AddRange(
+            //        new Contact // Customer Contact
+            //        {
+                        
+                        
+
+
+            //        },
+
+            //        new Contact // Vendor Contact
+            //        {
+                        
+
+
+
+            //        },
+
+            //        new Contact // Contractor Contact
+            //        {
+                        
+
+
+
+            //        }
+
+            //    );
+            //    context.SaveChanges();
+            //}
+            //#endregion
+            #region Companies
+            if (!context.Companies.Any())
+            {
+                context.Companies.AddRange(
+                    new Company
+                    {
+                        Name = "Eco Focus",
+                        Location = "Niagara Fall",
+                        DateChecked = DateTime.Now,
+                        BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
+                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
+                        Phone = 1234567890,
+                        BillingAddress1 = "First Avenue",
+                        BillingPostalCode = "L3C1A1",
+                        BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        ShippingAddress1 = "First Avenue",
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
+                        ShippingPostalCode = "L2C1A1",
+                        ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        Customer = true,
+                        //CustomerTypeID = 1,
+                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(b => b.Type == "Poultry").CustomerTypeID,
+                        //CustomerType = context.CustomerTypes.FirstOrDefault(b => b.Type == "Poultry"),
+                        Vendor = false,
+                        VendorTypeID = null,
+                        Contractor = false,
+                        ContractorTypeID = null
+                    }
+                    ,
+                    new Company
+                    {
+                        Name = "Meet lovers",
+                        Location = "Niagara Fall",
+                        DateChecked = DateTime.Now,
+                        BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
+                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
+                        Phone = 1234567890,
+                        BillingAddress1 = "First Avenue",
+                        BillingPostalCode = "L3C1A1",
+                        BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        ShippingAddress1 = "First Avenue",
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
+                        ShippingPostalCode = "L2C1A1",
+                        ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        Customer = true,
+                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(b => b.Type == "Beef").CustomerTypeID,
+                        Vendor = false,
+                        Contractor = false
+                    },
+                    new Company
+                    {
+                        Name = "Bacon lovers",
+                        Location = "Niagara Fall",
+                        DateChecked = DateTime.Now,
+                        BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
+                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
+                        Phone = 1234567890,
+                        BillingAddress1 = "First Avenue",
+                        BillingPostalCode = "L3C1A1",
+                        BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        ShippingAddress1 = "First Avenue",
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
+                        ShippingPostalCode = "L2C1A1",
+                        ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        Customer = true,
+                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(b => b.Type == "Pork").CustomerTypeID,
+                        Vendor = false,
+                        Contractor = false
+                    },
+                    new Company
+                    {
+                        Name = "Tele-Transporters",
+                        Location = "Niagara Fall",
+                        DateChecked = DateTime.Now,
+                        BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
+                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
+                        Phone = 1234567890,
+                        BillingAddress1 = "First Avenue",
+                        BillingPostalCode = "L3C1A1",
+                        BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        ShippingAddress1 = "First Avenue",
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
+                        ShippingPostalCode = "L2C1A1",
+                        ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        Customer = false,
+                        Vendor = true,
+                        VendorTypeID = context.VendorTypes.FirstOrDefault(b => b.Type == "Conveyor & Fabrication").VendorTypeID,
+                        Contractor = false
+                    },
+                    new Company
+                    {
+                        Name = "Mr. All Services",
+                        Location = "Niagara Fall",
+                        DateChecked = DateTime.Now,
+                        BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
+                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
+                        Phone = 1234567890,
+                        BillingAddress1 = "First Avenue",
+                        BillingPostalCode = "L3C1A1",
+                        BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        ShippingAddress1 = "First Avenue",
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
+                        ShippingPostalCode = "L2C1A1",
+                        ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        Customer = false,
+                        Vendor = true,
+                        VendorTypeID = context.VendorTypes.FirstOrDefault(b => b.Type == "Professional Service").VendorTypeID,
+                        Contractor = false
+                    },
+                    new Company
+                    {
+                        Name = "Dunder Mifflin",
+                        Location = "Niagara Fall",
+                        DateChecked = DateTime.Now,
+                        BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
+                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
+                        Phone = 1234567890,
+                        BillingAddress1 = "First Avenue",
+                        BillingPostalCode = "L3C1A1",
+                        BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        ShippingAddress1 = "First Avenue",
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
+                        ShippingPostalCode = "L2C1A1",
+                        ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        Customer = false,
+                        Vendor = true,
+                        VendorTypeID = context.VendorTypes.FirstOrDefault(b => b.Type == "Office Supplies").VendorTypeID,
+                        Contractor = false
+                    },
+                    new Company
+                    {
+                        Name = "IronMen",
+                        Location = "Niagara Fall",
+                        DateChecked = DateTime.Now,
+                        BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
+                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
+                        Phone = 1234567890,
+                        BillingAddress1 = "First Avenue",
+                        BillingPostalCode = "L3C1A1",
+                        BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        ShippingAddress1 = "First Avenue",
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
+                        ShippingPostalCode = "L2C1A1",
+                        ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        Customer = false,
+                        Vendor = false,
+                        Contractor = true,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Welding").ContractorTypeID
+                    },
+                    new Company
+                    {
+                        Name = "Mario Brothers",
+                        Location = "Niagara Fall",
+                        DateChecked = DateTime.Now,
+                        BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
+                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
+                        Phone = 1234567890,
+                        BillingAddress1 = "First Avenue",
+                        BillingPostalCode = "L3C1A1",
+                        BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        ShippingAddress1 = "First Avenue",
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
+                        ShippingPostalCode = "L2C1A1",
+                        ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        Customer = false,
+                        Vendor = false,
+                        Contractor = true,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Plumbing").ContractorTypeID
+                    },
+                    new Company
+                    {
+                        Name = "Static Shock",
+                        Location = "Niagara Fall",
+                        DateChecked = DateTime.Now,
+                        BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
+                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
+                        Phone = 1234567890,
+                        BillingAddress1 = "First Avenue",
+                        BillingPostalCode = "L3C1A1",
+                        BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        ShippingAddress1 = "First Avenue",
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
+                        ShippingPostalCode = "L2C1A1",
+                        ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
+                        Customer = false,
+                        Vendor = false,
+                        Contractor = true,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Electrical").ContractorTypeID
+                    }
+                    ) ;
+                context.SaveChanges();
+            }
+            #endregion
+
+            #region Contact
+            if (!context.Contacts.Any())
+            {
+                context.Contacts.AddRange(
+                    new Contact // Customer Contact 1
+                    {
+                        FirstName = "Harley",
+                        LastName = "Alford",
+                        JobTitle = "Employee",
+                        CellPhone = 6920192523,
+                        WorkPhone = 5489454130,
+                        Email = "harleyalford@example.com",
+                        Active = true,
+                        Notes = "Just an example of text. This text is just a random note for this example.",
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Eco Focus").CompanyID
+                    },
+
+                    new Contact // Customer Contact 2
+                    {
+                        FirstName = "Elicia",
+                        LastName = "Storey",
+                        JobTitle = "Employee",
+                        CellPhone = 4880498113,
+                        WorkPhone = 3194071784,
+                        Email = "elicia@example.com",
+                        Active = true,
+                        Notes = "Just an example of text. This text is just a random note for this example.",
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Meet lovers").CompanyID
+                    },
+
+                    new Contact // Customer Contact 3
+                    {
+                        FirstName = "Blanka",
+                        LastName = "Ramsay",
+                        JobTitle = "Employee",
+                        CellPhone = 1236548520,
+                        WorkPhone = 2583691478,
+                        Email = "ramsay@example.com",
+                        Active = true,
+                        Notes = "Just an example of text. This text is just a random note for this example.",
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Bacon lovers").CompanyID
+                    },
+
+                    new Contact // Vendor Contact 1
+                    {
+                        FirstName = "Jean",
+                        LastName = "Cano",
+                        JobTitle = "Employee",
+                        CellPhone = 1235210484,
+                        WorkPhone = 2179801100,
+                        Email = "jean@example.com",
+                        Active = false,
+                        Notes = "Just an example of text. This text is just a random note for this example.",
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Tele-Transporters").CompanyID
+                    },
+
+                    new Contact // Vendor Contact 2
+                    {
+                        FirstName = "Rahima",
+                        LastName = "Molina",
+                        JobTitle = "General Manager",
+                        CellPhone = 3214659878,
+                        WorkPhone = 2179802220,
+                        Email = "molina@example.com",
+                        Active = false,
+                        Notes = "Just an example of text. This text is just a random note for this example.",
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Mr. All Services").CompanyID
+                    },
+
+                    new Contact // Vendor Contact 3
+                    {
+                        FirstName = "Orson",
+                        LastName = "Mays",
+                        JobTitle = "Employee",
+                        CellPhone = 4568124645,
+                        WorkPhone = 2179801111,
+                        Email = "mays@example.com",
+                        Active = false,
+                        Notes = "Just an example of text. This text is just a random note for this example.",
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Dunder Mifflin").CompanyID
+                    },
+
+                    new Contact // Contractor Contact 1
+                    {
+                        FirstName = "Sameera",
+                        LastName = "Avalos",
+                        JobTitle = "Employee",
+                        CellPhone = 5552725851,
+                        WorkPhone = 1771362746,
+                        Email = "sameera@example.com",
+                        Active = true,
+                        Notes = "Just an example of text. This text is just a random note for this example.",
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "IronMen").CompanyID
+                    },
+
+                    new Contact // Contractor Contact 2
+                    {
+                        FirstName = "Raja",
+                        LastName = "Avalos",
+                        JobTitle = "General Manager",
+                        CellPhone = 5552725851,
+                        WorkPhone = 2179801190,
+                        Email = "avalos@example.com",
+                        Active = true,
+                        Notes = "Just an example of text. This text is just a random note for this example.",
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Mario Brothers").CompanyID
+                    },
+
+                    new Contact // Contractor Contact 3
+                    {
+                        FirstName = "Cerys",
+                        LastName = "Rowland",
+                        JobTitle = "Employee",
+                        CellPhone = 9876543210,
+                        WorkPhone = 3179801100,
+                        Email = "rowland@example.com",
+                        Active = true,
+                        Notes = "Just an example of text. This text is just a random note for this example.",
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Static Shock").CompanyID
+                    }
+
+                );
+                context.SaveChanges();
+            }
+            #endregion
+
+            #region Contact Categories
+            if (!context.ContactCategories.Any())
+            { 
+                context.ContactCategories.AddRange(
+                    // Customer Contact
+                    new ContactCategories
+                    {
+                        CategoriesID = context.Categories.FirstOrDefault(c => c.Category == "Christmas Card").ID,
+                        ContactID = context.Contacts.FirstOrDefault(c => c.LastName == "Alford" && c.FirstName == "Harley").ContactID
+                    },
+                    new ContactCategories
+                    {
+                        CategoriesID = context.Categories.FirstOrDefault(c => c.Category == "Newsletter").ID,
+                        ContactID = context.Contacts.FirstOrDefault(c => c.LastName == "Storey" && c.FirstName == "Elicia").ContactID
+                    },
+                    new ContactCategories
+                    {
+                        CategoriesID = context.Categories.FirstOrDefault(c => c.Category == "Marketing Material").ID,
+                        ContactID = context.Contacts.FirstOrDefault(c => c.LastName == "Ramsay" && c.FirstName == "Blanka").ContactID
+                    },
+                    // Vendor Contact.
+                    new ContactCategories
+                    {
+                        CategoriesID = context.Categories.FirstOrDefault(c => c.Category == "Marketing Material").ID,
+                        ContactID = context.Contacts.FirstOrDefault(c => c.LastName == "Cano" && c.FirstName == "Jean").ContactID
+                    },
+                    new ContactCategories
+                    {
+                        CategoriesID = context.Categories.FirstOrDefault(c => c.Category == "Newsletter").ID,
+                        ContactID = context.Contacts.FirstOrDefault(c => c.LastName == "Molina" && c.FirstName == "Rahima").ContactID
+                    },
+                    new ContactCategories
+                    {
+                        CategoriesID = context.Categories.FirstOrDefault(c => c.Category == "Newsletter").ID,
+                        ContactID = context.Contacts.FirstOrDefault(c => c.LastName == "Mays" && c.FirstName == "Orson").ContactID
+                    },
+                    // Contractor Contact
+                    new ContactCategories
+                    {
+                        CategoriesID = context.Categories.FirstOrDefault(c => c.Category == "Christmas Card").ID,
+                        ContactID = context.Contacts.FirstOrDefault(c => c.LastName == "Avalos" && c.FirstName == "Sameera").ContactID
+                    },
+                    new ContactCategories
+                    {
+                        CategoriesID = context.Categories.FirstOrDefault(c => c.Category == "Newsletter").ID,
+                        ContactID = context.Contacts.FirstOrDefault(c => c.LastName == "Avalos" && c.FirstName == "Raja").ContactID
+                    },
+                    new ContactCategories
+                    {
+                        CategoriesID = context.Categories.FirstOrDefault(c => c.Category == "Marketing Material").ID,
+                        ContactID = context.Contacts.FirstOrDefault(c => c.LastName == "Rowland" && c.FirstName == "Cerys").ContactID
+                    });
                 context.SaveChanges();
             }
             #endregion
