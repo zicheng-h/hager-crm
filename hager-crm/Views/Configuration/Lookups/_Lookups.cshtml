@@ -97,7 +97,7 @@
         );
     }
     function updateLookup(item) {
-        console.log(item);
+        //console.log(item);
         let $list = $(item).closest('.lookup-list-item');
         $list.find('.display-name').toggleClass('hide');
         $list.find('.edit-lookup-name').toggleClass('hide');
@@ -158,10 +158,53 @@
     $(function () {
         $("[name='sortable']").sortable({
             stop: function (event, ui) {
-                console.log($(this).sortable("toArray", { attribute: "data-item-id" }));
+                $.post("/Configuration/UpdateLookupOrder",
+                    {
+                        lookupName: $(this).data('lookup-name'),
+                        order: $(this).sortable("toArray", { attribute: "data-item-id" })
+                    },
+                    function (response) {
+                        if (!response.result)
+                            console.error("Unable to save the order");
+                    }
+                );
             },
             handle: "[name='sort-handle']"
         });
         $("[name='sortable']").disableSelection();
+
+        $("[name='sort-handle']").bind('touchstart', function (event) {
+            var touch = event.originalEvent.touches[0];
+            var mouseDownEvent = new MouseEvent('mousedown', {
+                clientX: touch.pageX,
+                clientY: touch.pageY,
+                bubbles: true,
+                cancelable: true
+            });
+
+            event.currentTarget.dispatchEvent(mouseDownEvent);
+            event.preventDefault();
+        });
+        $("[name='sort-handle']").bind('touchmove', function (event) {
+            var touch = event.originalEvent.touches[0];
+            var mouseMoveEvent = new MouseEvent('mousemove', {
+                clientX: touch.pageX,
+                clientY: touch.pageY,
+                bubbles: true,
+                cancelable: true
+            });
+
+            event.currentTarget.dispatchEvent(mouseMoveEvent);
+            event.preventDefault();
+        });
+        $("[name='sort-handle']").bind('touchend', function (event) {
+            var mouseUpEvent = new MouseEvent('mouseup', {
+                bubbles: true,
+                cancelable: true
+            });
+
+            event.currentTarget.dispatchEvent(mouseUpEvent);
+            event.preventDefault();
+        });
     });
 </script>

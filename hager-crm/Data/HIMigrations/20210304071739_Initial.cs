@@ -45,6 +45,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     ContractorTypeID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Order = table.Column<int>(nullable: true),
                     Type = table.Column<string>(maxLength: 40, nullable: true)
                 },
                 constraints: table =>
@@ -73,6 +74,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     CurrencyID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Order = table.Column<int>(nullable: true),
                     CurrencyName = table.Column<string>(maxLength: 30, nullable: true)
                 },
                 constraints: table =>
@@ -87,6 +89,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     CustomerTypeID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Order = table.Column<int>(nullable: true),
                     Type = table.Column<string>(maxLength: 40, nullable: true)
                 },
                 constraints: table =>
@@ -101,6 +104,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     EmploymentTypeID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Order = table.Column<int>(nullable: true),
                     Type = table.Column<string>(maxLength: 40, nullable: true)
                 },
                 constraints: table =>
@@ -115,6 +119,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     JobPositionID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Order = table.Column<int>(nullable: true),
                     Position = table.Column<string>(maxLength: 40, nullable: true)
                 },
                 constraints: table =>

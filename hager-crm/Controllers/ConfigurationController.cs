@@ -172,7 +172,17 @@ namespace hager_crm.Controllers
             bool result = await lookup.DeleteLookup(_hContext, lookupId);
             return Json(new {result});
         }
-        
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateLookupOrderAsync(string lookupName, int[] order)
+        {
+            var lookup = _hContext.GetLookups().Find(i => i.GetLookupName() == lookupName);
+            if (lookup == null)
+                return NotFound();
+            bool result = await lookup.UpdateLookupOrder(_hContext, order);
+            return Json(new { result });
+        }
+
         [HttpPost]
         public async void AddUserAsync(string userId, string roleName)
         {
