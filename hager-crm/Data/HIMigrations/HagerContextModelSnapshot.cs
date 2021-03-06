@@ -183,7 +183,7 @@ namespace hager_crm.Data.HIMigrations
                     b.Property<long?>("CellPhone")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CompanyID")
+                    b.Property<int>("CompanyID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
@@ -523,7 +523,8 @@ namespace hager_crm.Data.HIMigrations
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("Contacts")
                         .HasForeignKey("CompanyID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("hager_crm.Models.ContactCategories", b =>

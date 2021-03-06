@@ -9,7 +9,7 @@ using hager_crm.Data;
 namespace hager_crm.Data.HIMigrations
 {
     [DbContext(typeof(HagerContext))]
-    [Migration("20210304071739_Initial")]
+    [Migration("20210306052758_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace hager_crm.Data.HIMigrations
 
             modelBuilder.Entity("hager_crm.Models.Categories", b =>
                 {
-                    b.Property<int>("CategoriesID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -46,7 +46,7 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
 
-                    b.HasKey("CategoriesID");
+                    b.HasKey("ID");
 
                     b.ToTable("Categories");
                 });
@@ -222,19 +222,13 @@ namespace hager_crm.Data.HIMigrations
 
             modelBuilder.Entity("hager_crm.Models.ContactCategories", b =>
                 {
-                    b.Property<int>("ContactCategoriesID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("CategoriesID")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ContactID")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ContactCategoriesID");
-
-                    b.HasIndex("CategoriesID");
+                    b.HasKey("CategoriesID", "ContactID");
 
                     b.HasIndex("ContactID");
 

@@ -29,13 +29,13 @@ namespace hager_crm.Data.HIMigrations
                 schema: "HG",
                 columns: table => new
                 {
-                    CategoriesID = table.Column<int>(nullable: false)
+                    ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Category = table.Column<string>(maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.CategoriesID);
+                    table.PrimaryKey("PK_Categories", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -358,20 +358,18 @@ namespace hager_crm.Data.HIMigrations
                 schema: "HG",
                 columns: table => new
                 {
-                    ContactCategoriesID = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
                     CategoriesID = table.Column<int>(nullable: false),
                     ContactID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContactCategories", x => x.ContactCategoriesID);
+                    table.PrimaryKey("PK_ContactCategories", x => new { x.CategoriesID, x.ContactID });
                     table.ForeignKey(
                         name: "FK_ContactCategories_Categories_CategoriesID",
                         column: x => x.CategoriesID,
                         principalSchema: "HG",
                         principalTable: "Categories",
-                        principalColumn: "CategoriesID",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ContactCategories_Contacts_ContactID",
@@ -435,12 +433,6 @@ namespace hager_crm.Data.HIMigrations
                 schema: "HG",
                 table: "Companies",
                 column: "VendorTypeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ContactCategories_CategoriesID",
-                schema: "HG",
-                table: "ContactCategories",
-                column: "CategoriesID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ContactCategories_ContactID",
