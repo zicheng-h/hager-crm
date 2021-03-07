@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace hager_crm.Models
 {
-    public class Categories
+    public class Categories : BaseLookup<Categories>
     {
         public Categories()
         {
@@ -20,5 +21,16 @@ namespace hager_crm.Models
         public string Category { get; set; }
 
         public ICollection<ContactCategories> ContactCategories { get; set; }
+
+        [NotMapped]
+        public override string DisplayName
+        {
+            get => Category;
+            set => Category = value;
+        }
+
+        public override int GetId() => ID;
+
+        public override string GetLookupName() => "contact_category";
     }
 }

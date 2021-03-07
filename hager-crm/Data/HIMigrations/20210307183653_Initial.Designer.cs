@@ -9,7 +9,7 @@ using hager_crm.Data;
 namespace hager_crm.Data.HIMigrations
 {
     [DbContext(typeof(HagerContext))]
-    [Migration("20210306052758_Initial")]
+    [Migration("20210307183653_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,9 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.Property<int>("BillingTermID")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Order")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Terms")
@@ -45,6 +48,9 @@ namespace hager_crm.Data.HIMigrations
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
+
+                    b.Property<int?>("Order")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
 
@@ -464,6 +470,9 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.Property<int>("VendorTypeID")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Order")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Type")

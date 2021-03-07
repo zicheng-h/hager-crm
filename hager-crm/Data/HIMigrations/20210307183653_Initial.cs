@@ -17,6 +17,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     BillingTermID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Order = table.Column<int>(nullable: true),
                     Terms = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -31,6 +32,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Order = table.Column<int>(nullable: true),
                     Category = table.Column<string>(maxLength: 40, nullable: false)
                 },
                 constraints: table =>
@@ -149,6 +151,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     VendorTypeID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Order = table.Column<int>(nullable: true),
                     Type = table.Column<string>(maxLength: 40, nullable: true)
                 },
                 constraints: table =>

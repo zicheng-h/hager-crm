@@ -40,10 +40,13 @@ namespace hager_crm.Data
 
         public List<ILookupManage> GetLookups() => new List<ILookupManage>
         {
-            new EmploymentType(),
+            new BillingTerm(),
             new CustomerType(),
+            new VendorType(),
             new ContractorType(),
+            new Categories(),
             new JobPosition(),
+            new EmploymentType(),
             new Currency()
         };
         

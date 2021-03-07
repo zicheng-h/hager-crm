@@ -23,6 +23,9 @@ namespace hager_crm.Data.HIMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("Order")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Terms")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -43,6 +46,9 @@ namespace hager_crm.Data.HIMigrations
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
+
+                    b.Property<int?>("Order")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
 
@@ -462,6 +468,9 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.Property<int>("VendorTypeID")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Order")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Type")
