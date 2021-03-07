@@ -88,11 +88,14 @@
                 </dd>
             </dl>
         </div>
-
     </div>
+
     <hr />
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.ContactID">Edit</a> |
-        <a asp-action="Index">Back to List</a>
+        @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.ContactID" asp-route-ContactType="@ViewData["ContactType"]">Edit</a> @:|
+        }
+        <a asp-action="Index" asp-route-ContactType="@ViewData["ContactType"]">Back to @ViewData["ContactType"] Contact List</a>
     </div>
 </div>

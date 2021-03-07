@@ -5,10 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>All Contact list</h1>
-<p>
-    <a asp-action="Create">Add New</a>
-</p>
+<h1>@ViewData["ContactType"] Contact list</h1>
+
+@if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+{
+    <p>
+        <a asp-action="Create">Add New</a>
+    </p>
+}
+
 <form asp-action="Index" method="get">
     <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
     <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
@@ -19,15 +24,17 @@
         <div class="collapse @(ViewData["Filtering"])" id="collapseFilter">
             <div class="card card-body bg-light">
                 <div class="row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label class="control-label">Select by Category:</label>
                         @Html.DropDownList("CategoryID", null, "All Category", htmlAttributes: new { @class = "form-control" })
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label class="control-label">Search Contact Name:</label>
                         @Html.TextBox("SearchString", null, new { @class = "form-control" })
                     </div>
-                    <div class="form-group col-md-4 align-self-end">
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6 align-self-end">
                         <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" />
                         <a asp-action="Index" class="btn btn-outline-dark">Clear</a>
                     </div>
@@ -55,8 +62,8 @@
                     <input type="submit" disabled="disabled" value="Category" class="btn btn-link" />
                 </th>
                 @*<th>
-                    <input type="submit" name="actionButton" value="Category" class="btn btn-link" />
-                </th>*@
+                        <input type="submit" name="actionButton" value="Category" class="btn btn-link" />
+                    </th>*@
                 <th></th>
             </tr>
         </thead>
@@ -105,9 +112,16 @@
                         }
                     </td>
                     <td>
-                        <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.ContactID">Edit</a>
-                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.ContactID">Details</a>
-                        <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.ContactID">Delete</a>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                        {
+                            <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.ContactID" asp-route-ContactType="@ViewData["ContactType"]">Edit</a>
+                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.ContactID" asp-route-ContactType="@ViewData["ContactType"]">Details</a>
+                            <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.ContactID" asp-route-ContactType="@ViewData["ContactType"]">Delete</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.ContactID" asp-route-ContactType="@ViewData["ContactType"]">Details</a>
+                        }
                     </td>
                 </tr>
             }
