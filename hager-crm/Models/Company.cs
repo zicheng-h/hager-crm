@@ -26,9 +26,11 @@ namespace hager_crm.Models
         public bool CreditCheck { get; set; }
         [Display(Name = "Last Checked")]
         public DateTime? DateChecked { get; set; }
+        [Display(Name = "Billing Term")]
         public int? BillingTermID { get; set; }
         [Display(Name="Billing Term")]
         public BillingTerm BillingTerm { get; set; }
+        [Display(Name="Currency")]
         public int? CurrencyID { get; set; }
         public Currency Currency { get; set; }
 
@@ -49,13 +51,15 @@ namespace hager_crm.Models
         [Display(Name="Billing City")]
         public string BillingCity { get; set; }
 
+        [Display(Name = "Billing Province")]
         public int? BillingProvinceID { get; set; }
         [Display(Name = "Billing Province")]
         public Province BillingProvince { get; set; }
 
+        [Display(Name="Billing Postal Code")]
         [RegularExpression("^[A-Z][0-9][A-Z][0-9][A-Z][0-9]$", ErrorMessage = "Please enter a proper Postal Code.")]
         public string BillingPostalCode { get; set; }
-
+        [Display(Name = "Billing Country")]
         public int? BillingCountryID { get; set; }
         [Display(Name = "Billing Country")]
         public Country BillingCountry { get; set; }
@@ -69,28 +73,33 @@ namespace hager_crm.Models
 
         [Display(Name ="Shipping City")]
         public string ShippingCity { get; set; }
+        [Display(Name = "Shipping Province")]
         public int? ShippingProvinceID { get; set; }
 
         [Display(Name = "Shipping Province")]
         public Province ShippingProvince { get; set; }
 
+        [Display(Name = "Shipping Postal Code")]
         [RegularExpression("^[A-Z][0-9][A-Z][0-9][A-Z][0-9]$", ErrorMessage = "Please enter a proper Postal Code.")]
         public string ShippingPostalCode { get; set; }
-
+        [Display(Name = "Shipping Country")]
         public int? ShippingCountryID { get; set; }
         [Display(Name = "Shipping Country")]
         public Country ShippingCountry { get; set; }
         public bool Customer { get; set; }
+        [Display(Name = "Customer Type")]
         public int? CustomerTypeID { get; set; }
-        [Display(Name = "Customer Type.")]
+        [Display(Name = "Customer Type")]
         public CustomerType CustomerType { get; set; }
         public bool Vendor { get; set; }
+        [Display(Name = "Vendor Type")]
         public int? VendorTypeID { get; set; }
-        [Display(Name = "Vendor Type.")]
+        [Display(Name = "Vendor Type")]
         public VendorType VendorType { get; set; }
         public bool Contractor { get; set; }
+        [Display(Name = "Contractor Type")]
         public int? ContractorTypeID { get; set; }
-        [Display(Name = "Contractor Type.")]
+        [Display(Name = "Contractor Type")]
         public ContractorType ContractorType { get; set; }
         public bool Active { get; set; }
         [StringLength(200)]

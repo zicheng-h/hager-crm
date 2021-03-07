@@ -947,6 +947,13 @@ namespace hager_crm.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //GET: Redirect using company name to Company's Details page
+        public async Task<IActionResult> CompanyDetails(int id)
+        {
+            var company = await _context.Companies.FindAsync(id);
+            return RedirectToAction("Details", "Companies", new { id });
+        }
+
         // Categories Multi Select
         private void PopulateAssignedCategoryData(Contact contact)
         {
