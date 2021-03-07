@@ -16,7 +16,7 @@
         <nav id="sidebar">
             <div class="sidebar-header">
                 <div>
-                    <img src="~/assets/AppLogo.png" alt="Application Logo"/>
+                    <img src="~/assets/AppLogo.png" alt="Application Logo" />
                 </div>
                 <button type="button" id="sidebarCollapse" class="btn">
                     <i class="fas fa-align-left"></i>
@@ -30,10 +30,10 @@
                 <li>
                     <a href="#companiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Companies</a>
                     <ul class="collapse list-unstyled" id="companiesSubmenu">
-                        <li><a asp-controller="Companies" asp-action="Index">All Companies</a></li>
-                        <li><a asp-controller="Companies" asp-action="IndexCustomer">Customers</a></li>
-                        <li><a asp-controller="Companies" asp-action="IndexVendor">Vendors</a></li>
-                        <li><a asp-controller="Companies" asp-action="IndexContractor">Contractors</a></li>
+                        <li><a asp-controller="Companies" asp-action="Index" asp-route-CompanyType="All">All Companies</a></li>
+                        <li><a asp-controller="Companies" asp-action="Index" asp-route-CompanyType="Customer">Customers</a></li>
+                        <li><a asp-controller="Companies" asp-action="Index" asp-route-CompanyType="Vendor">Vendors</a></li>
+                        <li><a asp-controller="Companies" asp-action="Index" asp-route-CompanyType="Contractor">Contractors</a></li>
                     </ul>
                 </li>
                 <li>
@@ -63,7 +63,7 @@
                         </ul>
                     </li>
                 }
-                
+
             </ul>
         </nav>
 
@@ -93,14 +93,10 @@
             </div>
         </footer>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
-    <!-- jQuery, Bootstrap and Scroller from the CDN -->
-    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
     @* Toggle collapse button with JS*@
     <script type="text/javascript">

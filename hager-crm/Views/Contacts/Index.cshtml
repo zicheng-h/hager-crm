@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<hager_crm.Models.Contact>
-@using hager_crm.Utils;
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = @ViewData["ContactType"] + " Contacts";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +9,7 @@
 @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
 {
     <p>
-        <a asp-action="Create">Add New</a>
+        <a asp-action="Create" asp-route-ContactType="@ViewData["ContactType"]">Add New</a>
     </p>
 }
 

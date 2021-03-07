@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Details</h1>
@@ -206,6 +207,9 @@
     </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.CompanyID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Edit</a> @:|
+    }
+    <a asp-action="Index" asp-route-CompanyType="@ViewData["CompanyType"]">Back to @ViewData["CompanyType"] Company List</a>
 </div>

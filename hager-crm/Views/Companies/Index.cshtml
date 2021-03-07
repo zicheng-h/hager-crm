@@ -1,20 +1,20 @@
 ﻿@model IEnumerable<hager_crm.Models.Company>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = @ViewData["CompanyType"] + " Companies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>All Companies</h1>
+<h1>@ViewData["CompanyType"] Company List</h1>
+
+@if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+{
 <div>
     <p>
-        <a asp-action="Create">Create New</a>
+        <a asp-action="Create" asp-route-CompanyType="@ViewData["CompanyType"]">Add New</a>
     </p>
-  
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
     <form asp-action="InsertFromExcelCompany" asp-controller="Companies" method="post" enctype="multipart/form-data">
         <button type="button" class="btn btn-outline-primary" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Companies</button>
-        
         <div class="collapse" id="collapseImport">
             <br />
             <div class="form-horizontal">
@@ -36,13 +36,11 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-
     </form>
 </div>
-
+}
 
 <br />
 <form asp-action="Index" method="get">
@@ -75,10 +73,6 @@
             </div>
         </div>
     </div>
-
-
-
-
     <table class="table">
         <thead>
             <tr>
@@ -100,15 +94,15 @@
                 <th>
                     <input type="submit" name="actionButton" value="Country" class="btn btn-link" />
                 </th>
-
                 <th>
                     <input type="submit" name="actionButton" value="Active" class="btn btn-link" />
                 </th>
-
-                <th>
-                    <input type="submit" disabled="disabled" value="Type" class="btn btn-link" />
-                </th>
-
+                @if (ViewData["CompanyType"].ToString() == "All")
+                {
+                    <th>
+                        <input type="submit" disabled="disabled" value="Type" class="btn btn-link" />
+                    </th>
+                }
                 <th>
                     <input type="submit" disabled="disabled" value="Notes" class="btn btn-link" />
                 </th>
@@ -142,41 +136,49 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Active)
                     </td>
+                    @if (ViewData["CompanyType"].ToString() == "All")
+                    {
+                        <td>
+                            @{
+                                if (item.Customer == true)
+                                {
+                                    <a class="btn btn-warning">Customer</a>
+                                }
+                                if (item.Vendor == true)
+                                {
+                                    <a class="btn btn-success">Vendor</a>
+                                }
+                                if (item.Contractor == true)
+                                {
+                                    <a class="btn btn-info">Contractor</a>
+                                }
 
-                    <td>
-                        @{
-                            if (item.Customer == true)
-                            {
-                                <a class="btn btn-warning">Customer</a>
                             }
-                            if (item.Vendor == true)
-                            {
-                                <a class="btn btn-success">Vendor</a>
-                            }
-                            if (item.Contractor == true)
-                            {
-                                <a class="btn btn-info">Contractor</a>
-                            }
-
-                        }
-                    </td>
+                        </td>
+                    }
                     <td>
                         @Html.DisplayFor(modelItem => item.Notes)
                     </td>
                     <td>
-                        <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.CompanyID">Edit</a>
-                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID">Details</a>
-                        <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.CompanyID">Delete</a>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                        {
+                            <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Edit</a>
+                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Details</a>
+                            <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Delete</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Details</a>
+                        }
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-
     <partial name="_PagingNavBar" />
 </form>
 
-
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
 
     $('#theExcel').change(function () {

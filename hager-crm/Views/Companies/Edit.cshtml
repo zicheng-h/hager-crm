@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Edit</h1>
@@ -155,7 +156,7 @@
                         <input type="submit" value="Save" class="btn btn-primary" />
                     </div>
                     <div>
-                        <a asp-action="Index">Back to List</a>
+                        <a asp-action="Index" asp-route-CompanyType="@ViewData["CompanyType"]">Back to @ViewData["CompanyType"] Company List</a>
                     </div>
                 </div>
                 
