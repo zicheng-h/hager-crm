@@ -81,8 +81,8 @@ namespace hager_crm.Helpers
         {
             
             var result = $@"
-                <div class=""data-filter-rule col-12 col-md-6 col-xl-4 mb-2 d-flex flex-row"">
-                    <label class=""control-label mr-2"" 
+                <div class=""data-filter-rule col-12 col-md-6 mb-2 d-flex flex-row"">
+                    <label class=""data-filter-label control-label mr-2 col-5"" 
                            for=""{rule.FieldName + "FilterRule"}"">{rule.DisplayName}: </label>
                     {rule.GetHtml(html.ViewContext)}
                 </div>

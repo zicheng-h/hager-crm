@@ -51,7 +51,7 @@ function constructQuery(orderBy, dir, pageNumber) {
     for (var item of $(".data-filterable")) {
         $item = $(item);
         if ($item.val()) {
-            if ($item.prop("type") === "checkbox" && !$item.prop("checked"))
+            if ($item.prop("type") === "radio" && !$item.prop("checked"))
                 continue;
             query[$item.data('name')] = $item.val();
         }

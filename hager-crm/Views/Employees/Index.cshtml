@@ -10,7 +10,6 @@
 }
 
 <h1>Employee List</h1>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 @if (User.IsInRole("Admin"))
 {
@@ -121,13 +120,11 @@
 <script>
     const FILTER_URL = "@($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}")";
 </script>
-
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
-
     $('#theExcel').change(function () {
         var i = $(this).prev('label').clone();
         var file = $('#theExcel')[0].files[0].name;
         $(this).prev('label').text(file);
     });
-
 </script>

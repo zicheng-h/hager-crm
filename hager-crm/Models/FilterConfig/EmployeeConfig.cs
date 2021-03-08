@@ -28,11 +28,6 @@ namespace hager_crm.Models.FilterConfig
                 //     FieldName = "CellPhone",
                 //     FieldType = "tel"
                 // },
-                new CheckboxFilterRule
-                {
-                    DisplayName = "Is User",
-                    FieldName = "IsUser",
-                },
                 new DropdownFilterRule
                 {
                     DisplayName = "Employment Type",
@@ -40,10 +35,20 @@ namespace hager_crm.Models.FilterConfig
                 },
                 new DropdownFilterRule
                 {
-                    DisplayName = "JobPosition",
+                    DisplayName = "Job Position",
                     FieldName = "JobPositionID",
+                },
+                new RadioboxFilterRule
+                {
+                    DisplayName = "Is User",
+                    FieldName = "IsUser",
+                },
+                new RadioboxFilterRule
+                {
+                    DisplayName = "Is Active",
+                    FieldName = "Active",
                 }
-                
+
             };
         }
 
@@ -114,7 +119,17 @@ namespace hager_crm.Models.FilterConfig
                     {
                         OnSort = (p, q) => q,
                         OnFilter = (p, q) => 
-                            q.Where(i => (string) p != "on" || i.UserId != null)
+                            q.Where(i => ((string) p != "true" && (string) p != "false") ||
+                                ((string) p == "true" ? i.UserId != null : i.UserId == null))
+                    }
+                },
+                {
+                    "Active", new ConfigAction<Employee>
+                    {
+                        OnSort = (p, q) => q,
+                        OnFilter = (p, q) => 
+                            q.Where(i => ((string) p != "true" && (string) p != "false") ||
+                                ((string) p == "true" ? i.Active : !i.Active))
                     }
                 }
             };

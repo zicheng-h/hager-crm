@@ -382,7 +382,7 @@ a.data-sortable{
     align-items: baseline;
 }
 
-.data-filter-rule label {
+.data-filter-label {
     min-width: 120px;
     text-align: end;
 }

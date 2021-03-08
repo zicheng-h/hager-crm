@@ -50,7 +50,7 @@ namespace hager_crm.Models.FilterConfig
             if (context.HttpContext.Request.Query.TryGetValue(FieldName, out var values))
                 inputValue = values.FirstOrDefault() ?? "";
             return $@"
-            <input id=""{FieldName + "FilterRule"}"" class=""form-control data-filterable"" 
+            <input id=""{FieldName + "FilterRule"}"" class=""form-control data-filterable col-6"" 
                    data-name=""{FieldName}"" type=""{FieldType}"" value=""{inputValue}""/>";
         } 
     }
@@ -63,8 +63,30 @@ namespace hager_crm.Models.FilterConfig
             if (context.HttpContext.Request.Query.TryGetValue(FieldName, out var values))
                 inputValue = values.FirstOrDefault() ?? "";
             return $@"
-            <input id=""{FieldName + "FilterRule"}"" class=""data-filterable"" 
+            <input id=""{FieldName + "FilterRule"}"" class=""data-filterable col-6"" 
                    data-name=""{FieldName}"" type=""checkbox"" value=""on"" {(inputValue == "on" ? "checked" : "")}/>";
+        }
+    }
+    
+    public class RadioboxFilterRule : BaseFilterRule
+    {
+        public override string GetHtml(ViewContext context)
+        { 
+            var inputValue = "";
+            if (context.HttpContext.Request.Query.TryGetValue(FieldName, out var values))
+                inputValue = values.FirstOrDefault() ?? "";
+            return $@"
+            <div id=""{FieldName + "FilterRule"}"" class=""col-6"">
+                <input id=""{FieldName + "FilterTrue"}"" class=""data-filterable"" name=""{FieldName}""
+                   data-name=""{FieldName}"" type=""radio"" value=""true"" {(inputValue == "true" ? "checked" : "")}/>
+                <label for=""{FieldName + "FilterTrue"}"">Yes</label>
+                <input id=""{FieldName + "FilterFalse"}"" class=""data-filterable"" name=""{FieldName}""
+                   data-name=""{FieldName}"" type=""radio"" value=""false"" {(inputValue == "false" ? "checked" : "")}/>
+                <label for=""{FieldName + "FilterFalse"}"">No</label>
+                <input id=""{FieldName + "FilterOff"}"" class=""data-filterable"" name=""{FieldName}""
+                   data-name=""{FieldName}"" type=""radio"" value="""" {((inputValue != "true" && inputValue != "false") ? "checked" : "")}/>
+                <label for=""{FieldName + "FilterOff"}"">Off</label>
+            </div>";
         }
     }
     
@@ -80,8 +102,8 @@ namespace hager_crm.Models.FilterConfig
                 inputValue = values.FirstOrDefault() ?? "";
             
             var result = $@"
-            <select id=""{FieldName + "FilterRule"}"" class=""form-control data-filterable"" data-name=""{FieldName}"">
-                <option value="""">--Select {DisplayName}--</option>
+            <select id=""{FieldName + "FilterRule"}"" class=""form-control data-filterable col-6"" data-name=""{FieldName}"">
+                <option value="""">Select {DisplayName}</option>
                 {string.Join('\n', 
                 options.Select(i => 
                     $@"<option value=""{i.Value}"" {(i.Value == inputValue ? "selected" : "")}>{i.Text}</option>"))}
