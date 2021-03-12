@@ -27,10 +27,11 @@ namespace hager_crm.Controllers
         }
 
         // GET: Companies
-        public async Task<IActionResult> Index(string SearchString, int? ProvinceID, int? CountryID,
+        public async Task<IActionResult> Index(string SearchString, int? ProvinceID, int? CountryID, bool? Active,
             int? page, int? pageSizeID, string actionButton, string sortDirection = "asc",
             string sortField = "Name", string CompanyType = "All")
         {
+
             PopulateDropDownListsProvince();
             PopulateDropDownListsCountry();
             ViewData["Filtering"] = "";
@@ -65,9 +66,13 @@ namespace hager_crm.Controllers
                     return NotFound();
             }
 
+            
+
+
             //Add Filter by Province
             if (ProvinceID.HasValue)
             {
+
                 hagerContext = hagerContext.Where(b => b.BillingProvinceID == ProvinceID);
                 ViewData["Filtering"] = "show";
             }
@@ -78,9 +83,15 @@ namespace hager_crm.Controllers
                 hagerContext = hagerContext.Where(b => b.BillingCountryID == CountryID);
                 ViewData["Filtering"] = "show";
             }
+            //Add Filter by Active
+            if (Active.HasValue)
+            {
+                hagerContext = hagerContext.Where(b => b.Active == Active);
+                ViewData["Filtering"] = "show";
+            }
             //Search by Company Name
 
-            if(!String.IsNullOrEmpty(SearchString))
+            if (!String.IsNullOrEmpty(SearchString))
             {
                 hagerContext = hagerContext.Where(b => b.Name.ToUpper().Contains(SearchString.ToUpper()));
                 ViewData["Filtering"] = "show";
@@ -99,50 +110,15 @@ namespace hager_crm.Controllers
             }
 
             //Sort by field and revert direction when click again
-            if(sortField == "Name")
+            if (sortField == "Name")
             {
-                if(sortDirection == "asc")
+                if (sortDirection == "asc")
                 {
                     hagerContext = hagerContext.OrderByDescending(b => b.Name);
                 }
                 else
                 {
                     hagerContext = hagerContext.OrderBy(b => b.Name);
-                }
-            }
-            else if(sortField == "Location")
-            {
-                if (sortDirection == "asc")
-                {
-                    hagerContext = hagerContext.OrderByDescending(b => b.Location);
-                }
-                else
-                {
-                    hagerContext = hagerContext.OrderBy(b => b.Location);
-                }
-            }
-
-            else if (sortField == "Province")
-            {
-                if (sortDirection == "asc")
-                {
-                    hagerContext = hagerContext.OrderByDescending(b => b.BillingProvince);
-                }
-                else
-                {
-                    hagerContext = hagerContext.OrderBy(b => b.BillingProvince);
-                }
-            }
-
-            else if (sortField == "Country")
-            {
-                if (sortDirection == "asc")
-                {
-                    hagerContext = hagerContext.OrderByDescending(b => b.BillingCountry);
-                }
-                else
-                {
-                    hagerContext = hagerContext.OrderBy(b => b.BillingCountry);
                 }
             }
 
@@ -158,6 +134,39 @@ namespace hager_crm.Controllers
                 }
             }
 
+            else if (sortField == "Customer Type")
+            {
+                if (sortDirection == "asc")
+                {
+                    hagerContext = hagerContext.OrderByDescending(b => b.CustomerType);
+                }
+                else
+                {
+                    hagerContext = hagerContext.OrderBy(b => b.CustomerType);
+                }
+            }
+            else if (sortField == "Vendor Type")
+            {
+                if (sortDirection == "asc")
+                {
+                    hagerContext = hagerContext.OrderByDescending(b => b.CustomerType);
+                }
+                else
+                {
+                    hagerContext = hagerContext.OrderBy(b => b.CustomerType);
+                }
+            }
+            else if (sortField == "Contractor Type")
+            {
+                if (sortDirection == "asc")
+                {
+                    hagerContext = hagerContext.OrderByDescending(b => b.CustomerType);
+                }
+                else
+                {
+                    hagerContext = hagerContext.OrderBy(b => b.CustomerType);
+                }
+            }
             //Set sort for next time
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
@@ -225,14 +234,14 @@ namespace hager_crm.Controllers
         public IActionResult Create(string CompanyType)
         {
             ViewData["CompanyType"] = CompanyType;
-            ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName");
-            ViewData["BillingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName");
+            ViewData["BillingCountryID"] = new SelectList(_context.Countries.OrderBy(b=>b.CountryName), "CountryID", "CountryName");
+            ViewData["BillingProvinceID"] = new SelectList(_context.Provinces.OrderBy(b=>b.ProvinceName), "ProvinceID", "ProvinceName");
             ViewData["BillingTermID"] = new SelectList(_context.BillingTerms, "BillingTermID", "Terms");
             ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes, "ContractorTypeID", "Type");
-            ViewData["CurrencyID"] = new SelectList(_context.Currencies, "CurrencyID", "CurrencyName");
+            ViewData["CurrencyID"] = new SelectList(_context.Currencies.OrderBy(b=>b.CurrencyName), "CurrencyID", "CurrencyName");
             ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes, "CustomerTypeID", "Type");
-            ViewData["ShippingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName");
-            ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName");
+            ViewData["ShippingCountryID"] = new SelectList(_context.Countries.OrderBy(b => b.CountryName), "CountryID", "CountryName");
+            ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces.OrderBy(b => b.ProvinceName), "ProvinceID", "ProvinceName");
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "Type");
             return View();
         }
@@ -264,14 +273,14 @@ namespace hager_crm.Controllers
                 ModelState.AddModelError("", "Unable to create new record.");
             }
             
-            ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", company.BillingCountryID);
-            ViewData["BillingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", company.BillingProvinceID);
+            ViewData["BillingCountryID"] = new SelectList(_context.Countries.OrderBy(b => b.CountryName), "CountryID", "CountryName", company.BillingCountryID);
+            ViewData["BillingProvinceID"] = new SelectList(_context.Provinces.OrderBy(b => b.ProvinceName), "ProvinceID", "ProvinceName", company.BillingProvinceID);
             ViewData["BillingTermID"] = new SelectList(_context.BillingTerms, "BillingTermID", "Terms", company.BillingTermID);
             ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes, "ContractorTypeID", "ContractorTypeID", company.ContractorTypeID);
-            ViewData["CurrencyID"] = new SelectList(_context.Currencies, "CurrencyID", "CurrencyID", company.CurrencyID);
+            ViewData["CurrencyID"] = new SelectList(_context.Currencies.OrderBy(b=>b.CurrencyName), "CurrencyID", "CurrencyID", company.CurrencyID);
             ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes, "CustomerTypeID", "CustomerTypeID", company.CustomerTypeID);
-            ViewData["ShippingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", company.ShippingCountryID);
-            ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", company.ShippingProvinceID);
+            ViewData["ShippingCountryID"] = new SelectList(_context.Countries.OrderBy(b => b.CountryName), "CountryID", "CountryName", company.ShippingCountryID);
+            ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces.OrderBy(b => b.ProvinceName), "ProvinceID", "ProvinceName", company.ShippingProvinceID);
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "VendorTypeID", company.VendorTypeID);
             return View(company);
         }
@@ -292,14 +301,14 @@ namespace hager_crm.Controllers
             {
                 return NotFound();
             }
-            ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", company.BillingCountryID);
-            ViewData["BillingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", company.BillingProvinceID);
+            ViewData["BillingCountryID"] = new SelectList(_context.Countries.OrderBy(b=>b.CountryName), "CountryID", "CountryName", company.BillingCountryID);
+            ViewData["BillingProvinceID"] = new SelectList(_context.Provinces.OrderBy(b => b.ProvinceName), "ProvinceID", "ProvinceName", company.BillingProvinceID);
             ViewData["BillingTermID"] = new SelectList(_context.BillingTerms, "BillingTermID", "Terms", company.BillingTermID);
             ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes, "ContractorTypeID", "Type", company.ContractorTypeID);
-            ViewData["CurrencyID"] = new SelectList(_context.Currencies, "CurrencyID", "CurrencyName", company.CurrencyID);
+            ViewData["CurrencyID"] = new SelectList(_context.Currencies.OrderBy(b=>b.CurrencyName), "CurrencyID", "CurrencyName", company.CurrencyID);
             ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes, "CustomerTypeID", "Type", company.CustomerTypeID);
-            ViewData["ShippingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", company.ShippingCountryID);
-            ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", company.ShippingProvinceID);
+            ViewData["ShippingCountryID"] = new SelectList(_context.Countries.OrderBy(b => b.CountryName), "CountryID", "CountryName", company.ShippingCountryID);
+            ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces.OrderBy(b => b.ProvinceName), "ProvinceID", "ProvinceName", company.ShippingProvinceID);
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "Type", company.VendorTypeID);
             return View(company);
         }
@@ -309,8 +318,9 @@ namespace hager_crm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, string CompanyType)
         {
+            ViewData["CompanyType"] = CompanyType;
             var companyToUpdate = await _context.Companies
                 .Include(c => c.BillingTerm)
                 .Include(c => c.Currency)
@@ -359,7 +369,7 @@ namespace hager_crm.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), new { CompanyType = CompanyType });
                 }
                 catch (DbUpdateConcurrencyException)
                 {

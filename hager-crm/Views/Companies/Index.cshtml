@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="custom-file col-md-4">
-                            <p><a href="/TemplateFile/Companies_Import_Template_V4.xlsx" download> Click to Download Template</a></p>
+                            <p><a href="../TemplateFile/Companies_Import_Template_V4.xlsx" download> Click to Download Template</a></p>
                         </div>
                     </div>
                 </div>
@@ -43,9 +43,10 @@
 }
 
 <br />
-<form asp-action="Index" method="get">
+<form asp-action="Index" method="get" asp-route-CompanyType="@ViewData["CompanyType"]">
     <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
     <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+    <input type="hidden" name="CompanyType" value="@ViewData["CompanyType"]"/>
     <div class="form-horizontal">
         <button class="btn btn-outline-primary" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
             Filter/Search
@@ -65,9 +66,22 @@
                         <label class="control-label">Search Company Name:</label>
                         @Html.TextBox("SearchString", null, new { @class = "form-control" })
                     </div>
+                    <div class="form-group col-md-8">
+                        <label>Is Active? : </label>&nbsp;&nbsp;
+
+                        &nbsp;&nbsp;&nbsp;@Html.RadioButton("Active", true, false, htmlAttributes: new { @class = "form-check-input" })
+                        <label class="form-check-label">Yes</label>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Html.RadioButton("Active", false, false, htmlAttributes: new { @class = "form-check-input" })
+                        <label class="form-check-label">No</label>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Html.RadioButton("Active", null, true, htmlAttributes: new { @class = "form-check-input" })
+                        <label class="form-check-label">Off</label>
+
+                    </div>
                     <div class="form-group col-md-4 align-self-end">
-                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" />
-                        <a asp-action="Index" class="btn btn-outline-dark">Clear</a>
+                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary"/>
+                        <a asp-action="Index" class="btn btn-outline-dark" asp-route-CompanyType="@ViewData["CompanyType"]">Clear</a>
                     </div>
                 </div>
             </div>
@@ -80,19 +94,10 @@
                     <input type="submit" name="actionButton" value="Name" class="btn btn-link" />
                 </th>
                 <th>
-                    <input type="submit" name="actionButton" value="Location" class="btn btn-link" />
+                    <input type="submit" disabled="disabled" value="Location" class="btn btn-link" />
                 </th>
                 <th>
                     <input type="submit" disabled="disabled" value="Phone" class="btn btn-link" />
-                </th>
-                <th>
-                    <input type="submit" disabled="disabled" value="Website" class="btn btn-link" />
-                </th>
-                <th>
-                    <input type="submit" name="actionButton" value="Province" class="btn btn-link" />
-                </th>
-                <th>
-                    <input type="submit" name="actionButton" value="Country" class="btn btn-link" />
                 </th>
                 <th>
                     <input type="submit" name="actionButton" value="Active" class="btn btn-link" />
@@ -103,9 +108,24 @@
                         <input type="submit" disabled="disabled" value="Type" class="btn btn-link" />
                     </th>
                 }
-                <th>
-                    <input type="submit" disabled="disabled" value="Notes" class="btn btn-link" />
-                </th>
+                else if (ViewData["CompanyType"].ToString() == "Customer")
+                {
+                    <th>
+                        <input type="submit" name="actionButton" value="Customer Type" class="btn btn-link" />
+                    </th>
+                }
+                else if (ViewData["CompanyType"].ToString() == "Vendor")
+                {
+                    <th>
+                        <input type="submit" name="actionButton" value="Vendor Type" class="btn btn-link" />
+                    </th>
+                }
+                else if (ViewData["CompanyType"].ToString() == "Contractor")
+                {
+                    <th>
+                        <input type="submit" name="actionButton" value="Contractor Type" class="btn btn-link" />
+                    </th>
+                }
                 <th></th>
             </tr>
         </thead>
@@ -117,22 +137,13 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Location)
+                        @Html.DisplayFor(modelItem => item.Location), @Html.DisplayFor(modelItem => item.BillingProvince.ProvinceName),  @Html.DisplayFor(modelItem => item.BillingCountry.CountryName)
                     </td>
 
                     <td>
                         @Html.DisplayFor(modelItem => item.Phone)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Website)
-                    </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BillingProvince.ProvinceName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BillingCountry.CountryName)
-                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Active)
                     </td>
@@ -156,21 +167,37 @@
                             }
                         </td>
                     }
+
+                    else if(ViewData["CompanyType"].ToString() == "Customer")
+                    {
                     <td>
-                        @Html.DisplayFor(modelItem => item.Notes)
+                        @Html.DisplayFor(modelItem => item.CustomerType.DisplayName)
                     </td>
+                    }
+                    else if (ViewData["CompanyType"].ToString() == "Vendor")
+                    {
                     <td>
-                        @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
-                        {
-                            <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Edit</a>
-                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Details</a>
-                            <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Delete</a>
-                        }
-                        else
-                        {
-                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Details</a>
-                        }
+                        @Html.DisplayFor(modelItem => item.VendorType.DisplayName)
                     </td>
+                    }
+                    else if (ViewData["CompanyType"].ToString() == "Contractor")
+                    {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContractorType.DisplayName)
+                    </td>
+                    }
+                <td>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                    {
+                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Details</a>
+                        <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Edit</a>
+                        <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Delete</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Details</a>
+                    }
+                </td>
                 </tr>
             }
         </tbody>

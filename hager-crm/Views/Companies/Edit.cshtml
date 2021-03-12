@@ -12,6 +12,7 @@
 <div class="row justify-content-center">
     <div class="col-lg-10 col-12">
         <form asp-action="Edit">
+            <input type="hidden" name="CompanyType" value="@ViewData["CompanyType"]" />
             <div class="row">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="CompanyID" />
@@ -159,9 +160,9 @@
                         <a asp-action="Index" asp-route-CompanyType="@ViewData["CompanyType"]">Back to @ViewData["CompanyType"] Company List</a>
                     </div>
                 </div>
-                
+
             </div>
-            
+
         </form>
     </div>
 </div>
