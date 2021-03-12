@@ -8,6 +8,7 @@
 <hr />
 
 <form asp-action="Create" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="CType" id="CType" value="@Context.Request.Query["CType"]" />
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row justify-content-center">
         <div class="col-lg-10 col-12">
@@ -57,42 +58,42 @@
                         <div class="col-md-offset-1">
                             <table>
                                 <tr>
-                                @{
-                                    int cnt = 0;
-                                    List<hager_crm.ViewModels.OptionVM> checkboxes = ViewBag.CategoryOptions;
-                                    foreach (var checkbox in checkboxes)
-                                    {
-                                        if (cnt++ % 2 == 0)
+                                    @{
+                                        int cnt = 0;
+                                        List<hager_crm.ViewModels.OptionVM> checkboxes = ViewBag.CategoryOptions;
+                                        foreach (var checkbox in checkboxes)
                                         {
-                                        @:</tr><tr>
+                                            if (cnt++ % 2 == 0)
+                                            {
+                                            @:</tr><tr>
+                                            }
+                                            @:<td>
+                                                <input type="checkbox"
+                                                       name="selectedOptions"
+                                                       value="@checkbox.ID"
+                                                       @(Html.Raw(checkbox.Assigned ? "checked=\"checked\"" : "")) />
+                                                @checkbox.DisplayText @:&nbsp;&nbsp;
+                                            @:</td>
                                         }
-                                        @:<td>
-                                            <input type="checkbox"
-                                                   name="selectedOptions"
-                                                   value="@checkbox.ID"
-                                                   @(Html.Raw(checkbox.Assigned ? "checked=\"checked\"" : "")) />
-                                            @checkbox.DisplayText @:&nbsp;&nbsp;
-                                        @:</td>
+                                    @:</tr>
                                     }
-                                @:</tr>
-                                }
-                            </table>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 <div>
-    <a asp-action="Index" asp-route-ContactType="@ViewData["ContactType"]">Back to @ViewData["ContactType"] Contact List</a>
+    <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Contact List</a>
 </div>
 
 @section Scripts {

@@ -37,17 +37,20 @@ $(document).ready(function () {
             $(item).val("");
         }
         setCookie('gridPageSize', "", 30);
-        window.location = FILTER_URL;
+        window.location = FILTER_URL + cType.indexOf(url.get('CType')) == -1 ? '' : '?' + 'CType=' + url.get('CType');
     });
 });
 
 // Construct GET query
 function constructQuery(orderBy, dir, pageNumber) {
-    var url = new URLSearchParams(window.location.search);
     orderBy = orderBy || url.get('OrderField') || "ID";
     dir = dir || url.get('OrderDir') || "ASC";
     pageNumber = pageNumber || url.get('Page') || 1;
     query = { OrderField: orderBy, OrderDir: dir, Page: pageNumber };
+
+    if (url.get('CType'))
+        query.CType = cType.indexOf(url.get('CType')) == -1 ? "All" : url.get('CType');
+
     for (var item of $(".data-filterable")) {
         $item = $(item);
         if ($item.val()) {

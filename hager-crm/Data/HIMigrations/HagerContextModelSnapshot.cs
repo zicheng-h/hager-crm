@@ -263,6 +263,11 @@ namespace hager_crm.Data.HIMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CountryAbbr")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(10);
+
                     b.Property<string>("CountryName")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -453,6 +458,11 @@ namespace hager_crm.Data.HIMigrations
 
                     b.Property<int>("CountryID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProvinceAbbr")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(10);
 
                     b.Property<string>("ProvinceName")
                         .IsRequired()

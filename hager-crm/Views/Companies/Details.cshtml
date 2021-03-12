@@ -209,7 +209,7 @@
 <div>
     @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
     {
-        <a asp-action="Edit" asp-route-id="@Model.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Edit</a> @:|
+        <a asp-action="Edit" asp-route-id="@Model.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a> @:|
     }
-    <a asp-action="Index" asp-route-CompanyType="@ViewData["CompanyType"]">Back to @ViewData["CompanyType"] Company List</a>
+<a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
 </div>

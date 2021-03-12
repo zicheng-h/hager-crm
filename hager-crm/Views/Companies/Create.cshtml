@@ -12,6 +12,7 @@
     <div class="col-lg-10 col-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="CType" id="CType" value="@Context.Request.Query["CType"]" />
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="form-group">
@@ -153,16 +154,11 @@
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-primary" />
                     </div>
-
                     <div>
-                        <a asp-action="Index" asp-route-CompanyType="@ViewData["CompanyType"]">Back to @ViewData["CompanyType"] Company List</a>
+                        <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
                     </div>
                 </div>
-
             </div>
-            
-            
-            
         </form>
     </div>
 </div>

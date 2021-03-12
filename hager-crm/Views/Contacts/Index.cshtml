@@ -1,68 +1,52 @@
 ﻿@model IEnumerable<hager_crm.Models.Contact>
+@using hager_crm.Helpers;
+@using hager_crm.Utils;
 @{
-    ViewData["Title"] = @ViewData["ContactType"] + " Contacts";
+    ViewData["Title"] = @ViewData["CType"] + " Contacts";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var gridFilter = ViewBag.gridFilter;
+    var sorts = gridFilter.OuterSorts;
 }
 
-<h1>@ViewData["ContactType"] Contact list</h1>
+<h1>@Context.Request.Query["CType"] Contact list</h1>
 
 @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
 {
     <p>
-        <a asp-action="Create" asp-route-ContactType="@ViewData["ContactType"]">Add New</a>
+        <a asp-action="Create" asp-route-CType="@Context.Request.Query["CType"]">Add New</a>
     </p>
 }
 
-<form asp-action="Index" method="get">
-    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
-    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
-    <div class="form-horizontal">
-        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
-            Filter/Search
-        </button>
-        <div class="collapse @(ViewData["Filtering"])" id="collapseFilter">
-            <div class="card card-body bg-light">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Select by Category:</label>
-                        @Html.DropDownList("CategoryID", null, "All Category", htmlAttributes: new { @class = "form-control" })
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Search Contact Name:</label>
-                        @Html.TextBox("SearchString", null, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6 align-self-end">
-                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" />
-                        <a asp-action="Index" class="btn btn-outline-dark">Clear</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+@Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
+<div class="overflow-auto">
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    <input type="submit" name="actionButton" value="Contact" class="btn btn-link" />
+                    <a class="data-sortable" data-name="ContactName">
+                        <span>Contact</span>
+                        <span class="caret
+                          @(sorts["OrderField"] == "ContactName" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
+                        </span>
+                    </a>
                 </th>
                 <th>
-                    <input type="submit" disabled="disabled" value="Email" class="btn btn-link" />
+                    Email
                 </th>
                 <th>
-                    <input type="submit" name="actionButton" value="Company" class="btn btn-link" />
+                    <a class="data-sortable" data-name="CompanyName">
+                        <span>Company</span>
+                        <span class="caret
+                        @(sorts["OrderField"] == "CompanyName" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
+                        </span>
+                    </a>
                 </th>
                 <th>
-                    <input type="submit" disabled="disabled" value="Job Title" class="btn btn-link" />
+                    Job Title
                 </th>
                 <th>
-                    <input type="submit" disabled="disabled" value="Category" class="btn btn-link" />
+                    Category
                 </th>
-                @*<th>
-                        <input type="submit" name="actionButton" value="Category" class="btn btn-link" />
-                    </th>*@
                 <th></th>
             </tr>
         </thead>
@@ -113,18 +97,61 @@
                     <td>
                         @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
                         {
-                            <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.ContactID" asp-route-ContactType="@ViewData["ContactType"]">Edit</a>
-                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.ContactID" asp-route-ContactType="@ViewData["ContactType"]">Details</a>
-                            <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.ContactID" asp-route-ContactType="@ViewData["ContactType"]">Delete</a>
+                            <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
+                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
+                            <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Delete</a>
                         }
                         else
                         {
-                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.ContactID" asp-route-ContactType="@ViewData["ContactType"]">Details</a>
+                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
                         }
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    @if (!Model.Any())
+    {
+        <h4 class="text-center">There is no data found...</h4>
+    }
+    @Html.GeneratePagination((IGridFilterPaginatable)gridFilter)
+</div>
+
+<script>
+    const FILTER_URL = "@($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}")";
+    const cType = ['All', 'Customer', 'Vendor', 'Contractor'];
+    const url = new URLSearchParams(window.location.search);
+</script>
+
+@*<form asp-action="Index" method="get">
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+    <div class="form-horizontal">
+        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+            Filter/Search
+        </button>
+        <div class="collapse @(ViewData["Filtering"])" id="collapseFilter">
+            <div class="card card-body bg-light">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Select by Category:</label>
+                        @Html.DropDownList("CategoryID", null, "All Category", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Search Contact Name:</label>
+                        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6 align-self-end">
+                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" />
+                        <a asp-action="Index" class="btn btn-outline-dark">Clear</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
     <partial name="_PagingNavBar" />
-</form>
+</form>*@

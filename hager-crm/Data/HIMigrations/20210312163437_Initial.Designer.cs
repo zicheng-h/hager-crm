@@ -9,7 +9,7 @@ using hager_crm.Data;
 namespace hager_crm.Data.HIMigrations
 {
     [DbContext(typeof(HagerContext))]
-    [Migration("20210307183653_Initial")]
+    [Migration("20210312163437_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -265,6 +265,11 @@ namespace hager_crm.Data.HIMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CountryAbbr")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(10);
+
                     b.Property<string>("CountryName")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -455,6 +460,11 @@ namespace hager_crm.Data.HIMigrations
 
                     b.Property<int>("CountryID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProvinceAbbr")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(10);
 
                     b.Property<string>("ProvinceName")
                         .IsRequired()

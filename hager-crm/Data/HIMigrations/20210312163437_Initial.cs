@@ -62,7 +62,8 @@ namespace hager_crm.Data.HIMigrations
                 {
                     CountryID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    CountryName = table.Column<string>(maxLength: 40, nullable: false)
+                    CountryName = table.Column<string>(maxLength: 40, nullable: false),
+                    CountryAbbr = table.Column<string>(maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,6 +138,7 @@ namespace hager_crm.Data.HIMigrations
                     ProvinceID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ProvinceName = table.Column<string>(maxLength: 30, nullable: false),
+                    ProvinceAbbr = table.Column<string>(maxLength: 10, nullable: false),
                     CountryID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

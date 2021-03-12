@@ -15,6 +15,7 @@
             <div class="row">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="CompanyID" />
+                <input type="hidden" name="CType" id="CType" value="@Context.Request.Query["CType"]" />
                 <div class="col-md-6 col-12">
                     <div class="form-group">
                         <label asp-for="Name" class="control-label"></label>
@@ -156,7 +157,7 @@
                         <input type="submit" value="Save" class="btn btn-primary" />
                     </div>
                     <div>
-                        <a asp-action="Index" asp-route-CompanyType="@ViewData["CompanyType"]">Back to @ViewData["CompanyType"] Company List</a>
+                        <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
                     </div>
                 </div>
                 

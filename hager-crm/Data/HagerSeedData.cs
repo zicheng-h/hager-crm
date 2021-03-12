@@ -353,7 +353,18 @@ namespace hager_crm.Data
                 context.Countries.AddRange(
                     new Country
                     {
-                        CountryName = "Canada"
+                        CountryName = "Canada",
+                        CountryAbbr = "CA"
+                    },
+                    new Country
+                    {
+                        CountryName = "United States",
+                        CountryAbbr = "US"
+                    },
+                    new Country
+                    {
+                        CountryName = "Mexico",
+                        CountryAbbr = "MX"
                     }
                 );
                 context.SaveChanges();
@@ -365,67 +376,572 @@ namespace hager_crm.Data
                     new Province
                     {
                         ProvinceName = "Ontario",
+                        ProvinceAbbr = "ON",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "Quebec",
+                        ProvinceAbbr = "QC",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "Nova Scotia",
+                        ProvinceAbbr = "NS",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "New Brunswick",
+                        ProvinceAbbr = "NB",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "Manitoba",
+                        ProvinceAbbr = "MB",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "British Columbia",
+                        ProvinceAbbr = "BC",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "Prince Edward Island",
+                        ProvinceAbbr = "PE",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "Saskatchewan",
+                        ProvinceAbbr = "SK",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "Alberta",
+                        ProvinceAbbr = "AB",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "Newfoundland and Labrador",
+                        ProvinceAbbr = "NL",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "Northwest Territories",
+                        ProvinceAbbr = "NT",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "Yukon",
+                        ProvinceAbbr = "YT",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
                     },
                     new Province
                     {
                         ProvinceName = "Nunavut",
+                        ProvinceAbbr = "NU",
                         CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Alabama",
+                        ProvinceAbbr = "AL",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Alaska",
+                        ProvinceAbbr = "AK",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Arizona",
+                        ProvinceAbbr = "AZ",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Arkansas",
+                        ProvinceAbbr = "AR",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "California",
+                        ProvinceAbbr = "CA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Colorado",
+                        ProvinceAbbr = "CO",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Connecticut",
+                        ProvinceAbbr = "CT",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Delaware",
+                        ProvinceAbbr = "DE",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Florida",
+                        ProvinceAbbr = "FL",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Georgia",
+                        ProvinceAbbr = "GA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Hawaii",
+                        ProvinceAbbr = "HI",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Idaho",
+                        ProvinceAbbr = "ID",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Illinois",
+                        ProvinceAbbr = "IL",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Indiana",
+                        ProvinceAbbr = "IN",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Iowa",
+                        ProvinceAbbr = "IA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Kansas",
+                        ProvinceAbbr = "KS",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Kentucky",
+                        ProvinceAbbr = "KY",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Louisiana",
+                        ProvinceAbbr = "LA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Maine",
+                        ProvinceAbbr = "ME",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Maryland",
+                        ProvinceAbbr = "MD",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Massachusetts",
+                        ProvinceAbbr = "MA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Michigan",
+                        ProvinceAbbr = "MI",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Minnesota",
+                        ProvinceAbbr = "MN",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Mississippi",
+                        ProvinceAbbr = "MS",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Missouri",
+                        ProvinceAbbr = "MO",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Montana",
+                        ProvinceAbbr = "MT",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Nebraska",
+                        ProvinceAbbr = "NE",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Nevada",
+                        ProvinceAbbr = "NV",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "New Hampshire",
+                        ProvinceAbbr = "NH",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "New Jersey",
+                        ProvinceAbbr = "NJ",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "New Mexico",
+                        ProvinceAbbr = "NM",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "New York",
+                        ProvinceAbbr = "NY",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "North Carolina",
+                        ProvinceAbbr = "NC",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "North Dakota",
+                        ProvinceAbbr = "ND",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Ohio",
+                        ProvinceAbbr = "OH",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Oklahoma",
+                        ProvinceAbbr = "OK",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Oregon",
+                        ProvinceAbbr = "OR",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Pennsylvania",
+                        ProvinceAbbr = "PA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Rhode Island",
+                        ProvinceAbbr = "RI",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "South Carolina",
+                        ProvinceAbbr = "SC",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "South Dakota",
+                        ProvinceAbbr = "SD",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Tennessee",
+                        ProvinceAbbr = "TN",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Texas",
+                        ProvinceAbbr = "TX",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Utah",
+                        ProvinceAbbr = "UT",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Vermont",
+                        ProvinceAbbr = "VT",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Virginia",
+                        ProvinceAbbr = "VA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Washington",
+                        ProvinceAbbr = "WA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "West Virginia",
+                        ProvinceAbbr = "WV",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Wisconsin",
+                        ProvinceAbbr = "WI",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Wyoming",
+                        ProvinceAbbr = "WY",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "United States").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Aguascalientes",
+                        ProvinceAbbr = "AG",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Baja California",
+                        ProvinceAbbr = "BC",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Baja California Sur",
+                        ProvinceAbbr = "BS",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Campeche",
+                        ProvinceAbbr = "CM",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Chiapas",
+                        ProvinceAbbr = "CS",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Chihuahua",
+                        ProvinceAbbr = "CH",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Coahuila",
+                        ProvinceAbbr = "CO",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Colima",
+                        ProvinceAbbr = "CL",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Mexico City",
+                        ProvinceAbbr = "DF",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Durango",
+                        ProvinceAbbr = "DG",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Guanajuato",
+                        ProvinceAbbr = "GT",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Guerrero",
+                        ProvinceAbbr = "GR",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Hidalgo",
+                        ProvinceAbbr = "HG",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Jalisco",
+                        ProvinceAbbr = "JA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "México",
+                        ProvinceAbbr = "EM",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Michoacán",
+                        ProvinceAbbr = "MI",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Morelos",
+                        ProvinceAbbr = "MO",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Nayarit",
+                        ProvinceAbbr = "NA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Nuevo León",
+                        ProvinceAbbr = "NL",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Oaxaca",
+                        ProvinceAbbr = "OA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Puebla",
+                        ProvinceAbbr = "PU",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Querétaro",
+                        ProvinceAbbr = "QT",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Quintana Roo",
+                        ProvinceAbbr = "QR",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "San Luis Potosí",
+                        ProvinceAbbr = "SL",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Sinaloa",
+                        ProvinceAbbr = "SI",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Sonora",
+                        ProvinceAbbr = "SO",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Tabasco",
+                        ProvinceAbbr = "TB",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Tamaulipas",
+                        ProvinceAbbr = "TM",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Tlaxcala",
+                        ProvinceAbbr = "TL",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Veracruz",
+                        ProvinceAbbr = "VE",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Yucatán",
+                        ProvinceAbbr = "YU",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
+                    },
+                    new Province
+                    {
+                        ProvinceName = "Zacatecas",
+                        ProvinceAbbr = "ZA",
+                        CountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Mexico").CountryID
                     }
                 );
                 context.SaveChanges();
@@ -531,42 +1047,6 @@ namespace hager_crm.Data
             }
             #endregion
 
-            //#region Company
-
-            //#endregion
-
-            //#region Contact
-            //if (!context.Contacts.Any())
-            //{
-            //    context.Contacts.AddRange(
-            //        new Contact // Customer Contact
-            //        {
-                        
-                        
-
-
-            //        },
-
-            //        new Contact // Vendor Contact
-            //        {
-                        
-
-
-
-            //        },
-
-            //        new Contact // Contractor Contact
-            //        {
-                        
-
-
-
-            //        }
-
-            //    );
-            //    context.SaveChanges();
-            //}
-            //#endregion
             #region Companies
             if (!context.Companies.Any())
             {

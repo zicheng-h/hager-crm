@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using System.IO;
+using hager_crm.Models.FilterConfig;
 
 namespace hager_crm.Controllers
 {
@@ -20,23 +21,23 @@ namespace hager_crm.Controllers
     public class CompaniesController : Controller
     {
         private readonly HagerContext _context;
+        private readonly GridFilter<Company> _gridFilter;
 
         public CompaniesController(HagerContext context)
         {
             _context = context;
+            _gridFilter = new GridFilter<Company>(new CompanyConfig(), 5);
         }
 
-        // GET: Companies
-        public async Task<IActionResult> Index(string SearchString, int? ProvinceID, int? CountryID,
-            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc",
-            string sortField = "Name", string CompanyType = "All")
-        {
-            PopulateDropDownListsProvince();
-            PopulateDropDownListsCountry();
-            ViewData["Filtering"] = "";
-            ViewData["CompanyType"] = CompanyType;
+        private SelectList GetCountriesSelectList(object selectedValue = null) =>
+            new SelectList(_context.Countries.OrderBy(i => i.CountryName), "CountryID", "CountryName", selectedValue);
+        private SelectList GetProvincesSelectList(object selectedValue = null) =>
+            new SelectList(_context.Provinces.OrderBy(i => i.ProvinceName), "ProvinceID", "ProvinceName", selectedValue);
 
-            IQueryable<Company> hagerContext = _context.Companies
+        // GET: Companies
+        public async Task<IActionResult> Index()
+        {
+            IQueryable<Company> query = _context.Companies
                 .Include(c => c.BillingCountry)
                 .Include(c => c.BillingProvince)
                 .Include(c => c.BillingTerm)
@@ -48,154 +49,17 @@ namespace hager_crm.Controllers
                 .Include(c => c.VendorType)
                 .OrderBy(c => c.Name);
 
-            switch (CompanyType)
-            {
-                case "All":
-                    break;
-                case "Customer":
-                    hagerContext = hagerContext.Where(c => c.Customer == true);
-                    break;
-                case "Vendor":
-                    hagerContext = hagerContext.Where(c => c.Vendor == true);
-                    break;
-                case "Contractor":
-                    hagerContext = hagerContext.Where(c => c.Contractor == true);
-                    break;
-                default:  //all other values are invalid
-                    return NotFound();
-            }
+            _gridFilter.ParseQuery(HttpContext);
+            ViewBag.gridFilter = _gridFilter;
+            ViewData["CountryID"] = GetCountriesSelectList();
+            ViewData["ProvinceID"] = GetProvincesSelectList();
 
-            //Add Filter by Province
-            if (ProvinceID.HasValue)
-            {
-                hagerContext = hagerContext.Where(b => b.BillingProvinceID == ProvinceID);
-                ViewData["Filtering"] = "show";
-            }
-
-            //Add Filter by Country
-            if (CountryID.HasValue)
-            {
-                hagerContext = hagerContext.Where(b => b.BillingCountryID == CountryID);
-                ViewData["Filtering"] = "show";
-            }
-            //Search by Company Name
-
-            if(!String.IsNullOrEmpty(SearchString))
-            {
-                hagerContext = hagerContext.Where(b => b.Name.ToUpper().Contains(SearchString.ToUpper()));
-                ViewData["Filtering"] = "show";
-            }
-            //Call for a change of filtering or sorting
-            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted so lets sort!
-            {
-                if (actionButton != "Filter")//Change of sort is requested
-                {
-                    if (actionButton == sortField) //Reverse order on same field
-                    {
-                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
-                    }
-                    sortField = actionButton;//Sort by the button clicked
-                }
-            }
-
-            //Sort by field and revert direction when click again
-            if(sortField == "Name")
-            {
-                if(sortDirection == "asc")
-                {
-                    hagerContext = hagerContext.OrderByDescending(b => b.Name);
-                }
-                else
-                {
-                    hagerContext = hagerContext.OrderBy(b => b.Name);
-                }
-            }
-            else if(sortField == "Location")
-            {
-                if (sortDirection == "asc")
-                {
-                    hagerContext = hagerContext.OrderByDescending(b => b.Location);
-                }
-                else
-                {
-                    hagerContext = hagerContext.OrderBy(b => b.Location);
-                }
-            }
-
-            else if (sortField == "Province")
-            {
-                if (sortDirection == "asc")
-                {
-                    hagerContext = hagerContext.OrderByDescending(b => b.BillingProvince);
-                }
-                else
-                {
-                    hagerContext = hagerContext.OrderBy(b => b.BillingProvince);
-                }
-            }
-
-            else if (sortField == "Country")
-            {
-                if (sortDirection == "asc")
-                {
-                    hagerContext = hagerContext.OrderByDescending(b => b.BillingCountry);
-                }
-                else
-                {
-                    hagerContext = hagerContext.OrderBy(b => b.BillingCountry);
-                }
-            }
-
-            else if (sortField == "Active")
-            {
-                if (sortDirection == "asc")
-                {
-                    hagerContext = hagerContext.OrderByDescending(b => b.Active);
-                }
-                else
-                {
-                    hagerContext = hagerContext.OrderBy(b => b.Active);
-                }
-            }
-
-            //Set sort for next time
-            ViewData["sortField"] = sortField;
-            ViewData["sortDirection"] = sortDirection;
-
-            //Paging
-
-            if (!String.IsNullOrEmpty(actionButton))
-            {
-                page = 1;
-            }
-
-            //Handle Paging
-            int pageSize;//This is the value we will pass to PaginatedList
-            if (pageSizeID.HasValue)
-            {
-                //Value selected from DDL so use and save it to Cookie
-                pageSize = pageSizeID.GetValueOrDefault();
-                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
-            }
-            else
-            {
-                //Not selected so see if it is in Cookie
-                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
-            }
-            pageSize = (pageSize == 0) ? 3 : pageSize;//Neither Selected or in Cookie so go with default
-            ViewData["pageSizeID"] =
-                new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
-
-            var pagedData = await PaginatedList<Company>.CreateAsync(hagerContext.AsNoTracking(), page ?? 1, pageSize);
-
-            return View(pagedData);
+            return View(await _gridFilter.GetFilteredData(query));
         }
 
         // GET: Companies/Details/5
-        public async Task<IActionResult> Details(int? id, string CompanyType)
+        public async Task<IActionResult> Details(int? id)
         {
-            ViewData["CompanyType"] = CompanyType;
-
             if (id == null)
             {
                 return NotFound();
@@ -222,9 +86,9 @@ namespace hager_crm.Controllers
 
         // GET: Companies/Create
         [Authorize(Roles = "Admin, Supervisor")]
-        public IActionResult Create(string CompanyType)
+        public IActionResult Create(string CType)
         {
-            ViewData["CompanyType"] = CompanyType;
+            ViewData["CType"] = CType;
             ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName");
             ViewData["BillingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName");
             ViewData["BillingTermID"] = new SelectList(_context.BillingTerms, "BillingTermID", "Terms");
@@ -243,7 +107,7 @@ namespace hager_crm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Create([Bind("CompanyID,Name,Location,CreditCheck,DateChecked,BillingTermID,CurrencyID,Phone,Website,BillingAddress1,BillingAddress2,BillingProvinceID,BillingPostalCode,BillingCountryID,ShippingAddress1,ShippingAddress2,ShippingProvinceID,ShippingPostalCode,ShippingCountryID,Customer,CustomerTypeID,Vendor,VendorTypeID,Contractor,ContractorTypeID,Active,Notes")] Company company)
+        public async Task<IActionResult> Create([Bind("CompanyID,Name,Location,CreditCheck,DateChecked,BillingTermID,CurrencyID,Phone,Website,BillingAddress1,BillingAddress2,BillingProvinceID,BillingPostalCode,BillingCountryID,ShippingAddress1,ShippingAddress2,ShippingProvinceID,ShippingPostalCode,ShippingCountryID,Customer,CustomerTypeID,Vendor,VendorTypeID,Contractor,ContractorTypeID,Active,Notes")] Company company, string CType)
         {
             try
             {
@@ -251,7 +115,7 @@ namespace hager_crm.Controllers
                 {
                     _context.Add(company);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), new { CType = CType });
                 }
             }
             catch (RetryLimitExceededException)
@@ -278,9 +142,9 @@ namespace hager_crm.Controllers
 
         // GET: Companies/Edit/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Edit(int? id, string CompanyType)
+        public async Task<IActionResult> Edit(int? id, string CType)
         {
-            ViewData["CompanyType"] = CompanyType;
+            ViewData["CType"] = CType;
 
             if (id == null)
             {
@@ -309,7 +173,7 @@ namespace hager_crm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, string CType)
         {
             var companyToUpdate = await _context.Companies
                 .Include(c => c.BillingTerm)
@@ -359,7 +223,7 @@ namespace hager_crm.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), new { CType = CType });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -387,10 +251,8 @@ namespace hager_crm.Controllers
         }
         // GET: Companies/Delete/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Delete(int? id, string CompanyType)
+        public async Task<IActionResult> Delete(int? id)
         {
-            ViewData["CompanyType"] = CompanyType;
-
             if (id == null)
             {
                 return NotFound();
@@ -419,30 +281,13 @@ namespace hager_crm.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string CType)
         {
             var company = await _context.Companies.FindAsync(id);
             _context.Companies.Remove(company);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { CType = CType });
         }
-
-        private void PopulateDropDownListsProvince(Company company = null)
-        {
-            var cQuery = from c in _context.Provinces
-                         orderby c.ProvinceName
-                         select c;
-            ViewData["ProvinceID"] = new SelectList(cQuery, "ProvinceID", "ProvinceName", company?.BillingProvinceID);
-        }
-
-        private void PopulateDropDownListsCountry(Company company = null)
-        {
-            var cQuery = from c in _context.Countries
-                         orderby c.CountryName
-                         select c;
-            ViewData["CountryID"] = new SelectList(cQuery, "CountryID", "CountryName", company?.BillingCountryID);
-        }
-
 
         [HttpPost]
         [Authorize(Roles = "Admin, Supervisor")]

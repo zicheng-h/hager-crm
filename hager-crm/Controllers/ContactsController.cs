@@ -11,6 +11,7 @@ using hager_crm.ViewModels;
 using Microsoft.EntityFrameworkCore.Storage;
 using hager_crm.Utils;
 using Microsoft.AspNetCore.Authorization;
+using hager_crm.Models.FilterConfig;
 //Filters
 
 
@@ -20,138 +21,36 @@ namespace hager_crm.Controllers
     public class ContactsController : Controller
     {
         private readonly HagerContext _context;
+        private readonly GridFilter<Contact> _gridFilter;
 
 
         public ContactsController(HagerContext context)
         {
             _context = context;
+            _gridFilter = new GridFilter<Contact>(new ContactConfig(), 5);
         }
+        private SelectList GetCategoriesSelectList(object selectedValue = null) =>
+            new SelectList(_context.Categories.OrderBy(i => i.Category), "ID", "Category", selectedValue);
 
         // GET: Contacts
-        public async Task<IActionResult> Index(string SearchString, int? CategoryID, int? page,
-            int? pageSizeID, string actionButton, string sortDirection = "asc",
-            string sortField = "Name", string ContactType = "All")
+        public async Task<IActionResult> Index()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(c => c.Category), "ID", "Category");
-            ViewData["Filtering"] = ""; // Assume not filtering!
-            ViewData["ContactType"] = ContactType;
-
-            CookieHelper.CookieSet(HttpContext, "PatientsURL", "", -1);
-
-            //All Contacts
-            IQueryable<Contact> hagerContext = _context.Contacts
+            IQueryable<Contact> query = _context.Contacts
                 .Include(c => c.Company)
                 .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
-                .OrderBy(c => c.FirstName);
+                .OrderBy(c => c.FirstName)
+                .ThenBy(c => c.LastName);
 
-            switch (ContactType)
-            {
-                case "All":
-                    break;
-                case "Customer":
-                    hagerContext = hagerContext.Where(c => c.Company.Customer == true);
-                    break;
-                case "Vendor":
-                    hagerContext = hagerContext.Where(c => c.Company.Vendor == true);
-                    break;
-                case "Contractor":
-                    hagerContext = hagerContext.Where(c => c.Company.Contractor == true);
-                    break;
-                default:  //all other values are invalid
-                    return NotFound();
-            }
+            _gridFilter.ParseQuery(HttpContext);
+            ViewBag.gridFilter = _gridFilter;
+            ViewData["CategoriesID"] = GetCategoriesSelectList();
 
-            //Filters
-            if (!String.IsNullOrEmpty(SearchString))
-            {
-                hagerContext = hagerContext.Where(c => c.LastName.ToUpper().Contains(SearchString.ToUpper())
-                                           || c.FirstName.ToUpper().Contains(SearchString.ToUpper()));
-                ViewData["Filtering"] = " show";
-            }
-            if (CategoryID.HasValue)
-            {
-                hagerContext = hagerContext.Where(c => c.ContactCategories.Any(c => c.CategoriesID == CategoryID));
-                ViewData["Filtering"] = " show";
-            }
-
-            //Before sorting by a specific direction
-            if (!String.IsNullOrEmpty(actionButton))
-            {
-                page = 1;
-                if (actionButton != "Filter")
-                {
-                    if (actionButton == sortField)
-                    {
-                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
-                    }
-                    sortField = actionButton;
-                }
-            }
-
-            if (sortField == "Contact")
-            {
-                if (sortDirection == "asc")
-                {
-                    hagerContext = hagerContext.OrderBy(c => c.LastName)
-                        .ThenBy(p => p.FirstName);
-                }
-                else
-                {
-                    hagerContext = hagerContext.OrderByDescending(c => c.LastName)
-                        .ThenBy(p => p.FirstName);
-                }
-            }
-            else if (sortField == "Company")
-            {
-                if (sortDirection == "asc")
-                {
-                    hagerContext = hagerContext.OrderByDescending(c => c.Company);
-                }
-                else
-                {
-                    hagerContext = hagerContext.OrderBy(c => c.Company);
-                }
-            }
-            //else if (sortField == "Category")
-            //{
-            //    if (sortDirection == "asc")
-            //    {
-            //        hagerContext = hagerContext.OrderByDescending(c => c.ContactCategories);
-            //    }
-            //    else
-            //    {
-            //        hagerContext = hagerContext.OrderBy(c => c.ContactCategories);
-            //    }
-            //}
-
-
-            ViewData["sortField"] = sortField;
-            ViewData["sortDirection"] = sortDirection;
-
-            //Paginating
-            int pageSize;
-            if (pageSizeID.HasValue)
-            {
-                pageSize = pageSizeID.GetValueOrDefault();
-                CookieHelper.CookieSet(HttpContext, "pageSizeValue", pageSize.ToString(), 30);
-            }
-            else
-            {
-                pageSize = Convert.ToInt32(HttpContext.Request.Cookies["pageSizeValue"]);
-            }
-            pageSize = (pageSize == 0) ? 3 : pageSize;//Neither Selected or in Cookie so go with default
-            ViewData["pageSizeID"] = new SelectList(new[] { "3", "5", "10", "20", "30", "40", "50", "100", "500" }, pageSize.ToString());
-
-            var pagedData = await PaginatedList<Contact>.CreateAsync(hagerContext.AsNoTracking(), page ?? 1, pageSize);
-
-            return View(pagedData);
+            return View(await _gridFilter.GetFilteredData(query));
         }
 
         // GET: Contacts/Details/5
-        public async Task<IActionResult> Details(int? id, string ContactType)
+        public async Task<IActionResult> Details(int? id)
         {
-            ViewData["ContactType"] = ContactType;
-
             if (id == null)
             {
                 return NotFound();
@@ -170,9 +69,8 @@ namespace hager_crm.Controllers
 
         // GET: Contacts/Create
         [Authorize(Roles = "Admin, Supervisor")]
-        public IActionResult Create(string ContactType)
+        public IActionResult Create()
         {
-            ViewData["ContactType"] = ContactType;
             ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name");
 
             var contact = new Contact();
@@ -188,7 +86,7 @@ namespace hager_crm.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Create([Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
-            string[] selectedOptions)
+            string[] selectedOptions, string CType)
         {
             try
             {
@@ -206,7 +104,7 @@ namespace hager_crm.Controllers
                 {
                     _context.Add(contact);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), new { CType = CType });
                 }
                 ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
                 return View(contact);
@@ -223,10 +121,8 @@ namespace hager_crm.Controllers
 
         // GET: Contacts/Edit/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Edit(int? id, string ContactType)
+        public async Task<IActionResult> Edit(int? id)
         {
-            ViewData["ContactType"] = ContactType;
-
             if (id == null)
             {
                 return NotFound();
@@ -251,7 +147,7 @@ namespace hager_crm.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Edit(int id, [Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
-            string[] selectedOptions)
+            string[] selectedOptions, string CType)
         {
             var contactToUpdate = await _context.Contacts
                 .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
@@ -287,7 +183,7 @@ namespace hager_crm.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { CType = CType });
             }
 
             ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
@@ -297,10 +193,8 @@ namespace hager_crm.Controllers
 
         // GET: Contacts/Delete/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Delete(int? id, string ContactType)
+        public async Task<IActionResult> Delete(int? id)
         {
-            ViewData["ContactType"] = ContactType;
-
             if (id == null)
             {
                 return NotFound();
@@ -321,12 +215,12 @@ namespace hager_crm.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string CType)
         {
             var contact = await _context.Contacts.FindAsync(id);
             _context.Contacts.Remove(contact);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { CType = CType });
         }
 
         //GET: Redirect using company name to Company's Details page

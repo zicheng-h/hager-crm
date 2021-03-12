@@ -73,7 +73,8 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ContactID" />
+        <input type="hidden" name="CType" id="CType" value="@Context.Request.Query["CType"]" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index" asp-route-ContactType="@ViewData["ContactType"]">Back to @ViewData["ContactType"] Contact List</a>
+        <a asp-action="Index" asp-route-ContactType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Contact List</a>
     </form>
 </div>
