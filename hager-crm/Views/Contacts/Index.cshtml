@@ -97,8 +97,8 @@
                     <td>
                         @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
                         {
-                            <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
                             <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
+                            <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
                             <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Delete</a>
                         }
                         else
