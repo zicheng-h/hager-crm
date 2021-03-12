@@ -8,7 +8,7 @@
     var sorts = gridFilter.OuterSorts;
 }
 
-<h1>@Context.Request.Query["CType"] Contact list</h1>
+<h1>@Context.Request.Query["CType"] @Context.Request.Query["CompanyName"] Contact list</h1>
 
 @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
 {

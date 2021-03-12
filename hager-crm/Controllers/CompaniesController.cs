@@ -515,6 +515,12 @@ namespace hager_crm.Controllers
             return RedirectToAction(nameof(Details), new { id = rightCompanyId });
         }
 
-
+        //GET: Redirect using company name to Contact's Index page with filter set for Company's name.
+        public async Task<IActionResult> Contacts(int id)
+        {
+            var company = await _context.Companies.FirstOrDefaultAsync(c => c.CompanyID == id);
+            string name = company.Name;
+            return RedirectToAction("Index", "Contacts", new { CompanyName = name });
+        }
     }
 }
