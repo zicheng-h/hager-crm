@@ -9,37 +9,85 @@
 
 @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
 {
-<div>
-    <p>
-        <a asp-action="Create" asp-route-CompanyType="@ViewData["CompanyType"]">Add New</a>
-    </p>
-    <form asp-action="InsertFromExcelCompany" asp-controller="Companies" method="post" enctype="multipart/form-data">
-        <button type="button" class="btn btn-outline-primary" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Companies</button>
-        <div class="collapse" id="collapseImport">
-            <br />
+    <div>
+        <p>
+            <a asp-action="Create" asp-route-CompanyType="@ViewData["CompanyType"]">Add New</a>
+        </p>
+        <form asp-action="InsertFromExcelCompany" asp-controller="Companies" method="post" enctype="multipart/form-data">
+            <button type="button" class="btn btn-outline-primary" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Companies</button>
+            <div class="collapse" id="collapseImport">
+                <div class="form-horizontal">
+                    <div class="card card-body bg-light">
+                        <div class="row">
+                            <div class="custom-file col-md-4">
+                                <label for="theExcel" class="custom-file-label">
+                                    Upload Excel File:
+                                </label>
+                                <input id="theExcel" name="theExcel" type="file" class="custom-file-input">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="submit" value="Upload Data" class="btn btn-primary" />
+                                </div>
+                            </div>
+                            <div class="custom-file col-md-4">
+                                <p><a href="/TemplateFile/Companies_Import_Template_V4.xlsx" download> Click to Download Template</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <button type="button"
+                class="btn btn-outline-primary mt-2 mb-2"
+                data-toggle="collapse"
+                data-target="#collapseMerge"
+                aria-expanded="false" 
+                aria-controls="collapseMerge">
+            Merge Companies
+        </button>
+        <div class="collapse" id="collapseMerge">
             <div class="form-horizontal">
                 <div class="card card-body bg-light">
                     <div class="row">
-                        <div class="custom-file col-md-4">
-                            <label for="theExcel" class="custom-file-label">
-                                <i class="fa fa-cloud-upload"></i> Upload Excel File:
+                        <div class="form-group col-md-4">
+                            <label for="leftMerge">
+                                From Company
                             </label>
-                            <input id="theExcel" name="theExcel" type="file" class="custom-file-input">
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <input type="submit" value="Upload Data" class="btn btn-primary" />
+                            <div class="input-group mb-3">
+                                <input id="leftMerge" name="leftMerge" class="form-control" disabled data-id="">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-danger merge-company-remove">
+                                        &times;
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="custom-file col-md-4">
-                            <p><a href="/TemplateFile/Companies_Import_Template_V4.xlsx" download> Click to Download Template</a></p>
+                        <div class="form-group col-md-4">
+                            <label for="rightMerge">
+                                To Company
+                            </label>
+                            <div class="input-group mb-3">
+                                <input id="rightMerge" name="rightMerge" class="form-control" disabled data-id="">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-danger merge-company-remove">
+                                        &times;
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="submit" value="Compare Companies" class="btn btn-primary merge-company-compare" />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
-</div>
+    </div>
 }
 
 <br />
@@ -86,9 +134,6 @@
                     <input type="submit" disabled="disabled" value="Phone" class="btn btn-link" />
                 </th>
                 <th>
-                    <input type="submit" disabled="disabled" value="Website" class="btn btn-link" />
-                </th>
-                <th>
                     <input type="submit" name="actionButton" value="Province" class="btn btn-link" />
                 </th>
                 <th>
@@ -103,9 +148,6 @@
                         <input type="submit" disabled="disabled" value="Type" class="btn btn-link" />
                     </th>
                 }
-                <th>
-                    <input type="submit" disabled="disabled" value="Notes" class="btn btn-link" />
-                </th>
                 <th></th>
             </tr>
         </thead>
@@ -124,10 +166,6 @@
                         @Html.DisplayFor(modelItem => item.Phone)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Website)
-                    </td>
-
-                    <td>
                         @Html.DisplayFor(modelItem => item.BillingProvince.ProvinceName)
                     </td>
                     <td>
@@ -140,30 +178,28 @@
                     {
                         <td>
                             @{
-                                if (item.Customer == true)
+                                if (item.Customer)
                                 {
-                                    <a class="btn btn-warning">Customer</a>
+                                    <a class="btn btn-warning text-white">Customer</a>
                                 }
-                                if (item.Vendor == true)
+                                if (item.Vendor)
                                 {
-                                    <a class="btn btn-success">Vendor</a>
+                                    <a class="btn btn-success text-white">Vendor</a>
                                 }
-                                if (item.Contractor == true)
+                                if (item.Contractor)
                                 {
-                                    <a class="btn btn-info">Contractor</a>
+                                    <a class="btn btn-info text-white">Contractor</a>
                                 }
 
                             }
                         </td>
                     }
                     <td>
-                        @Html.DisplayFor(modelItem => item.Notes)
-                    </td>
-                    <td>
                         @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
                         {
                             <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Edit</a>
                             <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Details</a>
+                            <button class="btn btn-sm btn-outline-secondary w-100 merge-company-select" data-id="@item.CompanyID" data-companyname="@item.Name">Select for merge</button>
                             <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.CompanyID" asp-route-CompanyType="@ViewData["CompanyType"]">Delete</a>
                         }
                         else
@@ -187,4 +223,74 @@
         $(this).prev('label').text(file);
     });
 
+    $(document).ready(function () {
+        let locationUrl = "@Url.Action("Compare", "Companies", new { leftCompanyId = "leftId", rightCompanyId = "rightId", })";
+        let $leftMerge = $('#leftMerge');
+        let $rightMerge = $('#rightMerge');
+
+        $leftMerge.data('id', localStorage.getItem($leftMerge.attr('id')+'Id') || '');
+        $leftMerge.val(localStorage.getItem($leftMerge.attr('id')+'Name') || '');
+        $rightMerge.data('id', localStorage.getItem($rightMerge.attr('id') + 'Id') || '');
+        $rightMerge.val(localStorage.getItem($rightMerge.attr('id') + 'Name') || '');
+
+        function AddMerge(ev) {
+            ev.preventDefault();
+            let target = ev.target;
+            let $merge = null;
+            let id = $(target).data('id');
+            let companyName = $(target).data('companyname');
+            if ($leftMerge.data('id') == id || $rightMerge.data('id') == id) {
+                alert('This company already selected');
+                return;
+            }
+            if (!$leftMerge.data('id')) {
+                alert('Selected from company!');
+                $merge = $leftMerge;
+
+            } else if (!$rightMerge.data('id')) {
+                $merge = $rightMerge;
+                alert('Selected to company!');
+            } else {
+                alert('Companies to merge have been chosen. Please edit selected companies before proceed... ');
+                return;
+            }
+            
+            $merge.data('id', id);
+            $merge.val(companyName);
+            localStorage.setItem($merge.attr('id') + 'Id', id);
+            localStorage.setItem($merge.attr('id') + 'Name', companyName);
+        }
+
+        function RemoveMerge(ev) {
+            ev.preventDefault();
+            let $merge = $(ev.target).parent().siblings('input');
+            $merge.data('id', '');
+            $merge.val('');
+            localStorage.setItem($merge.attr('id') + 'Id', '');
+            localStorage.setItem($merge.attr('id') + 'Name', '');
+        }
+
+        function ResetSelection() {
+            for (let $merge of [$leftMerge, $rightMerge]) {
+                $merge.data('id', '');
+                $merge.val('');
+                localStorage.setItem($merge.attr('id') + 'Id', '');
+                localStorage.setItem($merge.attr('id') + 'Name', '');
+            }
+        }
+
+        function RelocateToCompare() {
+            if (!$leftMerge.data('id') || !$rightMerge.data('id')) {
+                alert("Please select both companies before proceed...");
+                return;
+            }
+            let url = locationUrl.replace('leftId', $leftMerge.data('id')).replace('rightId', $rightMerge.data('id'));
+            ResetSelection();
+            window.location = url;
+        }
+
+        $('.merge-company-select').click(AddMerge);
+        $('.merge-company-remove').click(RemoveMerge);
+        $('.merge-company-compare').click(RelocateToCompare);
+    });
 </script>

@@ -1,0 +1,479 @@
+﻿@model hager_crm.Models.Company[]
+
+@{
+    ViewData["Title"] = "Compare Companies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Compare</h1>
+
+<h4>Company</h4>
+<button class="btn btn-primary" onclick="$('form.compare input[type=\'checkbox\'][name=\'fieldsToMerge\']').attr('checked', true);">Select All</button>
+<button class="btn btn-secondary ml-2" onclick="$('form.compare input[type=\'checkbox\'][name=\'fieldsToMerge\']').attr('checked', false);">Unselect All</button>
+<hr />
+<div class="row justify-content-center">
+    <div class="col-lg-10 col-12">
+        <form class="compare" asp-action="Merge" asp-route-leftCompanyId="@Model[0].CompanyID" asp-route-rightCompanyId="@Model[1].CompanyID">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().Name" class="control-label"></label>
+                            <input asp-for="First().Name" class="form-control" disabled />
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Name" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().Name" class="control-label"></label>
+                            <input asp-for="Last().Name" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().Location" class="control-label"></label>
+                            <input asp-for="First().Location" class="form-control" disabled />
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Location" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().Location" class="control-label"></label>
+                            <input asp-for="Last().Location" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <label class="control-label mr-4">From: </label>
+                                <input class="form-check-input" asp-for="First().CreditCheck" disabled /> @Html.DisplayNameFor(model => model[0].CreditCheck)
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="CreditCheck" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <label class="control-label mr-4">To: </label>
+                                <input class="form-check-input" asp-for="Last().CreditCheck" disabled /> @Html.DisplayNameFor(model => model[1].CreditCheck)
+                            </label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().DateChecked" class="control-label"></label>
+                            <input asp-for="First().DateChecked" class="form-control" disabled />
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="DateChecked" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().DateChecked" class="control-label"></label>
+                            <input asp-for="Last().DateChecked" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().BillingTermID" class="control-label"></label>
+                            <select asp-for="First().BillingTermID" class="form-control" asp-items="@ViewBag.LeftMerge["BillingTermID"]" disabled></select>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="BillingTermID" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().BillingTermID" class="control-label"></label>
+                            <select asp-for="Last().BillingTermID" class="form-control" asp-items="@ViewBag.RightMerge["BillingTermID"]" disabled></select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().CurrencyID" class="control-label"></label>
+                            <select asp-for="First().CurrencyID" class="form-control" asp-items="@ViewBag.LeftMerge["CurrencyID"]" disabled></select>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="CurrencyID" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().CurrencyID" class="control-label"></label>
+                            <select asp-for="Last().CurrencyID" class="form-control" asp-items="@ViewBag.RightMerge["CurrencyID"]" disabled></select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().Phone" class="control-label"></label>
+                            <input asp-for="First().Phone" class="form-control" disabled />
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Phone" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().Phone" class="control-label"></label>
+                            <input asp-for="Last().Phone" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().Website" class="control-label"></label>
+                            <input asp-for="First().Website" class="form-control" disabled />
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Website" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().Website" class="control-label"></label>
+                            <input asp-for="Last().Website" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label class="control-label">Billing Address</label>
+                            <input value="@(Model[0].BillingAddress1 + " " + @Model[0].BillingAddress2)" class="form-control" disabled />
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="BillingAddress" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label class="control-label">Billing Address</label>
+                            <input value="@(Model[1].BillingAddress1 + " " + @Model[1].BillingAddress2)" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().BillingProvinceID" class="control-label"></label>
+                            <select asp-for="First().BillingProvinceID" class="form-control" asp-items="@ViewBag.LeftMerge["BillingProvinceID"]" disabled></select>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="BillingProvinceID" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().BillingProvinceID" class="control-label"></label>
+                            <select asp-for="Last().BillingProvinceID" class="form-control" asp-items="@ViewBag.RightMerge["BillingProvinceID"]" disabled></select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().BillingPostalCode" class="control-label"></label>
+                            <input asp-for="First().BillingPostalCode" class="form-control" disabled />
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="BillingPostalCode" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().BillingPostalCode" class="control-label"></label>
+                            <input asp-for="Last().BillingPostalCode" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().BillingCountryID" class="control-label"></label>
+                            <select asp-for="First().BillingCountryID" class="form-control" asp-items="@ViewBag.LeftMerge["BillingCountryID"]" disabled></select>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="BillingProvinceID" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().BillingCountryID" class="control-label"></label>
+                            <select asp-for="Last().BillingCountryID" class="form-control" asp-items="@ViewBag.RightMerge["BillingCountryID"]" disabled></select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label class="control-label">Shipping Address</label>
+                            <input value="@(Model[0].ShippingAddress1 + " " + @Model[0].ShippingAddress2)" class="form-control" disabled />
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="ShippingAddress" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label class="control-label">Shipping Address</label>
+                            <input value="@(Model[1].ShippingAddress1 + " " + @Model[1].ShippingAddress2)" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().ShippingProvinceID" class="control-label"></label>
+                            <select asp-for="First().ShippingProvinceID" class="form-control" asp-items="@ViewBag.LeftMerge["ShippingProvinceID"]" disabled></select>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="BillingProvinceID" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().ShippingProvinceID" class="control-label"></label>
+                            <select asp-for="Last().ShippingProvinceID" class="form-control" asp-items="@ViewBag.RightMerge["ShippingProvinceID"]" disabled></select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().ShippingPostalCode" class="control-label"></label>
+                            <input asp-for="First().ShippingPostalCode" class="form-control" disabled />
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="ShippingPostalCode" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().ShippingPostalCode" class="control-label"></label>
+                            <input asp-for="Last().ShippingPostalCode" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().ShippingCountryID" class="control-label"></label>
+                            <select asp-for="First().ShippingCountryID" class="form-control" asp-items="@ViewBag.LeftMerge["ShippingCountryID"]" disabled></select>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="BillingProvinceID" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().ShippingCountryID" class="control-label"></label>
+                            <select asp-for="Last().ShippingCountryID" class="form-control" asp-items="@ViewBag.RightMerge["ShippingCountryID"]" disabled></select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <label class="control-label mr-4">From: </label>
+                                <input class="form-check-input" asp-for="First().Customer" disabled /> @Html.DisplayNameFor(model => model[0].Customer)
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Customer" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <label class="control-label mr-4">To: </label>
+                                <input class="form-check-input" asp-for="Last().Customer" disabled /> @Html.DisplayNameFor(model => model[1].Customer)
+                            </label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().CustomerTypeID" class="control-label"></label>
+                            <select asp-for="First().CustomerTypeID" class="form-control" asp-items="@ViewBag.LeftMerge["CustomerTypeID"]" disabled></select>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="CustomerTypeID" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().CustomerTypeID" class="control-label"></label>
+                            <select asp-for="Last().CustomerTypeID" class="form-control" asp-items="@ViewBag.RightMerge["CustomerTypeID"]" disabled></select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <label class="control-label mr-4">From: </label>
+                                <input class="form-check-input" asp-for="First().Vendor" disabled /> @Html.DisplayNameFor(model => model[0].Vendor)
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Vendor" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <label class="control-label mr-4">To: </label>
+                                <input class="form-check-input" asp-for="Last().Vendor" disabled /> @Html.DisplayNameFor(model => model[1].Vendor)
+                            </label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().VendorTypeID" class="control-label"></label>
+                            <select asp-for="First().VendorTypeID" class="form-control" asp-items="@ViewBag.LeftMerge["VendorTypeID"]" disabled></select>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="VendorTypeID" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().VendorTypeID" class="control-label"></label>
+                            <select asp-for="Last().VendorTypeID" class="form-control" asp-items="@ViewBag.RightMerge["VendorTypeID"]" disabled></select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <label class="control-label mr-4">From: </label>
+                                <input class="form-check-input" asp-for="First().Contractor" disabled /> @Html.DisplayNameFor(model => model[0].Contractor)
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Contractor" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <label class="control-label mr-4">To: </label>
+                                <input class="form-check-input" asp-for="Last().Contractor" disabled /> @Html.DisplayNameFor(model => model[1].Contractor)
+                            </label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().ContractorTypeID" class="control-label"></label>
+                            <select asp-for="First().ContractorTypeID" class="form-control" asp-items="@ViewBag.LeftMerge["ContractorTypeID"]" disabled></select>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="ContractorTypeID" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().ContractorTypeID" class="control-label"></label>
+                            <select asp-for="Last().ContractorTypeID" class="form-control" asp-items="@ViewBag.RightMerge["ContractorTypeID"]" disabled></select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <label class="control-label mr-4">From: </label>
+                                <input class="form-check-input" asp-for="First().Active" disabled /> @Html.DisplayNameFor(model => model[0].Active)
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Active" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <label class="control-label mr-4">To: </label>
+                                <input class="form-check-input" asp-for="Last().Active" disabled /> @Html.DisplayNameFor(model => model[1].Active)
+                            </label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">From: </label>
+                            <label asp-for="First().Notes" class="control-label"></label>
+                            <input asp-for="First().Notes" class="form-control" disabled />
+                        </div>
+                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Notes" /> Merge
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-5 form-group">
+                            <label class="control-label">To: </label>
+                            <label asp-for="Last().Notes" class="control-label"></label>
+                            <input asp-for="Last().Notes" class="form-control" disabled />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <input type="submit" value="Merge" class="btn btn-primary" />
+                    </div>
+                    <div>
+                        <a asp-action="Index" asp-route-CompanyType="All">Back to All Company List</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
