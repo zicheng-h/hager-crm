@@ -96,7 +96,7 @@
 
 @Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
 <div class="overflow-auto">
-    <table class="table">
+    <table class="table text-center">
         <thead>
             <tr>
                 <th>
@@ -121,12 +121,38 @@
                         </span>
                     </a>
                 </th>
-                @if (Context.Request.Query["CType"] == "All")
-                {
-                    <th>
-                        <input type="submit" disabled="disabled" value="Type" class="btn btn-link" />
-                    </th>
-                }
+                <th>
+                    @switch (Context.Request.Query["CType"])
+                    {
+                        case "All":
+                            @:Type
+                            break;
+                        case "Customer":
+                            <a class="data-sortable" data-name="CustomerType">
+                                <span>Type</span>
+                                <span class="caret
+                                @(sorts["OrderField"] == "CustomerType" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
+                                </span>
+                            </a>
+                            break;
+                        case "Vendor":
+                            <a class="data-sortable" data-name="VendorType">
+                                <span>Type</span>
+                                <span class="caret
+                                @(sorts["OrderField"] == "VendorType" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
+                                </span>
+                            </a>
+                            break;
+                        case "Contractor":
+                            <a class="data-sortable" data-name="ContractorType">
+                                <span>Type</span>
+                                <span class="caret
+                                @(sorts["OrderField"] == "ContractorType" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
+                                </span>
+                            </a>
+                            break;
+                    }
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -134,22 +160,22 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Location), @Html.DisplayFor(modelItem => item.BillingProvince.ProvinceAbbr), @Html.DisplayFor(modelItem => item.BillingCountry.CountryAbbr)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Phone)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Active)
                     </td>
-                    @if (Context.Request.Query["CType"] == "All")
-                    {
-                        <td>
-                            @{
+                    <td class="align-middle">
+                        @switch (Context.Request.Query["CType"])
+                        {
+                            case "All":
                                 if (item.Customer)
                                 {
                                     <a class="btn btn-warning text-white">Customer</a>
@@ -162,21 +188,31 @@
                                 {
                                     <a class="btn btn-info text-white">Contractor</a>
                                 }
-
-                            }
-                        </td>
-                    }
-                <td>
+                                break;
+                            case "Customer":
+                                @Html.DisplayFor(modelItem => item.CustomerType.DisplayName)
+                                break;
+                            case "Vendor":
+                                @Html.DisplayFor(modelItem => item.VendorType.DisplayName)
+                                break;
+                            case "Contractor":
+                                @Html.DisplayFor(modelItem => item.ContractorType.DisplayName)
+                                break;
+                        }
+                    </td>
+                <td class="align-middle">
                     @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
                     {
-                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
-                        <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
-                        <button class="btn btn-sm btn-outline-secondary w-100 merge-company-select" data-id="@item.CompanyID" data-companyname="@item.Name">Select for merge</button>
-                        <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Delete</a>
+                        <div class="row w-100">
+                            <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
+                            <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
+                            <button class="btn btn-sm btn-outline-secondary col-12 col-xl-6 merge-company-select" data-id="@item.CompanyID" data-companyname="@item.Name">Select for merge</button>
+                            <a class="btn btn-sm btn-outline-danger col-12 col-xl-6" asp-action="Delete" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Delete</a>
+                        </div>
                     }
                     else
                     {
-                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
+                        <a class="btn btn-sm btn-outline-dark w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
                     }
                 </td>
                 </tr>

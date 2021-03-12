@@ -97,6 +97,30 @@ namespace hager_crm.Models.FilterConfig
                                 ((string) p == "All")
                             ))
                     }
+                },
+                {
+                    "CustomerType", new ConfigAction<Company>
+                    {
+                        OnSort = (p, q) =>
+                            (string) p == "DESC" ? q.OrderByDescending(i => i.CustomerType.Type) :
+                                q.OrderBy(i => i.CustomerType.Type)
+                    }
+                },
+                {
+                    "VendorType", new ConfigAction<Company>
+                    {
+                        OnSort = (p, q) =>
+                            (string) p == "DESC" ? q.OrderByDescending(i => i.VendorType.Type) :
+                                q.OrderBy(i => i.VendorType.Type)
+                    }
+                },
+                {
+                    "ContractorType", new ConfigAction<Company>
+                    {
+                        OnSort = (p, q) =>
+                            (string) p == "DESC" ? q.OrderByDescending(i => i.ContractorType.Type) :
+                                q.OrderBy(i => i.ContractorType.Type)
+                    }
                 }
             };
         }
