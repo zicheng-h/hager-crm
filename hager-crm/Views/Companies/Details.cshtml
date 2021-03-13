@@ -30,52 +30,52 @@
         <div role="tabpanel" class="tab-pane fade ml-3 show active" id="basic">
             <br />
             <dl class="row">
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 my-2">
                     @Html.DisplayNameFor(model => model.Name)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9 my-2">
                     @Html.DisplayFor(model => model.Name)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 my-2">
                     @Html.DisplayNameFor(model => model.Location)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9 my-2">
                     @Html.DisplayFor(model => model.Location)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 my-2">
                     @Html.DisplayNameFor(model => model.CreditCheck)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9 my-2">
                     @Html.DisplayFor(model => model.CreditCheck)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 my-2">
                     @Html.DisplayNameFor(model => model.DateChecked)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9 my-2">
                     @Html.DisplayFor(model => model.DateChecked)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 my-2">
                     @Html.DisplayNameFor(model => model.BillingTerm)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9 my-2">
                     @Html.DisplayFor(model => model.BillingTerm.Terms)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 my-2">
                     @Html.DisplayNameFor(model => model.Currency)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9 my-2">
                     @Html.DisplayFor(model => model.Currency.CurrencyName)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 my-2">
                     @Html.DisplayNameFor(model => model.Phone)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9 my-2">
                     @Html.DisplayFor(model => model.Phone)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 my-2">
                     @Html.DisplayNameFor(model => model.Website)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9 my-2">
                     @Html.DisplayFor(model => model.Website)
                 </dd>
             </dl>
@@ -85,65 +85,33 @@
         <div role="tabpanel" class="tab-pane fade ml-3" id="moreinfo" aria-labelledby="moreinfo-tab">
             <br />
             <dl class="row">
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.BillingAddress1)
+                <dt class="col-sm-3 mt-2 mb-0">
+                    Billing Address
                 </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.BillingAddress1)
+                <dd class="col-sm-9 mt-2 mb-0">
+                    @Html.DisplayFor(model => model.BillingAddress1)@if (!String.IsNullOrEmpty(Model.BillingAddress2))
+                    {
+                        Html.DisplayFor(model => model.BillingAddress2);
+                    }, @Html.DisplayFor(model => model.BillingPostalCode)
                 </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.BillingAddress2)
+                <dt class="col-sm-3 mt-0 mb-2">
                 </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.BillingAddress2)
+                <dd class="col-sm-9 mt-0 mb-2">
+                    @Html.DisplayFor(model => model.BillingProvince.ProvinceName), @Html.DisplayFor(model => model.BillingCountry.CountryName)
                 </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.BillingProvince)
+                <dt class="col-sm-3 mt-2 mb-0">
+                    Shipping Address
                 </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.BillingProvince.ProvinceName)
+                <dd class="col-sm-9 mt-2 mb-0">
+                    @Html.DisplayFor(model => model.ShippingAddress1)@if (!String.IsNullOrEmpty(Model.ShippingAddress2))
+                    {
+                        Html.DisplayFor(model => model.ShippingAddress2);
+                    }, @Html.DisplayFor(model => model.ShippingPostalCode)
                 </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.BillingPostalCode)
+                <dt class="col-sm-3 mt-0 mb-2">
                 </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.BillingPostalCode)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.BillingCountry)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.BillingCountry.CountryName)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.ShippingAddress1)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ShippingAddress1)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.ShippingAddress2)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ShippingAddress2)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.ShippingProvince)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ShippingProvince.ProvinceName)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.ShippingPostalCode)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ShippingPostalCode)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.ShippingCountry)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ShippingCountry.CountryName)
+                <dd class="col-sm-9 mt-0 mb-2">
+                    @Html.DisplayFor(model => model.ShippingProvince.ProvinceName), @Html.DisplayFor(model => model.ShippingCountry.CountryName)
                 </dd>
             </dl>
 
@@ -152,52 +120,43 @@
         <div role="tabpanel" class="tab-pane fade ml-3" id="emergencycontact" aria-labelledby="moreinfo-tab">
             <br />
             <dl class="row">
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Customer)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Customer)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.CustomerType)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.CustomerType.Type)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Vendor)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Vendor)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.VendorType)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.VendorType.Type)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Contractor)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Contractor)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.ContractorType)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ContractorType.Type)
-                </dd>
-                <dt class="col-sm-2">
+                @if (Model.Customer)
+                {
+                    <dt class="col-sm-3 my-2">
+                        @Html.DisplayNameFor(model => model.CustomerType)
+                    </dt>
+                    <dd class="col-sm-9 my-2">
+                        @Html.DisplayFor(model => model.CustomerType.Type)
+                    </dd>
+                }
+                @if (Model.Vendor)
+                {
+                    <dt class="col-sm-3 my-2">
+                        @Html.DisplayNameFor(model => model.VendorType)
+                    </dt>
+                    <dd class="col-sm-9 my-2">
+                        @Html.DisplayFor(model => model.VendorType.Type)
+                    </dd>
+                }
+                @if (Model.Contractor)
+                {
+                    <dt class="col-sm-3 my-2">
+                        @Html.DisplayNameFor(model => model.ContractorType)
+                    </dt>
+                    <dd class="col-sm-9 my-2">
+                        @Html.DisplayFor(model => model.ContractorType.Type)
+                    </dd>
+                }
+                <dt class="col-sm-3 my-2">
                     @Html.DisplayNameFor(model => model.Active)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9 my-2">
                     @Html.DisplayFor(model => model.Active)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 my-2">
                     @Html.DisplayNameFor(model => model.Notes)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9 my-2">
                     @Html.DisplayFor(model => model.Notes)
                 </dd>
             </dl>
