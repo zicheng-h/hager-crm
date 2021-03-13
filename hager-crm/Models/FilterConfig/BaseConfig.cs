@@ -111,6 +111,50 @@ namespace hager_crm.Models.FilterConfig
             return result;
         }
     }
-    
-    
+
+    public class CountryDropdownFilterRule : BaseFilterRule
+    {
+        public override string GetHtml(ViewContext context)
+        {
+            if (!(context.ViewData[FieldName] is SelectList options))
+                throw new ArgumentException($"There is no select list found for field name: {FieldName}");
+
+            var inputValue = "";
+            if (context.HttpContext.Request.Query.TryGetValue(FieldName, out var values))
+                inputValue = values.FirstOrDefault() ?? "";
+
+            var result = $@"
+            <select id=""{FieldName + "FilterRule"}"" class=""dropdown-country form-control data-filterable col-6"" data-name=""{FieldName}"">
+                <option value="""">Select {DisplayName}</option>
+                {string.Join('\n',
+                options.Select(i =>
+                    $@"<option value=""{i.Value}"" {(i.Value == inputValue ? "selected" : "")}>{i.Text}</option>"))}
+            </select>";
+            return result;
+        }
+    }
+
+    public class ProvinceDropdownFilterRule : BaseFilterRule
+    {
+        public override string GetHtml(ViewContext context)
+        {
+            if (!(context.ViewData[FieldName] is SelectList options))
+                throw new ArgumentException($"There is no select list found for field name: {FieldName}");
+
+            var inputValue = "";
+            if (context.HttpContext.Request.Query.TryGetValue(FieldName, out var values))
+                inputValue = values.FirstOrDefault() ?? "";
+
+            var result = $@"
+            <select id=""{FieldName + "FilterRule"}"" class=""dropdown-province form-control data-filterable col-6"" data-name=""{FieldName}"">
+                <option value="""">Select {DisplayName}</option>
+                {string.Join('\n',
+                options.Items.Cast<SelectListItem>().Select(i =>
+                    $@"<option value=""{i.Value.Split(';')[0]}"" data-country=""{i.Value.Split(';')[1]}"" {(i.Value == inputValue ? "selected" : "")}>{i.Text}</option>"))}
+            </select>";
+            return result;
+        }
+    }
+
+
 }
