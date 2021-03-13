@@ -32,6 +32,11 @@ namespace hager_crm.Models.FilterConfig
                 {
                     DisplayName = "Category",
                     FieldName = "CategoriesID",
+                },
+                new RadioboxFilterRule
+                {
+                    DisplayName = "Is Active",
+                    FieldName = "Active",
                 }
             };
         }
@@ -89,6 +94,15 @@ namespace hager_crm.Models.FilterConfig
                                         .Select(c => c.CategoriesID)
                                         .Contains(res)
                                     ) : q
+                    }
+                },
+                {
+                    "Active", new ConfigAction<Contact>
+                    {
+                        OnSort = (p, q) => q,
+                        OnFilter = (p, q) =>
+                            q.Where(i => ((string) p != "true" && (string) p != "false") ||
+                                ((string) p == "true" ? i.Active : !i.Active))
                     }
                 },
                 {
