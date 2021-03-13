@@ -212,3 +212,10 @@
         <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
     </form>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#@Context.Request.Query["CType"].ToString().ToLower()CompaniesSubmenu").attr("style", "color: #862633; background: #fff;");
+    })
+</script>

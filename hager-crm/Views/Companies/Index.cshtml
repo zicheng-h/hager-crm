@@ -197,21 +197,21 @@ else Html.GenerateFiltering((IGridFilterFilterable)gridFilter);
                                 break;
                         }
                     </td>
-                <td class="align-middle">
-                    @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
-                    {
-                        <div class="row w-100">
-                            <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
-                            <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
-                            <button class="btn btn-sm btn-outline-secondary col-12 col-xl-6 merge-company-select" data-id="@item.CompanyID" data-companyname="@item.Name">Select for merge</button>
-                            <a class="btn btn-sm btn-outline-danger col-12 col-xl-6" asp-action="Delete" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Delete</a>
-                        </div>
-                    }
-                    else
-                    {
-                        <a class="btn btn-sm btn-outline-dark w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
-                    }
-                </td>
+                    <td class="align-middle">
+                        @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                        {
+                            <div class="row w-100">
+                                <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
+                                <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
+                                <button class="btn btn-sm btn-outline-secondary col-12 col-xl-6 merge-company-select" data-id="@item.CompanyID" data-companyname="@item.Name">Select for merge</button>
+                                <a class="btn btn-sm btn-outline-danger col-12 col-xl-6" asp-action="Delete" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Delete</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="btn btn-sm btn-outline-dark w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
@@ -223,12 +223,15 @@ else Html.GenerateFiltering((IGridFilterFilterable)gridFilter);
     @Html.GeneratePagination((IGridFilterPaginatable)gridFilter)
 </div>
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     const FILTER_URL = "@($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}")";
     const cType = ['All', 'Customer', 'Vendor', 'Contractor'];
     const url = new URLSearchParams(window.location.search);
+    $(document).ready(function () {
+        $("#@Context.Request.Query["CType"].ToString().ToLower()CompaniesSubmenu").attr("style", "color: #862633; background: #fff;");
+    })
 </script>
-<script src="~/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
     $('#theExcel').change(function () {
         var i = $(this).prev('label').clone();

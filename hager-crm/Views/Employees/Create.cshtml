@@ -10,7 +10,7 @@
 <h1>Create</h1>
 
 <h4>Employee</h4>
-<hr/>
+<hr />
 <div class="row justify-content-center">
     <div class="col-lg-10 col-12">
         <form asp-action="Create">
@@ -81,35 +81,35 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label asp-for="DOB" class="control-label"></label>
-                        <input asp-for="DOB" class="form-control"/>
+                        <input asp-for="DOB" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label asp-for="Wage" class="control-label"></label>
-                        <input asp-for="Wage" class="form-control"/>
+                        <input asp-for="Wage" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label asp-for="Expense" class="control-label"></label>
-                        <input asp-for="Expense" class="form-control"/>
+                        <input asp-for="Expense" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label asp-for="DateJoined" class="control-label"></label>
-                        <input asp-for="DateJoined" class="form-control"/>
+                        <input asp-for="DateJoined" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label asp-for="KeyFob" class="control-label"></label>
-                        <input asp-for="KeyFob" class="form-control"/>
+                        <input asp-for="KeyFob" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label asp-for="EmergencyContactName" class="control-label"></label>
-                        <input asp-for="EmergencyContactName" class="form-control"/>
+                        <input asp-for="EmergencyContactName" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label asp-for="EmergencyContactPhone" class="control-label"></label>
-                        <input asp-for="EmergencyContactPhone" class="form-control"/>
+                        <input asp-for="EmergencyContactPhone" class="form-control" />
                     </div>
                     <div class="form-group form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Active"/> @Html.DisplayNameFor(model => model.Active)
+                            <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
                         </label>
                     </div>
                     <div class="form-group">
@@ -119,8 +119,8 @@
                     <div class="form-group form-check">
                         <label class="form-check-label" data-toggle="collapse" data-target="#userAccountSetup" aria-expanded="false" aria-controls="userAccountSetup">
                             @* Weird kludge from aspnet *@
-                            <input id="isUser" type="checkbox" class="form-check-input" value="true" name="isUser"/> Is User
-                            <input type="hidden" value="false" name="isUser"/>
+                            <input id="isUser" type="checkbox" class="form-check-input" value="true" name="isUser" /> Is User
+                            <input type="hidden" value="false" name="isUser" />
                         </label>
                     </div>
                     <div id="userAccountSetup" class="form-group collapse">
@@ -128,11 +128,11 @@
                             <h5 class="card-title">Setup User Account</h5>
                             <div class="form-group">
                                 <label class="control-label">Password</label>
-                                <input type="password" name="userPassword" class="form-control" autocomplete="new-password"/>
+                                <input type="password" name="userPassword" class="form-control" autocomplete="new-password" />
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Repeat Password</label>
-                                <input type="password" name="userRepeatPassword" class="form-control" autocomplete="new-password"/>
+                                <input type="password" name="userRepeatPassword" class="form-control" autocomplete="new-password" />
                             </div>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary"/>
+                        <input type="submit" value="Create" class="btn btn-primary" />
                     </div>
                     <div>
                         <a asp-action="Index">Back to List</a>
@@ -155,3 +155,10 @@
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#employeesManagementSubmenu").attr("style", "color: #862633; background: #fff;");
+    })
+</script>

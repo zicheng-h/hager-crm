@@ -10,7 +10,7 @@
 <div>
     <h4>Company: @Model.Name</h4>
     <hr />
- </div>
+</div>
 <div>
     <ul class="nav nav-pills" id="myTabs" role="tablist">
         <li class="nav-item">
@@ -211,5 +211,12 @@
     {
         <a asp-action="Edit" asp-route-id="@Model.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a> @:|
     }
-<a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
+    <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#@Context.Request.Query["CType"].ToString().ToLower()CompaniesSubmenu").attr("style", "color: #862633; background: #fff;");
+    })
+</script>

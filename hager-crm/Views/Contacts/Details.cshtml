@@ -83,7 +83,8 @@
                 </dt>
                 <dd class="col-sm-10">
                     <a asp-action="CompanyDetails" asp-route-id="@Model.CompanyID">
-                    @Html.DisplayFor(model => model.Company.Name)</a>
+                        @Html.DisplayFor(model => model.Company.Name)
+                    </a>
                 </dd>
             </dl>
         </div>
@@ -98,3 +99,10 @@
         <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Contact List</a>
     </div>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#@Context.Request.Query["CType"].ToString().ToLower()ContactsSubmenu").attr("style", "color: #862633; background: #fff;");
+    })
+</script>

@@ -477,3 +477,10 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#allCompaniesSubmenu").attr("style", "color: #862633; background: #fff;");
+    })
+</script>

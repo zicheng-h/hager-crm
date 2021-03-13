@@ -130,11 +130,11 @@
                             <h5 class="card-title"> @(!Model.IsUser? "Setup" : "Update password for ") User Account</h5>
                             <div class="form-group">
                                 <label class="control-label">Password</label>
-                                <input type="password" name="userPassword" class="form-control" autocomplete="new-password"/>
+                                <input type="password" name="userPassword" class="form-control" autocomplete="new-password" />
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Repeat Password</label>
-                                <input type="password" name="userRepeatPassword" class="form-control" autocomplete="new-password"/>
+                                <input type="password" name="userRepeatPassword" class="form-control" autocomplete="new-password" />
                             </div>
                         </div>
                     </div>
@@ -155,6 +155,12 @@
     </div>
 </div>
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#employeesManagementSubmenu").attr("style", "color: #862633; background: #fff;");
+    })
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

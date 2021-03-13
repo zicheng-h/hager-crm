@@ -103,11 +103,11 @@
                     <td class="align-middle">
                         @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
                         {
-                        <div class="row w-100">
-                            <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Details" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
-                            <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Edit" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
-                            <a class="btn btn-sm btn-outline-danger col-12" asp-action="Delete" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Delete</a>
-                        </div>
+                            <div class="row w-100">
+                                <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Details" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
+                                <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Edit" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
+                                <a class="btn btn-sm btn-outline-danger col-12" asp-action="Delete" asp-route-id="@item.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Delete</a>
+                            </div>
                         }
                         else
                         {
@@ -126,42 +126,12 @@
     @Html.GeneratePagination((IGridFilterPaginatable)gridFilter)
 </div>
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     const FILTER_URL = "@($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}")";
     const cType = ['All', 'Customer', 'Vendor', 'Contractor'];
     const url = new URLSearchParams(window.location.search);
+    $(document).ready(function () {
+        $("#@Context.Request.Query["CType"].ToString().ToLower()ContactsSubmenu").attr("style", "color: #862633; background: #fff;");
+    })
 </script>
-
-
-@*<form asp-action="Index" method="get">
-        <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
-        <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
-        <div class="form-horizontal">
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
-                Filter/Search
-            </button>
-            <div class="collapse @(ViewData["Filtering"])" id="collapseFilter">
-                <div class="card card-body bg-light">
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label class="control-label">Select by Category:</label>
-                            @Html.DropDownList("CategoryID", null, "All Category", htmlAttributes: new { @class = "form-control" })
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="control-label">Search Contact Name:</label>
-                            @Html.TextBox("SearchString", null, new { @class = "form-control" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6 align-self-end">
-                            <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" />
-                            <a asp-action="Index" class="btn btn-outline-dark">Clear</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <partial name="_PagingNavBar" />
-    </form>*@

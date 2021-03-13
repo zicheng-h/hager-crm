@@ -192,10 +192,17 @@
         </div>
 
     </div>
-    <hr/>
+    <hr />
     <form asp-action="Delete">
         <input type="hidden" asp-for="EmployeeID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#employeesManagementSubmenu").attr("style", "color: #862633; background: #fff;");
+    })
+</script>

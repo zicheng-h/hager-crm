@@ -32,11 +32,11 @@
                     break;
                 case 'lookup-tab': $('#lookup-panel').load('/Configuration/GetLookups');
                     break;
-                default: 
+                default:
                     break;
             }
         }
-        $('.nav-link').click( function () {
+        $('.nav-link').click(function () {
             var activeTab = $(this).attr("id");
             refreshTab(activeTab);
         });
@@ -46,3 +46,10 @@
         }
     </script>
 }
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#configurationAdminSubmenu").attr("style", "color: #862633; background: #fff;");
+    })
+</script>
