@@ -10,88 +10,107 @@
 }
 
 <h1>@Context.Request.Query["CType"] Company List</h1>
+<hr />
+
+@if (ViewBag.DuplicationCompany != null)
+{
+    Tuple<Company, Company> companyTuple = ViewBag.DuplicationCompany;
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Duplication alert!</h4>
+        <p style="color: inherit;">
+            Company "@(companyTuple.Item2.Name)" and Company "@(companyTuple.Item1.Name)" look similar,
+            would you like to compare them and merge?
+        </p>
+        <hr>
+        <a href="@Url.Action("Compare", "Companies", new { leftCompanyId = companyTuple.Item2.CompanyID, rightCompanyId = companyTuple.Item1.CompanyID, })"
+           class="btn btn-outline-warning alert-warning">Compare</a>
+        <button type="button" class="btn btn-outline-secondary alert-warning" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">Dismiss</span>
+        </button>
+    </div>
+}
 
 
 @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
 {
-<div>
     <div>
-        <a class="btn btn-outline-primary mt-2 mb-2" asp-action="Create" asp-route-CType="@Context.Request.Query["CType"]">Add New</a>
-        <button type="button" class="btn btn-outline-primary" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Companies</button>
-        <button type="button"
-                class="btn btn-outline-primary mt-2 mb-2"
-                data-toggle="collapse"
-                data-target="#collapseMerge"
-                aria-expanded="false"
-                aria-controls="collapseMerge">
-            Merge Companies
-        </button>
-    </div>
+        <div>
+            <a class="btn btn-outline-primary mt-2 mb-2" asp-action="Create" asp-route-CType="@Context.Request.Query["CType"]">Add New</a>
+            <button type="button" class="btn btn-outline-primary" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Companies</button>
+            <button type="button"
+                    class="btn btn-outline-primary mt-2 mb-2"
+                    data-toggle="collapse"
+                    data-target="#collapseMerge"
+                    aria-expanded="false"
+                    aria-controls="collapseMerge">
+                Merge Companies
+            </button>
+        </div>
 
-    <form class="collapse" id="collapseImport" asp-action="InsertFromExcelCompany" asp-controller="Companies" method="post" enctype="multipart/form-data">
-        <div class="form-horizontal">
-            <div class="card card-body bg-light">
-                <div class="row">
-                    <div class="custom-file col-md-4">
-                        <label for="theExcel" class="custom-file-label">
-                            Upload Excel File:
-                        </label>
-                        <input id="theExcel" name="theExcel" type="file" class="custom-file-input">
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <input type="submit" value="Upload Data" class="btn btn-primary" />
+        <form class="collapse" id="collapseImport" asp-action="InsertFromExcelCompany" asp-controller="Companies" method="post" enctype="multipart/form-data">
+            <div class="form-horizontal">
+                <div class="card card-body bg-light">
+                    <div class="row">
+                        <div class="custom-file col-md-4">
+                            <label for="theExcel" class="custom-file-label">
+                                Upload Excel File:
+                            </label>
+                            <input id="theExcel" name="theExcel" type="file" class="custom-file-input">
                         </div>
-                    </div>
-                    <div class="custom-file col-md-4">
-                        <p><a href="/TemplateFile/Companies_Import_Template_V4.xlsx" download> Click to Download Template</a></p>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="submit" value="Upload Data" class="btn btn-primary" />
+                            </div>
+                        </div>
+                        <div class="custom-file col-md-4">
+                            <p><a href="/TemplateFile/Companies_Import_Template_V4.xlsx" download> Click to Download Template</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <div class="collapse" id="collapseMerge">
-        <div class="form-horizontal">
-            <div class="card card-body bg-light">
-                <div class="row">
-                    <div class="form-group col-md-4">
-                        <label for="leftMerge">
-                            From Company
-                        </label>
-                        <div class="input-group mb-3">
-                            <input id="leftMerge" name="leftMerge" class="form-control" disabled data-id="">
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-danger merge-company-remove">
-                                    &times;
-                                </button>
+        </form>
+        <div class="collapse" id="collapseMerge">
+            <div class="form-horizontal">
+                <div class="card card-body bg-light">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="leftMerge">
+                                From Company
+                            </label>
+                            <div class="input-group mb-3">
+                                <input id="leftMerge" name="leftMerge" class="form-control" disabled data-id="">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-danger merge-company-remove">
+                                        &times;
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="rightMerge">
+                                To Company
+                            </label>
+                            <div class="input-group mb-3">
+                                <input id="rightMerge" name="rightMerge" class="form-control" disabled data-id="">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-danger merge-company-remove">
+                                        &times;
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group col-md-4">
-                        <label for="rightMerge">
-                            To Company
-                        </label>
-                        <div class="input-group mb-3">
-                            <input id="rightMerge" name="rightMerge" class="form-control" disabled data-id="">
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-danger merge-company-remove">
-                                    &times;
-                                </button>
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="submit" value="Compare Companies" class="btn btn-primary merge-company-compare" />
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <input type="submit" value="Compare Companies" class="btn btn-primary merge-company-compare" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 }
 
 @Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
@@ -166,19 +185,19 @@
                             }
                         </td>
                     }
-                <td>
-                    @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
-                    {
-                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
-                        <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
-                        <button class="btn btn-sm btn-outline-secondary w-100 merge-company-select" data-id="@item.CompanyID" data-companyname="@item.Name">Select for merge</button>
-                        <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Delete</a>
-                    }
-                    else
-                    {
-                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
-                    }
-                </td>
+                    <td>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                        {
+                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
+                            <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
+                            <button class="btn btn-sm btn-outline-secondary w-100 merge-company-select" data-id="@item.CompanyID" data-companyname="@item.Name">Select for merge</button>
+                            <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Delete</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
@@ -234,7 +253,7 @@
                 alert('Companies to merge have been chosen. Please edit selected companies before proceed... ');
                 return;
             }
-            
+
             $merge.data('id', id);
             $merge.val(companyName);
             localStorage.setItem($merge.attr('id') + 'Id', id);
