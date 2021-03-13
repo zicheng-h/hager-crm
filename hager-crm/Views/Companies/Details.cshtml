@@ -85,17 +85,12 @@
         <div role="tabpanel" class="tab-pane fade ml-3" id="moreinfo" aria-labelledby="moreinfo-tab">
             <br />
             <dl class="row">
+                
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.BillingAddress1)
+                    Full Billing Address
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.BillingAddress1)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.BillingAddress2)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.BillingAddress2)
+                    @Html.DisplayNameFor(model => model.BillingAddress1), @Html.DisplayNameFor(model => model.BillingAddress2)
                 </dd>
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.BillingProvince)
@@ -116,16 +111,10 @@
                     @Html.DisplayFor(model => model.BillingCountry.CountryName)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.ShippingAddress1)
+                    Full Shipping Addres
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ShippingAddress1)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.ShippingAddress2)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ShippingAddress2)
+                    @Html.DisplayNameFor(model => model.ShippingAddress1), @Html.DisplayNameFor(model => model.ShippingAddress2)
                 </dd>
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.ShippingProvince)

@@ -101,15 +101,16 @@ namespace hager_crm.Models
         [DisplayFormat(DataFormatString = "{0:####:#####}", ApplyFormatInEditMode = false)]
         public Int32? KeyFob { get; set; }
 
-        [Display(Name = "Emergency Contact Name")]
+        [Display(Name = "Contact Name")]
         [StringLength(50, ErrorMessage = "Please enter a Emergency Contact Name with less than 50 characters.")]
         public string EmergencyContactName { get; set; }
 
-        [Display(Name = "Emergency Contact Phone")]
+        [Display(Name = "Contact Phone")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a proper Phone number with 10 digits without spaces.")]
         [DataType(DataType.PhoneNumber)]
         [DisplayFormat(DataFormatString = "{0:(###) ###-####}", ApplyFormatInEditMode = false)]
         public Int64? EmergencyContactPhone { get; set; }
+
         public bool Active { get; set; }
 
         [StringLength(200, ErrorMessage = "No more than 200 characters for notes.")]
