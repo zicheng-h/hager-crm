@@ -34,6 +34,25 @@ namespace hager_crm.Controllers
         private SelectList GetProvincesSelectList(object selectedValue = null) =>
             new SelectList(_context.Provinces.OrderBy(i => i.ProvinceName), "ProvinceID", "ProvinceName", selectedValue);
 
+        private Tuple<Company, Company> GetSimillarCompanies(List<Company> companies)
+        {
+            var pairs = new List<Tuple<Company, Company>>();
+            for(int i = 0; i < companies.Count; i++)
+            {
+                for (int j = i + 1; j < companies.Count; j++)
+                    pairs.Add(new Tuple<Company, Company>(companies[i], companies[j]));
+            }
+
+            foreach(var pair in pairs)
+            {
+                if (LevenshteinDistance.Compute(pair.Item1.Name, pair.Item2.Name) <= 2)
+                    return pair;
+            }
+
+            return null;
+        }
+
+
         // GET: Companies
         public async Task<IActionResult> Index()
         {
@@ -53,7 +72,7 @@ namespace hager_crm.Controllers
             ViewBag.gridFilter = _gridFilter;
             ViewData["CountryID"] = GetCountriesSelectList();
             ViewData["ProvinceID"] = GetProvincesSelectList();
-
+            ViewData["DuplicationCompany"] = GetSimillarCompanies(await _context.Companies.OrderBy(c => c.CompanyID).Take(20).ToListAsync());
             return View(await _gridFilter.GetFilteredData(query));
         }
 

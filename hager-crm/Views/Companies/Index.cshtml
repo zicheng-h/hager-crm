@@ -10,6 +10,25 @@
 }
 
 <h1>@Context.Request.Query["CType"] Company List</h1>
+<hr />
+
+@if (ViewBag.DuplicationCompany != null)
+{
+    Tuple<Company, Company> companyTuple = ViewBag.DuplicationCompany;
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Duplication alert!</h4>
+        <p style="color: inherit;">
+            Company "@(companyTuple.Item2.Name)" and Company "@(companyTuple.Item1.Name)" look similar,
+            would you like to compare them and merge?
+        </p>
+        <hr>
+        <a href="@Url.Action("Compare", "Companies", new { leftCompanyId = companyTuple.Item2.CompanyID, rightCompanyId = companyTuple.Item1.CompanyID, })"
+           class="btn btn-outline-warning alert-warning">Compare</a>
+        <button type="button" class="btn btn-outline-secondary alert-warning" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">Dismiss</span>
+        </button>
+    </div>
+}
 
 
 @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
