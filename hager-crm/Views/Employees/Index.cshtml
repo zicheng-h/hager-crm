@@ -13,15 +13,13 @@
 
 @if (User.IsInRole("Admin"))
 {
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <form asp-action="InsertFromExcel" asp-controller="Employees" method="post" enctype="multipart/form-data">
+<div>
+    <a class="btn btn-outline-primary my-2" asp-action="Create">Create New</a>
+    <button type="button" class="btn btn-outline-primary my-2" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Employees</button>
+    @Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
+    <form class="my-3" asp-action="InsertFromExcel" asp-controller="Employees" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="All" class="text-danger"></div>
-        <button type="button" class="btn btn-outline-primary" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Employees</button>
-
         <div class="collapse" id="collapseImport">
-            <br />
             <div class="form-horizontal">
                 <div class="card card-body bg-light">
                     <div class="row">
@@ -44,76 +42,82 @@
             </div>
         </div>
     </form>
+</div>
 }
+else Html.GenerateFiltering((IGridFilterFilterable)gridFilter);
 
-@Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
 <div class="overflow-auto">
-    <table class="table">
+    <table class="table text-center">
         <thead>
-        <tr>
-            <th>
-                <a class="data-sortable" data-name="FullName">
-                    <span>@Html.DisplayNameFor(model => model.FullName)</span>
-                    <span class="caret
-                          @(sorts["OrderField"] == "FullName" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
-                    </span>
-                </a>
-            </th>
-            <th>
-                <a class="data-sortable" data-name="JobPositionID">
-                    <span>@Html.DisplayNameFor(model => model.JobPosition)</span>
-                    <span class="caret
-                        @(sorts["OrderField"] == "JobPositionID" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
-                    </span>
-                </a>
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkPhone)
-            </th>
-            <th>
-                <a class="data-sortable" data-name="Email">
-                    <span>@Html.DisplayNameFor(model => model.Email)</span>
-                    <span class="caret
-                        @(sorts["OrderField"] == "Email" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
-                    </span>
-                </a>
-            </th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model)
-        {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.JobPosition.Position)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WorkPhone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
+                <th>
+                    <a class="data-sortable" data-name="FullName">
+                        <span>@Html.DisplayNameFor(model => model.FullName)</span>
+                        <span class="caret
+                          @(sorts["OrderField"] == "FullName" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
+                        </span>
+                    </a>
+                </th>
+                <th>
+                    <a class="data-sortable" data-name="JobPositionID">
+                        <span>@Html.DisplayNameFor(model => model.JobPosition)</span>
+                        <span class="caret
+                        @(sorts["OrderField"] == "JobPositionID" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
+                        </span>
+                    </a>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkPhone)
+                </th>
+                <th>
+                    <a class="data-sortable" data-name="Email">
+                        <span>@Html.DisplayNameFor(model => model.Email)</span>
+                        <span class="caret
+                        @(sorts["OrderField"] == "Email" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
+                        </span>
+                    </a>
+                </th>
                 @if (User.IsInRole("Admin"))
                 {
-                    <td>
-                        <a class="btn btn-sm btn-light w-100" asp-action="Details" asp-route-id="@item.EmployeeID">Details</a>
-                        <a class="btn btn-sm btn-light w-100" asp-action="Edit" asp-route-id="@item.EmployeeID">Edit</a>
-                        <a class="btn btn-sm btn-outline-danger w-100" asp-action="Delete" asp-route-id="@item.EmployeeID">Delete</a>
-                    </td>
+                    <th></th>
                 }
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.JobPosition.Position)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.WorkPhone)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td class="align-middle">
+                            <div class="row w-100">
+                                <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Details" asp-route-id="@item.EmployeeID">Details</a>
+                                <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Edit" asp-route-id="@item.EmployeeID">Edit</a>
+                                <a class="btn btn-sm btn-outline-danger col-12" asp-action="Delete" asp-route-id="@item.EmployeeID">Delete</a>
+                            </div>
+                        </td>
+                    }
+                </tr>
+            }
         </tbody>
     </table>
     @if (!Model.Any())
     {
         <h4 class="text-center">There is no data found...</h4>
     }
-    @Html.GeneratePagination((IGridFilterPaginatable) gridFilter)
+    @Html.GeneratePagination((IGridFilterPaginatable)gridFilter)
 </div>
 
 <script>

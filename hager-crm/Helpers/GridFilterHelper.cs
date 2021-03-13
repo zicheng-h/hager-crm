@@ -93,15 +93,15 @@ namespace hager_crm.Helpers
         public static HtmlString GenerateFiltering(this IHtmlHelper html, IGridFilterFilterable gridFilter)
         {
             var result = $@"
-                <div class=""grid-filter-panel mt-4 mb-4"">
-                    <button class=""btn btn-primary mb-2"" 
-                            type=""button"" 
-                            data-toggle=""collapse"" 
-                            data-target=""#filter-data-collapse"" 
-                            aria-expanded=""false"" 
-                            aria-controls=""filter-data-collapse"">
-                        Open Filtering Menu
-                    </button>
+                <button class=""btn btn-outline-primary my-2"" 
+                        type=""button"" 
+                        data-toggle=""collapse"" 
+                        data-target=""#filter-data-collapse"" 
+                        aria-expanded=""false"" 
+                        aria-controls=""filter-data-collapse"">
+                    Open Filtering Menu
+                </button>
+                <div class=""grid-filter-panel my-3"">
                     <div id=""filter-data-collapse"" class=""card card-body collapse"">
                         <div class=""row"">
                             {string.Join('\n', gridFilter.FilterRules.Select(html.GetFilteringOption))}
