@@ -21,7 +21,7 @@ namespace hager_crm.Models.FilterConfig
                     FieldName = "Email",
                     FieldType = "email"
                 },
-                // It is stupid to filter by number imho
+                // It is stupid to filter by integer imho
                 // new InputFilterRule
                 // {
                 //     DisplayName = "Cell Phone",

@@ -1,5 +1,18 @@
 ﻿// jQuery scripts to work with filters
 $(document).ready(function () {
+
+    $('select.dropdown-country').change(function () {
+        let countryId = $(this).find('option:selected').val();
+        $('select.dropdown-province option:selected').prop("selected", false);
+        $('select.dropdown-province option').each(function () {
+            let $item = $(this);
+            if (countryId == '' || $item.val() == '' || $item.data('country') == countryId)
+                $item.show();
+            else
+                $item.hide();
+        });
+    });
+
     $(".data-sortable").on("click", function () {
         var self = $(this);
         var caret = self.find('span.caret');

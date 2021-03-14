@@ -32,7 +32,13 @@ namespace hager_crm.Controllers
         private SelectList GetCountriesSelectList(object selectedValue = null) =>
             new SelectList(_context.Countries.OrderBy(i => i.CountryName), "CountryID", "CountryName", selectedValue);
         private SelectList GetProvincesSelectList(object selectedValue = null) =>
-            new SelectList(_context.Provinces.OrderBy(i => i.ProvinceName), "ProvinceID", "ProvinceName", selectedValue);
+            new SelectList(_context.Provinces.OrderBy(i => i.ProvinceName).Select(i => 
+            new SelectListItem(
+                i.ProvinceName, 
+                $"{i.ProvinceID};{i.CountryID}", 
+                selectedValue != null && i.ProvinceID.ToString() == selectedValue.ToString())
+            )
+            .ToList());
 
         private Tuple<Company, Company> GetSimillarCompanies(List<Company> companies)
         {

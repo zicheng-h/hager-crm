@@ -16,12 +16,12 @@ namespace hager_crm.Models.FilterConfig
                     FieldName = "Name",
                     FieldType = "text"
                 },
-                new DropdownFilterRule
+                new ProvinceDropdownFilterRule
                 {
                     DisplayName = "Province",
                     FieldName = "ProvinceID",
                 },
-                new DropdownFilterRule
+                new CountryDropdownFilterRule
                 {
                     DisplayName = "Country",
                     FieldName = "CountryID",
