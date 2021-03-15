@@ -125,6 +125,7 @@ else Html.GenerateFiltering((IGridFilterFilterable)gridFilter);
 </script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
+    const url = new URLSearchParams(window.location.search);
     $('#theExcel').change(function () {
         var i = $(this).prev('label').clone();
         var file = $('#theExcel')[0].files[0].name;
