@@ -38,9 +38,9 @@ namespace hager_crm.Controllers
         private SelectList GetProvincesSelectList(object selectedValue = null) =>
             new SelectList(_context.Provinces.OrderBy(i => i.ProvinceName), "ProvinceID", "ProvinceName", selectedValue);
         private SelectList GetEmploymentTypesSelectList(object selectedValue = null) =>
-            new SelectList(_context.EmploymentTypes.OrderBy(i => i.Type), "EmploymentTypeID", "Type", selectedValue);
+            new SelectList(_context.EmploymentTypes.OrderBy(i => i.Order), "EmploymentTypeID", "Type", selectedValue);
         private SelectList GetPositionsSelectList(object selectedValue = null) =>
-            new SelectList(_context.JobPositions.OrderBy(i => i.Position), "JobPositionID", "Position", selectedValue);
+            new SelectList(_context.JobPositions.OrderBy(i => i.Order), "JobPositionID", "Position", selectedValue);
 
         // GET: Employees
         public async Task<IActionResult> Index()

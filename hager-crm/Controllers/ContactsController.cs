@@ -30,7 +30,7 @@ namespace hager_crm.Controllers
             _gridFilter = new GridFilter<Contact>(new ContactConfig(), 5);
         }
         private SelectList GetCategoriesSelectList(object selectedValue = null) =>
-            new SelectList(_context.Categories.OrderBy(i => i.Category), "ID", "Category", selectedValue);
+            new SelectList(_context.Categories.OrderBy(i => i.Order), "ID", "Category", selectedValue);
 
         // GET: Contacts
         public async Task<IActionResult> Index()

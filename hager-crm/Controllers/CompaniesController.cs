@@ -116,13 +116,13 @@ namespace hager_crm.Controllers
             ViewData["CType"] = CType;
             ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName");
             ViewData["BillingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName");
-            ViewData["BillingTermID"] = new SelectList(_context.BillingTerms, "BillingTermID", "Terms");
-            ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes, "ContractorTypeID", "Type");
-            ViewData["CurrencyID"] = new SelectList(_context.Currencies, "CurrencyID", "CurrencyName");
-            ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes, "CustomerTypeID", "Type");
+            ViewData["BillingTermID"] = new SelectList(_context.BillingTerms.OrderBy(t => t.Order), "BillingTermID", "Terms");
+            ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes.OrderBy(t => t.Order), "ContractorTypeID", "Type");
+            ViewData["CurrencyID"] = new SelectList(_context.Currencies.OrderBy(t => t.Order), "CurrencyID", "CurrencyName");
+            ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes.OrderBy(t => t.Order), "CustomerTypeID", "Type");
             ViewData["ShippingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName");
             ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName");
-            ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "Type");
+            ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes.OrderBy(t => t.Order), "VendorTypeID", "Type");
             return View();
         }
 
