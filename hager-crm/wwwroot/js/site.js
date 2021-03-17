@@ -5,7 +5,7 @@ $(document).ready(function () {
         let countryId = $(this).find('option:selected').val();
         let dropdownSelector = 'select.dropdown-province.' + $(this).data('link');
         $(dropdownSelector + ' option:selected')
-            .each(function() {$(this).data('country') != countryId && $(this).prop("selected", false)});
+            .each(function() {$(this).data('country') != countryId && countryId != '' && $(this).prop("selected", false)});
         $(dropdownSelector + ' option').each(function () {
             let $item = $(this);
             if (countryId == '' || $item.val() == '' || $item.data('country') == countryId)
