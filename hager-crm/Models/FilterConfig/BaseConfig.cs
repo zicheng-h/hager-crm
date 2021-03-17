@@ -124,7 +124,8 @@ namespace hager_crm.Models.FilterConfig
                 inputValue = values.FirstOrDefault() ?? "";
 
             var result = $@"
-            <select id=""{FieldName + "FilterRule"}"" class=""dropdown-country form-control data-filterable col-6"" data-name=""{FieldName}"">
+            <select id=""{FieldName + "FilterRule"}"" class=""dropdown-country form-control data-filterable col-6"" 
+                data-name=""{FieldName}"" data-link=""link-filter-province"">
                 <option value="""">Select {DisplayName}</option>
                 {string.Join('\n',
                 options.Select(i =>
@@ -146,11 +147,13 @@ namespace hager_crm.Models.FilterConfig
                 inputValue = values.FirstOrDefault() ?? "";
 
             var result = $@"
-            <select id=""{FieldName + "FilterRule"}"" class=""dropdown-province form-control data-filterable col-6"" data-name=""{FieldName}"">
+            <select id=""{FieldName + "FilterRule"}"" class=""dropdown-province link-filter-province form-control data-filterable col-6 "" 
+                data-name=""{FieldName}"">
                 <option value="""">Select {DisplayName}</option>
                 {string.Join('\n',
                 options.Items.Cast<SelectListItem>().Select(i =>
-                    $@"<option value=""{i.Value.Split(';')[0]}"" data-country=""{i.Value.Split(';')[1]}"" {(i.Value == inputValue ? "selected" : "")}>{i.Text}</option>"))}
+                    $@"<option value=""{i.Value.Split(';')[0]}"" 
+                        data-country=""{i.Value.Split(';')[1]}"" {(i.Value.Split(';')[0] == inputValue ? "selected" : "")}>{i.Text}</option>"))}
             </select>";
             return result;
         }

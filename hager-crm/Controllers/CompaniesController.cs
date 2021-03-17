@@ -30,9 +30,9 @@ namespace hager_crm.Controllers
         }
 
         private SelectList GetCountriesSelectList(object selectedValue = null) =>
-            new SelectList(_context.Countries.OrderBy(i => i.CountryName), "CountryID", "CountryName", selectedValue);
+            new SelectList(_context.Countries.ToList(), "CountryID", "CountryName", selectedValue);
         private SelectList GetProvincesSelectList(object selectedValue = null) =>
-            new SelectList(_context.Provinces.OrderBy(i => i.ProvinceName).Select(i => 
+            new SelectList(_context.Provinces.Select(i => 
             new SelectListItem(
                 i.ProvinceName, 
                 $"{i.ProvinceID};{i.CountryID}", 
@@ -115,13 +115,13 @@ namespace hager_crm.Controllers
         {
             ViewData["CType"] = CType;
             ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName");
-            ViewData["BillingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName");
+            ViewData["BillingProvinceID"] = GetProvincesSelectList();
             ViewData["BillingTermID"] = new SelectList(_context.BillingTerms.OrderBy(t => t.Order), "BillingTermID", "Terms");
             ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes.OrderBy(t => t.Order), "ContractorTypeID", "Type");
             ViewData["CurrencyID"] = new SelectList(_context.Currencies.OrderBy(t => t.Order), "CurrencyID", "CurrencyName");
             ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes.OrderBy(t => t.Order), "CustomerTypeID", "Type");
             ViewData["ShippingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName");
-            ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName");
+            ViewData["ShippingProvinceID"] = GetProvincesSelectList();
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes.OrderBy(t => t.Order), "VendorTypeID", "Type");
             return View();
         }
@@ -154,13 +154,14 @@ namespace hager_crm.Controllers
             }
             
             ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", company.BillingCountryID);
-            ViewData["BillingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", company.BillingProvinceID);
+            ViewData["BillingProvinceID"] = GetProvincesSelectList(company.BillingProvinceID);
             ViewData["BillingTermID"] = new SelectList(_context.BillingTerms, "BillingTermID", "Terms", company.BillingTermID);
             ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes, "ContractorTypeID", "ContractorTypeID", company.ContractorTypeID);
             ViewData["CurrencyID"] = new SelectList(_context.Currencies, "CurrencyID", "CurrencyID", company.CurrencyID);
             ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes, "CustomerTypeID", "CustomerTypeID", company.CustomerTypeID);
             ViewData["ShippingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", company.ShippingCountryID);
             ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", company.ShippingProvinceID);
+            ViewData["ShippingProvinceID"] = GetProvincesSelectList(company.ShippingProvinceID);
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "VendorTypeID", company.VendorTypeID);
             return View(company);
         }
@@ -182,13 +183,13 @@ namespace hager_crm.Controllers
                 return NotFound();
             }
             ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", company.BillingCountryID);
-            ViewData["BillingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", company.BillingProvinceID);
+            ViewData["BillingProvinceID"] = GetProvincesSelectList(company.BillingProvinceID);
             ViewData["BillingTermID"] = new SelectList(_context.BillingTerms, "BillingTermID", "Terms", company.BillingTermID);
             ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes, "ContractorTypeID", "Type", company.ContractorTypeID);
             ViewData["CurrencyID"] = new SelectList(_context.Currencies, "CurrencyID", "CurrencyName", company.CurrencyID);
             ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes, "CustomerTypeID", "Type", company.CustomerTypeID);
             ViewData["ShippingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", company.ShippingCountryID);
-            ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", company.ShippingProvinceID);
+            ViewData["ShippingProvinceID"] = GetProvincesSelectList(company.ShippingProvinceID);
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "Type", company.VendorTypeID);
             return View(company);
         }
@@ -264,13 +265,13 @@ namespace hager_crm.Controllers
                 
             }
             ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", companyToUpdate.BillingCountryID);
-            ViewData["BillingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", companyToUpdate.BillingProvinceID);
+            ViewData["BillingProvinceID"] = GetProvincesSelectList(companyToUpdate.BillingProvinceID);
             ViewData["BillingTermID"] = new SelectList(_context.BillingTerms, "BillingTermID", "Terms", companyToUpdate.BillingTermID);
             ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes, "ContractorTypeID", "Type", companyToUpdate.ContractorTypeID);
             ViewData["CurrencyID"] = new SelectList(_context.Currencies, "CurrencyID", "CurrencyName", companyToUpdate.CurrencyID);
             ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes, "CustomerTypeID", "Type", companyToUpdate.CustomerTypeID);
             ViewData["ShippingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", companyToUpdate.ShippingCountryID);
-            ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", companyToUpdate.ShippingProvinceID);
+            ViewData["ShippingProvinceID"] = GetProvincesSelectList(companyToUpdate.ShippingProvinceID);
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "Type", companyToUpdate.VendorTypeID);
             return View(companyToUpdate);
         }
@@ -444,95 +445,110 @@ namespace hager_crm.Controllers
         [Route("Company/Merge/{leftCompanyId}/to/{rightCompanyId}")]
         public async Task<IActionResult> Merge(int leftCompanyId, int rightCompanyId, string[] fieldsToMerge)
         {
-            var leftCompany = _context.Companies.FirstOrDefault(c => c.CompanyID == leftCompanyId);
-            var rightCompany = _context.Companies.FirstOrDefault(c => c.CompanyID == rightCompanyId);
+            var leftCompany = _context.Companies
+                .Include(c => c.Contacts)
+                .FirstOrDefault(c => c.CompanyID == leftCompanyId);
+            var rightCompany = _context.Companies
+                .Include(c => c.Contacts)
+                .FirstOrDefault(c => c.CompanyID == rightCompanyId);
             if (leftCompany == null || rightCompany == null)
                 return NotFound();
 
             // This is ridiculous, but I don't want to deal with a reflection in loop.
             foreach (var field in fieldsToMerge)
-            switch (field)
+                switch (field)
+                {
+                    case "Name":
+                        rightCompany.Name = leftCompany.Name;
+                        break;
+                    case "Location":
+                        rightCompany.Location = leftCompany.Location;
+                        break;
+                    case "CreditCheck":
+                        rightCompany.CreditCheck = leftCompany.CreditCheck;
+                        break;
+                    case "DateChecked":
+                        rightCompany.DateChecked = leftCompany.DateChecked;
+                        break;
+                    case "BillingTermID":
+                        rightCompany.BillingTermID = leftCompany.BillingTermID;
+                        break;
+                    case "CurrencyID":
+                        rightCompany.CurrencyID = leftCompany.CurrencyID;
+                        break;
+                    case "Phone":
+                        rightCompany.Phone = leftCompany.Phone;
+                        break;
+                    case "Website":
+                        rightCompany.Website = leftCompany.Website;
+                        break;
+                    case "BillingAddress":
+                        rightCompany.BillingAddress1 = leftCompany.BillingAddress1;
+                        rightCompany.BillingAddress2 = leftCompany.BillingAddress2;
+                        break;
+                    case "BillingCity":
+                        rightCompany.BillingCity = leftCompany.BillingCity;
+                        break;
+                    case "BillingProvinceID":
+                        rightCompany.BillingProvinceID = leftCompany.BillingProvinceID;
+                        break;
+                    case "BillingPostalCode":
+                        rightCompany.BillingPostalCode = leftCompany.BillingPostalCode;
+                        break;
+                    case "BillingCountryID":
+                        rightCompany.BillingCountryID = leftCompany.BillingCountryID;
+                        break;
+                    case "ShippingAddress":
+                        rightCompany.ShippingAddress1 = leftCompany.ShippingAddress1;
+                        rightCompany.ShippingAddress2 = leftCompany.ShippingAddress2;
+                        break;
+                    case "ShippingCity":
+                        rightCompany.ShippingCity = leftCompany.ShippingCity;
+                        break;
+                    case "ShippingProvinceID":
+                        rightCompany.ShippingProvinceID = leftCompany.ShippingProvinceID;
+                        break;
+                    case "ShippingPostalCode":
+                        rightCompany.ShippingPostalCode = leftCompany.ShippingPostalCode;
+                        break;
+                    case "ShippingCountryID":
+                        rightCompany.ShippingCountryID = leftCompany.ShippingCountryID;
+                        break;
+                    case "Customer":
+                        rightCompany.Customer = leftCompany.Customer;
+                        break;
+                    case "CustomerTypeID":
+                        rightCompany.CustomerTypeID = leftCompany.CustomerTypeID;
+                        break;
+                    case "Vendor":
+                        rightCompany.VendorTypeID = leftCompany.VendorTypeID;
+                        break;
+                    case "Contractor":
+                        rightCompany.Contractor = leftCompany.Contractor;
+                        break;
+                    case "ContractorTypeID":
+                        rightCompany.ContractorTypeID = leftCompany.ContractorTypeID;
+                        break;
+                    case "Active":
+                        rightCompany.Active = leftCompany.Active;
+                        break;
+                    case "Notes":
+                        rightCompany.Notes = leftCompany.Notes;
+                        break;
+
+                }
+
+            if (leftCompany.Contacts.Any())
             {
-                case "Name":
-                    rightCompany.Name = leftCompany.Name;
-                    break;
-                case "Location":
-                    rightCompany.Location = leftCompany.Location;
-                    break;
-                case "CreditCheck":
-                    rightCompany.CreditCheck = leftCompany.CreditCheck;
-                    break;
-                case "DateChecked":
-                    rightCompany.DateChecked = leftCompany.DateChecked;
-                    break;
-                case "BillingTermID":
-                    rightCompany.BillingTermID = leftCompany.BillingTermID;
-                    break;
-                case "CurrencyID":
-                    rightCompany.CurrencyID = leftCompany.CurrencyID;
-                    break;
-                case "Phone":
-                    rightCompany.Phone = leftCompany.Phone;
-                    break;
-                case "Website":
-                    rightCompany.Website = leftCompany.Website;
-                    break;
-                case "BillingAddress":
-                    rightCompany.BillingAddress1 = leftCompany.BillingAddress1;
-                    rightCompany.BillingAddress2 = leftCompany.BillingAddress2;
-                    break;
-                case "BillingCity":
-                    rightCompany.BillingCity = leftCompany.BillingCity;
-                    break;
-                case "BillingProvinceID":
-                    rightCompany.BillingProvinceID = leftCompany.BillingProvinceID;
-                    break;
-                case "BillingPostalCode":
-                    rightCompany.BillingPostalCode = leftCompany.BillingPostalCode;
-                    break;
-                case "BillingCountryID":
-                    rightCompany.BillingCountryID = leftCompany.BillingCountryID;
-                    break;
-                case "ShippingAddress":
-                    rightCompany.ShippingAddress1 = leftCompany.ShippingAddress1;
-                    rightCompany.ShippingAddress2 = leftCompany.ShippingAddress2;
-                    break;
-                case "ShippingCity":
-                    rightCompany.ShippingCity = leftCompany.ShippingCity;
-                    break;
-                case "ShippingProvinceID":
-                    rightCompany.ShippingProvinceID = leftCompany.ShippingProvinceID;
-                    break;
-                case "ShippingPostalCode":
-                    rightCompany.ShippingPostalCode = leftCompany.ShippingPostalCode;
-                    break;
-                case "ShippingCountryID":
-                    rightCompany.ShippingCountryID = leftCompany.ShippingCountryID;
-                    break;
-                case "Customer":
-                    rightCompany.Customer = leftCompany.Customer;
-                    break;
-                case "CustomerTypeID":
-                    rightCompany.CustomerTypeID = leftCompany.CustomerTypeID;
-                    break;
-                case "Vendor":
-                    rightCompany.VendorTypeID = leftCompany.VendorTypeID;
-                    break;
-                case "Contractor":
-                    rightCompany.Contractor = leftCompany.Contractor;
-                    break;
-                case "ContractorTypeID":
-                    rightCompany.ContractorTypeID = leftCompany.ContractorTypeID;
-                    break;
-                case "Active":
-                    rightCompany.Active = leftCompany.Active;
-                    break;
-                case "Notes":
-                    rightCompany.Notes = leftCompany.Notes;
-                    break;
-
+                // To do in query updates you need to install separate package EFCore Plus lol
+                // _context.Contacts.Where(c => c.CompanyID == leftCompany.CompanyID).Update();
+                // I have to query all entities and change them manually...
+                var contacts = await _context.Contacts
+                    .Where(c => c.CompanyID == leftCompany.CompanyID)
+                    .ToListAsync();
+                contacts.ForEach(c => c.CompanyID = rightCompany.CompanyID);
+                await _context.SaveChangesAsync();
             }
-
             _context.Companies.Remove(leftCompany);
             await _context.SaveChangesAsync();
 

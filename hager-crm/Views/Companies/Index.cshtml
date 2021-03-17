@@ -110,7 +110,10 @@
         </div>
     </div>
 }
-else Html.GenerateFiltering((IGridFilterFilterable)gridFilter);
+else
+{
+    @Html.GenerateFiltering((IGridFilterFilterable) gridFilter)
+}
 <div class="overflow-auto">
     <table class="table text-center">
         <thead>
