@@ -96,7 +96,15 @@
         {
             <a asp-action="Edit" asp-route-id="@Model.ContactID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a> @:|
         }
-        <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Contact List</a>
+        @if (String.IsNullOrEmpty(ViewData["returnURL"].ToString()))
+        {
+            <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Contact List</a>
+        }
+        else
+        {
+            <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Contact List</a>
+        }
+
     </div>
 </div>
 

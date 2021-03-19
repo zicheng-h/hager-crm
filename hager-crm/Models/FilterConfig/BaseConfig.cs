@@ -72,7 +72,7 @@ namespace hager_crm.Models.FilterConfig
     {
         public override string GetHtml(ViewContext context)
         { 
-            var inputValue = "";
+            var inputValue = "true";
             if (context.HttpContext.Request.Query.TryGetValue(FieldName, out var values))
                 inputValue = values.FirstOrDefault() ?? "";
             return $@"
@@ -84,7 +84,7 @@ namespace hager_crm.Models.FilterConfig
                    data-name=""{FieldName}"" type=""radio"" value=""false"" {(inputValue == "false" ? "checked" : "")}/>
                 <label for=""{FieldName + "FilterFalse"}"">No</label>
                 <input id=""{FieldName + "FilterOff"}"" class=""data-filterable"" name=""{FieldName}""
-                   data-name=""{FieldName}"" type=""radio"" value="""" {((inputValue != "true" && inputValue != "false") ? "checked" : "")}/>
+                   data-name=""{FieldName}"" type=""radio"" value=""off"" {(inputValue == "off" ? "checked" : "")}/>
                 <label for=""{FieldName + "FilterOff"}"">Off</label>
             </div>";
         }

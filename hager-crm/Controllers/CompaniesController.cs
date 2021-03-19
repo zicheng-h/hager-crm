@@ -83,12 +83,19 @@ namespace hager_crm.Controllers
         }
 
         // GET: Companies/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string returnURL)
         {
             if (id == null)
             {
                 return NotFound();
             }
+
+            //Get the URL of the page that send us here
+            if (String.IsNullOrEmpty(returnURL))
+            {
+                returnURL = Request.Headers["Referer"].ToString();
+            }
+            ViewData["returnURL"] = returnURL;
 
             var company = await _context.Companies
                 .Include(c => c.BillingCountry)
@@ -111,8 +118,15 @@ namespace hager_crm.Controllers
 
         // GET: Companies/Create
         [Authorize(Roles = "Admin, Supervisor")]
-        public IActionResult Create(string CType)
+        public IActionResult Create(string CType, string returnURL)
         {
+
+            //Get the URL of the page that send us here
+            if (String.IsNullOrEmpty(returnURL))
+            {
+                returnURL = Request.Headers["Referer"].ToString();
+            }
+            ViewData["returnURL"] = returnURL;
             ViewData["CType"] = CType;
             ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName");
             ViewData["BillingProvinceID"] = GetProvincesSelectList();
@@ -132,15 +146,24 @@ namespace hager_crm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Create([Bind("CompanyID,Name,Location,CreditCheck,DateChecked,BillingTermID,CurrencyID,Phone,Website,BillingAddress1,BillingAddress2,BillingProvinceID,BillingPostalCode,BillingCountryID,ShippingAddress1,ShippingAddress2,ShippingProvinceID,ShippingPostalCode,ShippingCountryID,Customer,CustomerTypeID,Vendor,VendorTypeID,Contractor,ContractorTypeID,Active,Notes")] Company company, string CType)
+        public async Task<IActionResult> Create([Bind("CompanyID,Name,Location,CreditCheck,DateChecked,BillingTermID,CurrencyID,Phone,Website,BillingAddress1,BillingAddress2,BillingProvinceID,BillingPostalCode,BillingCountryID,ShippingAddress1,ShippingAddress2,ShippingProvinceID,ShippingPostalCode,ShippingCountryID,Customer,CustomerTypeID,Vendor,VendorTypeID,Contractor,ContractorTypeID,Active,Notes")] Company company, string CType, string returnURL)
         {
+            ViewData["returnURL"] = returnURL;
             try
             {
                 if (ModelState.IsValid)
                 {
                     _context.Add(company);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index), new { CType = CType });
+                    //If no referrer then go back to index
+                    if (String.IsNullOrEmpty(returnURL))
+                    {
+                        return RedirectToAction(nameof(Index), new { CType = CType });
+                    }
+                    else
+                    {
+                        return Redirect(returnURL);
+                    }
                 }
             }
             catch (RetryLimitExceededException)
@@ -168,9 +191,16 @@ namespace hager_crm.Controllers
 
         // GET: Companies/Edit/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Edit(int? id, string CType)
+        public async Task<IActionResult> Edit(int? id, string CType, string returnURL)
         {
             ViewData["CType"] = CType;
+
+            //Get the URL of the page that send us here
+            if (String.IsNullOrEmpty(returnURL))
+            {
+                returnURL = Request.Headers["Referer"].ToString();
+            }
+            ViewData["returnURL"] = returnURL;
 
             if (id == null)
             {
@@ -199,8 +229,9 @@ namespace hager_crm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Edit(int id, string CType)
+        public async Task<IActionResult> Edit(int id, string CType, string returnURL)
         {
+            ViewData["returnURL"] = returnURL;
             var companyToUpdate = await _context.Companies
                 .Include(c => c.BillingTerm)
                 .Include(c => c.Currency)
@@ -249,7 +280,15 @@ namespace hager_crm.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index), new { CType = CType });
+                    if(String.IsNullOrEmpty(returnURL))
+                    {
+                        return RedirectToAction(nameof(Index), new { CType = CType });
+                    }
+                    else
+                    {
+                        return Redirect(returnURL);
+                    }
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -277,8 +316,15 @@ namespace hager_crm.Controllers
         }
         // GET: Companies/Delete/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, string returnURL)
         {
+            //Get the URL of the page that send us here
+            if (String.IsNullOrEmpty(returnURL))
+            {
+                returnURL = Request.Headers["Referer"].ToString();
+            }
+            ViewData["returnURL"] = returnURL;
+
             if (id == null)
             {
                 return NotFound();
@@ -307,12 +353,37 @@ namespace hager_crm.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> DeleteConfirmed(int id, string CType)
+        public async Task<IActionResult> DeleteConfirmed(int id, string CType, string returnURL)
         {
+            ViewData["returnURL"] = returnURL;
             var company = await _context.Companies.FindAsync(id);
-            _context.Companies.Remove(company);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), new { CType = CType });
+            try
+            {
+                _context.Companies.Remove(company);
+                await _context.SaveChangesAsync();
+                if(String.IsNullOrEmpty(returnURL))
+                {
+                    return RedirectToAction(nameof(Index), new { CType = CType });
+                }
+                else
+                {
+                    return Redirect(returnURL);
+                }
+                
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete Company. You cannot delete a Companies that has contacts assigned.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            return View(company);
+
         }
 
         [HttpPost]

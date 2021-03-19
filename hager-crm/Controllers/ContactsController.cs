@@ -49,8 +49,16 @@ namespace hager_crm.Controllers
         }
 
         // GET: Contacts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string returnURL)
         {
+
+            //Get the URL of the page that send us here
+            if (String.IsNullOrEmpty(returnURL))
+            {
+                returnURL = Request.Headers["Referer"].ToString();
+            }
+            ViewData["returnURL"] = returnURL;
+
             if (id == null)
             {
                 return NotFound();
@@ -69,8 +77,15 @@ namespace hager_crm.Controllers
 
         // GET: Contacts/Create
         [Authorize(Roles = "Admin, Supervisor")]
-        public IActionResult Create()
+        public IActionResult Create(string returnURL)
         {
+            //Get the URL of the page that send us here
+            if (String.IsNullOrEmpty(returnURL))
+            {
+                returnURL = Request.Headers["Referer"].ToString();
+            }
+            ViewData["returnURL"] = returnURL;
+
             ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name");
 
             var contact = new Contact();
@@ -86,8 +101,9 @@ namespace hager_crm.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Create([Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
-            string[] selectedOptions, string CType)
+            string[] selectedOptions, string CType, string returnURL)
         {
+            ViewData["returnURL"] = returnURL;
             try
             {
                 // Adding the multi select categories
@@ -104,7 +120,15 @@ namespace hager_crm.Controllers
                 {
                     _context.Add(contact);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index), new { CType = CType });
+                    if(String.IsNullOrEmpty(returnURL))
+                    {
+                        return RedirectToAction(nameof(Index), new { CType = CType });
+                    }
+                    else
+                    {
+                        return Redirect(returnURL);
+                    }
+                    
                 }
                 ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
                 return View(contact);
@@ -121,8 +145,15 @@ namespace hager_crm.Controllers
 
         // GET: Contacts/Edit/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, string returnURL)
         {
+            //Get the URL of the page that send us here
+            if (String.IsNullOrEmpty(returnURL))
+            {
+                returnURL = Request.Headers["Referer"].ToString();
+            }
+            ViewData["returnURL"] = returnURL;
+
             if (id == null)
             {
                 return NotFound();
@@ -147,8 +178,9 @@ namespace hager_crm.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Edit(int id, [Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
-            string[] selectedOptions, string CType)
+            string[] selectedOptions, string CType, string returnURL)
         {
+            ViewData["returnURL"] = returnURL;
             var contactToUpdate = await _context.Contacts
                 .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
                 .SingleOrDefaultAsync(c => c.ContactID == id);
@@ -183,7 +215,15 @@ namespace hager_crm.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), new { CType = CType });
+                if(String.IsNullOrEmpty(returnURL))
+                {
+                    return RedirectToAction(nameof(Index), new { CType = CType });
+                }
+                else
+                {
+                    return Redirect(returnURL);
+                }
+                
             }
 
             ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
@@ -193,8 +233,15 @@ namespace hager_crm.Controllers
 
         // GET: Contacts/Delete/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, string returnURL)
         {
+            //Get the URL of the page that send us here
+            if (String.IsNullOrEmpty(returnURL))
+            {
+                returnURL = Request.Headers["Referer"].ToString();
+            }
+            ViewData["returnURL"] = returnURL;
+
             if (id == null)
             {
                 return NotFound();
@@ -215,12 +262,21 @@ namespace hager_crm.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> DeleteConfirmed(int id, string CType)
+        public async Task<IActionResult> DeleteConfirmed(int id, string CType, string returnURL)
         {
+            ViewData["returnURL"] = returnURL;
             var contact = await _context.Contacts.FindAsync(id);
             _context.Contacts.Remove(contact);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), new { CType = CType });
+            if(String.IsNullOrEmpty(returnURL))
+            {
+                return RedirectToAction(nameof(Index), new { CType = CType });
+            }
+            else
+            {
+                return Redirect(returnURL);
+            }
+            
         }
 
         //GET: Redirect using company name to Company's Details page

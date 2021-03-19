@@ -13,6 +13,7 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="CType" id="CType" value="@Context.Request.Query["CType"]" />
+            <input type="hidden" name="returnURL" value="@ViewData["returnURL"]" />
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="form-group">
@@ -37,11 +38,14 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="BillingTermID" class="control-label"></label>
-                        <select asp-for="BillingTermID" class="form-control" asp-items="ViewBag.BillingTermID"></select>
+                        <select asp-for="BillingTermID" class="form-control" asp-items="ViewBag.BillingTermID">
+                            <option value="">Select a Billing Term</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label asp-for="CurrencyID" class="control-label"></label>
                         <select asp-for="CurrencyID" class="form-control" asp-items="ViewBag.CurrencyID">
+                            <option value="">Select Currency Type</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -71,8 +75,10 @@
                             @foreach (var item in ViewBag.BillingProvinceID.Items)
                             {
                                 <option value="@item.Value.Split(';')[0]"
-                                        data-country="@item.Value.Split(';')[1]">@item.Text</option>
-                            }
+                                        data-country="@item.Value.Split(';')[1]">
+                                    @item.Text
+                                    </option>
+                                }
                         </select>
                     </div>
                     <div class="form-group">
@@ -82,8 +88,10 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="BillingCountryID" class="control-label"></label>
-                        <select asp-for="BillingCountryID" class="form-control dropdown-country" 
-                                data-link="link-edit-bill-province"  asp-items="ViewBag.BillingCountryID"></select>
+                        <select asp-for="BillingCountryID" class="form-control dropdown-country"
+                                data-link="link-edit-bill-province" asp-items="ViewBag.BillingCountryID">
+                            <option value="">-- Select Country --</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -104,8 +112,10 @@
                             @foreach (var item in ViewBag.ShippingProvinceID.Items)
                             {
                                 <option value="@item.Value.Split(';')[0]"
-                                        data-country="@item.Value.Split(';')[1]">@item.Text</option>
-                            }
+                                        data-country="@item.Value.Split(';')[1]">
+                                    @item.Text
+                                    </option>
+                                }
                         </select>
                     </div>
                     <div class="form-group">
@@ -115,8 +125,10 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="ShippingCountryID" class="control-label"></label>
-                        <select asp-for="ShippingCountryID" class="form-control dropdown-country" 
-                                data-link="link-edit-ship-province" asp-items="ViewBag.ShippingCountryID"></select>
+                        <select asp-for="ShippingCountryID" class="form-control dropdown-country"
+                                data-link="link-edit-ship-province" asp-items="ViewBag.ShippingCountryID">
+                            <option value="">-- Select Country --</option>
+                        </select>
                     </div>
                     <div class="form-group form-check">
                         <label class="form-check-label">
@@ -153,7 +165,7 @@
                     </div>
                     <div class="form-group form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                            <input class="form-check-input" asp-for="Active" checked /> @Html.DisplayNameFor(model => model.Active)
                         </label>
                     </div>
                     <div class="form-group">
@@ -171,7 +183,15 @@
                         <input type="submit" value="Create" class="btn btn-primary" />
                     </div>
                     <div>
-                        <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
+                        @if (String.IsNullOrEmpty(ViewData["returnURL"].ToString()))
+                        {
+                            <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
+                        }
+                        else
+                        {
+                            <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
+                        }
+
                     </div>
                 </div>
             </div>
