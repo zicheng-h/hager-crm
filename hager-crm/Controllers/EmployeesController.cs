@@ -19,7 +19,7 @@ using hager_crm.Utils;
 
 namespace hager_crm.Controllers
 {
-    [Authorize(Roles = "Admin, Supervisor")]
+    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly HagerContext _context;

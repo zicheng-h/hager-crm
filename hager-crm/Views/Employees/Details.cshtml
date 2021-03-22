@@ -164,7 +164,10 @@
     </div>
     <hr />
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.EmployeeID">Edit</a> |
+        @if (this.User.IsInRole("Admin"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.EmployeeID">Edit</a> @:|
+        }
         <a asp-action="Index">Back to List</a>
     </div>
 </div>
@@ -173,5 +176,5 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#employeesManagementSubmenu").attr("style", "color: #862633; background: #fff;");
-    })
+        })
 </script>

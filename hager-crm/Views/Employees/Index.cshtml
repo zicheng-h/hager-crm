@@ -77,10 +77,7 @@ else {@Html.GenerateFiltering((IGridFilterFilterable)gridFilter)}
                         </span>
                     </a>
                 </th>
-                @if (User.IsInRole("Admin"))
-                {
-                    <th></th>
-                }
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -99,16 +96,16 @@ else {@Html.GenerateFiltering((IGridFilterFilterable)gridFilter)}
                     <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <td class="align-middle">
-                            <div class="row w-100">
-                                <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Details" asp-route-id="@item.EmployeeID">Details</a>
+                    <td class="align-middle">
+                        <div class="row w-100">
+                            <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Details" asp-route-id="@item.EmployeeID">Details</a>
+                            @if (User.IsInRole("Admin"))
+                            {
                                 <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Edit" asp-route-id="@item.EmployeeID">Edit</a>
                                 <a class="btn btn-sm btn-outline-danger col-12" asp-action="Delete" asp-route-id="@item.EmployeeID">Delete</a>
-                            </div>
-                        </td>
-                    }
+                            }
+                        </div>
+                    </td>
                 </tr>
             }
         </tbody>
