@@ -193,7 +193,7 @@ namespace hager_crm.Controllers
             UpdateContactCategory(selectedOptions, contactToUpdate); // Updateing categories
 
             if (await TryUpdateModelAsync<Contact>(contactToUpdate, "", c => c.FirstName, c => c.LastName, c => c.JobTitle,
-                                                    c => c.CellPhone, c => c.WorkPhone, c => c.Email, c => c.Active, c => c.CompanyID))
+                    c => c.CellPhone, c => c.WorkPhone, c => c.Email, c => c.Active, c => c.Notes, c => c.CompanyID))
             {
                 try
                 {
