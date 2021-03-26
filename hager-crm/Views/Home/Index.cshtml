@@ -22,12 +22,12 @@
                         }
                     </ul>
                 </div>
-                <div class="card-body">
+                <div>
                     <div class="tab-content" id="announcement-tab-content">
-                        <div class="tab-pane fade p-1" id="news-unread-panel" role="tabpanel" aria-labelledby="news-unread-tab"></div>
+                        <div class="tab-pane fade" id="news-unread-panel" role="tabpanel" aria-labelledby="news-unread-tab"></div>
                         @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
                         {
-                            <div class="tab-pane fade p-1" id="news-all-panel" role="tabpanel" aria-labelledby="news-all-tab"></div>
+                            <div class="tab-pane fade" id="news-all-panel" role="tabpanel" aria-labelledby="news-all-tab"></div>
                         }
                     </div>
                 </div>
@@ -37,6 +37,20 @@
     <div class="col-12 col-md-5 ">
         <div class="card p-4 m-2">
             <h4 class="card-title">Statistics</h4>
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Contracts to end soon
+                <span class="badge badge-primary badge-pill">14</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Warning about company duplication
+                <span class="badge badge-primary badge-pill">2</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Employee birthday coming as a separate tab!
+                <span class="badge badge-primary badge-pill">1</span>
+              </li>
+            </ul>
         </div>
     </div>
 </div>
