@@ -1,11 +1,8 @@
 ﻿using hager_crm.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using hager_crm.Data;
 using Microsoft.AspNetCore.Authorization;
 
 namespace hager_crm.Controllers
@@ -14,9 +11,13 @@ namespace hager_crm.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        
+        private readonly HagerContext _context;
+        
+        public HomeController(HagerContext context, ILogger<HomeController> logger)
         {
+            _context = context;
+
             _logger = logger;
         }
 

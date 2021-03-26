@@ -17,6 +17,54 @@ namespace hager_crm.Data.HIMigrations
                 .HasDefaultSchema("HG")
                 .HasAnnotation("ProductVersion", "3.1.11");
 
+            modelBuilder.Entity("hager_crm.Models.Announcement", b =>
+                {
+                    b.Property<int>("AnnouncementID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("PostedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Severity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(64);
+
+                    b.HasKey("AnnouncementID");
+
+                    b.ToTable("Announcements");
+                });
+
+            modelBuilder.Entity("hager_crm.Models.AnnouncementEmployee", b =>
+                {
+                    b.Property<int>("AnnouncementEmployeeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AnnouncementID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EmployeeID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("AnnouncementEmployeeID");
+
+                    b.HasIndex("AnnouncementID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.ToTable("AnnouncementEmployees");
+                });
+
             modelBuilder.Entity("hager_crm.Models.BillingTerm", b =>
                 {
                     b.Property<int>("BillingTermID")
@@ -490,6 +538,21 @@ namespace hager_crm.Data.HIMigrations
                     b.HasKey("VendorTypeID");
 
                     b.ToTable("VendorTypes");
+                });
+
+            modelBuilder.Entity("hager_crm.Models.AnnouncementEmployee", b =>
+                {
+                    b.HasOne("hager_crm.Models.Announcement", "Announcement")
+                        .WithMany("EmployeesUnread")
+                        .HasForeignKey("AnnouncementID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("hager_crm.Models.Employee", "Employee")
+                        .WithMany("UnreadAnnouncements")
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("hager_crm.Models.Company", b =>

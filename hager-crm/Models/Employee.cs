@@ -12,6 +12,12 @@ namespace hager_crm.Models
     //2021-01-22
     public class Employee
     {
+
+        public Employee()
+        {
+            UnreadAnnouncements = new HashSet<AnnouncementEmployee>();
+        }
+        
         public int EmployeeID { get; set; }
 
         [Required(ErrorMessage = "Please enter a First Name.")]
@@ -123,6 +129,7 @@ namespace hager_crm.Models
 
         [Display(Name = "Full Name")]
         public string FullName => FirstName + " " + LastName;
-
+        
+        public ICollection<AnnouncementEmployee> UnreadAnnouncements { get; set; }
     }
 }
