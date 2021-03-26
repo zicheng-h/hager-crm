@@ -389,5 +389,21 @@ namespace hager_crm.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
+        // GET: Employees/GetSignedIn
+        [Authorize]
+        public async Task<string> GetSignedIn()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var employee = await _context.Employees
+                .Where(e => e.UserId == user.Id)
+                .FirstOrDefaultAsync();
+            if (employee == null)
+            {
+                return User.Identity.Name;
+            }
+            return employee.FullName;
+        }
     }
 }
