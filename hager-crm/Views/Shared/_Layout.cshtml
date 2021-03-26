@@ -16,7 +16,7 @@
         <nav id="sidebar">
             <div class="sidebar-header">
                 <div>
-                    <img src="~/assets/AppLogo.png" alt="Application Logo" />
+                    <img src="~/assets/AppLogo_White.png" alt="Application Logo" />
                 </div>
                 <button type="button" id="sidebarCollapse" class="btn">
                     <i class="fas fa-align-left"></i>
@@ -25,44 +25,48 @@
             </div>
 
             @* The menu and links *@
-        <ul class="list-unstyled components">
-            <li><a id="homeSubmenu" asp-controller="Home" asp-action="Index">Home</a></li>
-            <li>
-                <a id="toggleCompaniesSubmenu" href="#companiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Companies</a>
-                <ul class="collapse list-unstyled" id="companiesSubmenu">
-                    <li><a id="allCompaniesSubmenu" asp-controller="Companies" asp-action="Index" asp-route-CType="All">All Companies</a></li>
-                    <li><a id="customerCompaniesSubmenu" asp-controller="Companies" asp-action="Index" asp-route-CType="Customer">Customers</a></li>
-                    <li><a id="vendorCompaniesSubmenu" asp-controller="Companies" asp-action="Index" asp-route-CType="Vendor">Vendors</a></li>
-                    <li><a id="contractorCompaniesSubmenu" asp-controller="Companies" asp-action="Index" asp-route-CType="Contractor">Contractors</a></li>
-                </ul>
-            </li>
-            <li>
-                <a id="toggleContactsSubmenu" href="#contactsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Contacts</a>
-                <ul class="collapse list-unstyled" id="contactsSubmenu">
-                    <li><a id="allContactsSubmenu" asp-controller="Contacts" asp-action="Index" asp-route-CType="All">All Contacts</a></li>
-                    <li><a id="customerContactsSubmenu" asp-controller="Contacts" asp-action="Index" asp-route-CType="Customer">Customers</a></li>
-                    <li><a id="vendorContactsSubmenu" asp-controller="Contacts" asp-action="Index" asp-route-CType="Vendor">Vendors</a></li>
-                    <li><a id="contractorContactsSubmenu" asp-controller="Contacts" asp-action="Index" asp-route-CType="Contractor">Contractors</a></li>
-                </ul>
-            </li>
-            <li>
-                <a id="toggleManagementSubmenu" href="#managementSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Management</a>
-                <ul class="collapse list-unstyled" id="managementSubmenu">
-                    <li><a id="employeesManagementSubmenu" asp-controller="Employees" asp-action="Index">Employees</a></li>
-                </ul>
-            </li>
-            @if (User.IsInRole("Admin"))
-            {
+            <ul id="menuLinks" class="list-unstyled components">
+                <li><a id="homeSubmenu" asp-controller="Home" asp-action="Index">Home</a></li>
                 <li>
-                    <a id="toggleAdminSubmenu" href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Admin Options</a>
-                    <ul class="collapse list-unstyled" id="adminSubmenu">
-                        <li><a id="configurationAdminSubmenu" asp-controller="Configuration" asp-action="Index">Configuration</a></li>
+                    <a id="toggleCompaniesSubmenu" href="#companiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Companies</a>
+                    <ul class="collapse list-unstyled" id="companiesSubmenu">
+                        <li><a id="allCompaniesSubmenu" asp-controller="Companies" asp-action="Index" asp-route-CType="All">All Companies</a></li>
+                        <li><a id="customerCompaniesSubmenu" asp-controller="Companies" asp-action="Index" asp-route-CType="Customer">Customers</a></li>
+                        <li><a id="vendorCompaniesSubmenu" asp-controller="Companies" asp-action="Index" asp-route-CType="Vendor">Vendors</a></li>
+                        <li><a id="contractorCompaniesSubmenu" asp-controller="Companies" asp-action="Index" asp-route-CType="Contractor">Contractors</a></li>
                     </ul>
                 </li>
-            }
+                <li>
+                    <a id="toggleContactsSubmenu" href="#contactsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Contacts</a>
+                    <ul class="collapse list-unstyled" id="contactsSubmenu">
+                        <li><a id="allContactsSubmenu" asp-controller="Contacts" asp-action="Index" asp-route-CType="All">All Contacts</a></li>
+                        <li><a id="customerContactsSubmenu" asp-controller="Contacts" asp-action="Index" asp-route-CType="Customer">Customers</a></li>
+                        <li><a id="vendorContactsSubmenu" asp-controller="Contacts" asp-action="Index" asp-route-CType="Vendor">Vendors</a></li>
+                        <li><a id="contractorContactsSubmenu" asp-controller="Contacts" asp-action="Index" asp-route-CType="Contractor">Contractors</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a id="toggleManagementSubmenu" href="#managementSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Management</a>
+                    <ul class="collapse list-unstyled" id="managementSubmenu">
+                        <li><a id="employeesManagementSubmenu" asp-controller="Employees" asp-action="Index">Employees</a></li>
+                    </ul>
+                </li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a id="toggleAdminSubmenu" href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Admin Options</a>
+                        <ul class="collapse list-unstyled" id="adminSubmenu">
+                            <li><a id="configurationAdminSubmenu" asp-controller="Configuration" asp-action="Index">Configuration</a></li>
+                        </ul>
+                    </li>
+                }
 
-        </ul>
+            </ul>
         </nav>
+
+        @* Mask *@
+        <div id="mask">
+        </div>
 
         @* Navbar *@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -108,6 +112,10 @@
                 $elements.addClass('notransition');
                 $elements.addClass('active');
                 $('.collapse.in').addClass('in');
+                if ($(window).width() <= 768) {
+                    $('#mask').css("background", "rgba(0, 0, 0, 0.75)");
+                    $('#mask').css("z-index", 100);
+                }
                 $elements[0].offsetHeight; // Cool trick, force browser to flush css transitions
                 $elements.removeClass('notransition');
             }
@@ -116,18 +124,27 @@
                 theme: "minimal"
             });
 
-            $('#sidebarCollapse').on('click', function () {
+            function toggleMenu() {
                 if (!!localStorage.getItem('menuHidden')) {
                     $('#sidebar, #content, .footer, .navbar').removeClass('active');
                     $('.collapse.in').removeClass('in');
+                    if ($(window).width() <= 768) {
+                        $('#mask').css("background", "#fff");
+                        $('#mask').css("z-index", -100);
+                    }
                     localStorage.setItem('menuHidden', '');
                 } else {
                     $('#sidebar, #content, .footer, .navbar').addClass('active');
                     $('.collapse.in').addClass('in');
+                    if ($(window).width() <= 768) {
+                        $('#mask').css("background", "rgba(0, 0, 0, 0.75)");
+                        $('#mask').css("z-index", 100);
+                    }
                     localStorage.setItem('menuHidden', '1');
                 }
-                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-            });
+            }
+            $('#sidebarCollapse').on('click', toggleMenu);
+            $('#mask').on('click', toggleMenu);
 
 
             if (localStorage.getItem('companiesCollapsed') != 'true')

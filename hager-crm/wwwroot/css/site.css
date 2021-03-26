@@ -232,7 +232,7 @@ p {
     display: flex;
     height: var(--navbar-height);
     justify-content: space-between;
-    background: #fff;
+    background: #862633;
 }
 
 #sidebar .sidebar-header div {
@@ -300,6 +300,20 @@ p {
     background: #862633;
 }
 
+#menuLinks {
+    height: calc(100vh - var(--navbar-height));
+    overflow-y: auto;
+}
+
+#mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -100;
+}
+
 
 /* ---------------------------------------------------
     CONTENT STYLE
@@ -343,12 +357,8 @@ p {
         margin-left: 0;
     }
 
-    #content, .footer, .navbar {
+    #content, #content.active, .footer, .navbar {
         width: 100%;
-    }
-
-    #content.active {
-        width: var(--content-width);
     }
 }
 
