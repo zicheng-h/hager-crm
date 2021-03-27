@@ -112,7 +112,7 @@
 }
 else
 {
-    @Html.GenerateFiltering((IGridFilterFilterable) gridFilter)
+    @Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
 }
 <div class="overflow-auto">
     <table class="table text-center">
@@ -140,38 +140,9 @@ else
                         </span>
                     </a>
                 </th>
-                <th>
-                    @switch (Context.Request.Query["CType"])
-                    {
-                        case "All":
-                            @:Type
-                            break;
-                        case "Customer":
-                            <a class="data-sortable" data-name="CustomerType">
-                                <span>Type</span>
-                                <span class="caret
-                                @(sorts["OrderField"] == "CustomerType" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
-                                </span>
-                            </a>
-                            break;
-                        case "Vendor":
-                            <a class="data-sortable" data-name="VendorType">
-                                <span>Type</span>
-                                <span class="caret
-                                @(sorts["OrderField"] == "VendorType" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
-                                </span>
-                            </a>
-                            break;
-                        case "Contractor":
-                            <a class="data-sortable" data-name="ContractorType">
-                                <span>Type</span>
-                                <span class="caret
-                                @(sorts["OrderField"] == "ContractorType" && sorts["OrderDir"] == "DESC" ? "up" : "down")">
-                                </span>
-                            </a>
-                            break;
-                    }
-                </th>
+                @*<th>
+                    Types:
+                </th>*@
                 <th></th>
             </tr>
         </thead>
@@ -190,34 +161,6 @@ else
                     </td>
                     <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Active)
-                    </td>
-                    <td class="align-middle">
-                        @switch (Context.Request.Query["CType"])
-                        {
-                            case "All":
-                                if (item.Customer)
-                                {
-                                    <a class="btn btn-warning text-white">Customer</a>
-                                }
-                                if (item.Vendor)
-                                {
-                                    <a class="btn btn-success text-white">Vendor</a>
-                                }
-                                if (item.Contractor)
-                                {
-                                    <a class="btn btn-info text-white">Contractor</a>
-                                }
-                                break;
-                            case "Customer":
-                                @Html.DisplayFor(modelItem => item.CustomerType.DisplayName)
-                                break;
-                            case "Vendor":
-                                @Html.DisplayFor(modelItem => item.VendorType.DisplayName)
-                                break;
-                            case "Contractor":
-                                @Html.DisplayFor(modelItem => item.ContractorType.DisplayName)
-                                break;
-                        }
                     </td>
                     <td class="align-middle">
                         @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))

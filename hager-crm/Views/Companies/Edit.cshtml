@@ -9,9 +9,9 @@
 
 <h4>Company</h4>
 <hr />
-<div class="row justify-content-center">
-    <div class="col-lg-10 col-12">
-        <form asp-action="Edit">
+<form asp-action="Edit">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-12">
             <div class="row">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="CompanyID" />
@@ -77,8 +77,8 @@
                                 <option value="@item.Value.Split(';')[0]"
                                         data-country="@item.Value.Split(';')[1]">
                                     @item.Text
-                                    </option>
-                                }
+                                </option>
+                            }
                         </select>
                         <span asp-validation-for="BillingProvinceID" class="text-danger"></span>
                     </div>
@@ -114,8 +114,8 @@
                                 <option value="@item.Value.Split(';')[0]"
                                         data-country="@item.Value.Split(';')[1]">
                                     @item.Text
-                                    </option>
-                                }
+                                </option>
+                            }
                         </select>
                         <span asp-validation-for="ShippingProvinceID" class="text-danger"></span>
                     </div>
@@ -132,38 +132,66 @@
                     </div>
                     <div class="form-group form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Customer" /> @Html.DisplayNameFor(model => model.Customer)
+                            <input class="form-check-input" id="checkcustomers" asp-for="Customer" /> @Html.DisplayNameFor(model => model.Customer)
                         </label>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="CustomerTypeID" class="control-label"></label>
-                        <select asp-for="CustomerTypeID" class="form-control" asp-items="ViewBag.CustomerTypeID"></select>
-                        <span asp-validation-for="CustomerTypeID" class="text-danger"></span>
+                    <div class="row" id="autoUpdate">
+                        <div class="form-group col-md-6">
+                            <label class="control-label"> Customer type</label>
+                            <button type="button" id="btnRight" class="btn btn-danger btn-sm">
+                                <strong>-</strong>
+                            </button>
+                            @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOptsCust, new { @size = 6, @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label"> Choose Type</label>
+                            <button type="button" id="btnLeft" class="btn btn-success btn-sm">
+                                <strong>+</strong>
+                            </button>
+                            @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOptsCust, new { @size = 6, @class = "form-control" })
+                        </div>
                     </div>
                     <div class="form-group form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Vendor" /> @Html.DisplayNameFor(model => model.Vendor)
+                            <input class="form-check-input" asp-for="Contractor" id="checkcontractor" /> @Html.DisplayNameFor(model => model.Contractor)
                         </label>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="VendorTypeID" class="control-label"></label>
-                        <select asp-for="VendorTypeID" class="form-control" asp-items="ViewBag.VendorTypeID"></select>
-                        <span asp-validation-for="VendorTypeID" class="text-danger"></span>
+                    <div class="row" id="autoUpdateCont">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Contractor type</label>
+                            <button type="button" id="btnRightContractor" class="btn btn-danger btn-sm">
+                                <strong>-</strong>
+                            </button>
+                            @Html.ListBox("selectedOptionsCont", (MultiSelectList)ViewBag.selOptsCont, new { @size = 6, @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label"> Choose Type</label>
+                            <button type="button" id="btnLeftContractor" class="btn btn-success btn-sm">
+                                <strong>+</strong>
+                            </button>
+                            @Html.ListBox("availOptionsCont", (MultiSelectList)ViewBag.availOptsCont, new { @size = 6, @class = "form-control" })
+                        </div>
                     </div>
                     <div class="form-group form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Contractor" /> @Html.DisplayNameFor(model => model.Contractor)
+                            <input class="form-check-input" asp-for="Vendor" id="checkvendor" /> @Html.DisplayNameFor(model => model.Vendor)
                         </label>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="ContractorTypeID" class="control-label"></label>
-                        <select asp-for="ContractorTypeID" class="form-control" asp-items="ViewBag.ContractorTypeID"></select>
-                        <span asp-validation-for="ContractorTypeID" class="text-danger"></span>
-                    </div>
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
-                        </label>
+                    <div class="row" id="autoUpdateVen">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Vendor type</label>
+                            <button type="button" id="btnRightVendor" class="btn btn-danger btn-sm">
+                                <strong>-</strong>
+                            </button>
+                            @Html.ListBox("selectedOptionsVen", (MultiSelectList)ViewBag.selOptsVen, new { @size = 6, @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label"> Choose Type</label>
+                            <button type="button" id="btnLeftVendor" class="btn btn-success btn-sm">
+                                <strong>+</strong>
+                            </button>
+                            @Html.ListBox("availOptionsVen", (MultiSelectList)ViewBag.availOptsVen, new { @size = 6, @class = "form-control" })
+                        </div>
                     </div>
                     <div class="form-group">
                         <label asp-for="Notes" class="control-label"></label>
@@ -175,7 +203,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <input type="submit" id="btnSubmit" value="Save" class="btn btn-primary" />
                     </div>
                     <div>
                         @if (String.IsNullOrEmpty(ViewData["returnURL"].ToString()))
@@ -190,17 +218,45 @@
                 </div>
 
             </div>
-
-        </form>
-    </div>
-</div>
+        </div>
+    </div> 
+</form>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src = "~/js/multiselectlist.js" ></script >
 }
-
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     $(document).ready(function () {
         $("#@Context.Request.Query["CType"].ToString().ToLower()CompaniesSubmenu").attr("style", "color: #862633; background: #fff;");
     })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#checkcustomers').change(function () {
+            if (!this.checked)
+                $('#autoUpdate').hide();
+            else
+                $('#autoUpdate').show();
+        });
+    });
+
+    $(document).ready(function () {
+        $('#checkcontractor').change(function () {
+            if (!this.checked)
+                $('#autoUpdateCont').hide();
+            else
+                $('#autoUpdateCont').show();
+        });
+    });
+
+    $(document).ready(function () {
+        $('#checkvendor').change(function () {
+            if (!this.checked)
+                $('#autoUpdateVen').hide();
+            else
+                $('#autoUpdateVen').show();
+        });
+    });
 </script>

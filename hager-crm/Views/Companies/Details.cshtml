@@ -20,9 +20,17 @@
         <li class="nav-item">
             <a href="#moreinfo" aria-controls="moreinfo" role="tab" class="nav-link" name="moreinfo" data-toggle="tab" aria-selected="false">Billing and Shipping</a>
         </li>
-
         <li class="nav-item">
             <a href="#emergencycontact" aria-controls="emergencycontact" role="tab" class="nav-link" name="emergencycontact" data-toggle="tab" aria-selected="false">More Information</a>
+        </li>
+        <li class="nav-item">
+            <a href="#customertypes" aria-controls="customertypes" role="tab" class="nav-link" name="customertypes" data-toggle="tab" aria-selected="false">Customer Types</a>
+        </li>
+        <li class="nav-item">
+            <a href="#contractortypes" aria-controls="contractortypes" role="tab" class="nav-link" name="contractortypes" data-toggle="tab" aria-selected="false">Contractor Types</a>
+        </li>
+        <li class="nav-item">
+            <a href="#vendortypes" aria-controls="vendortypes" role="tab" class="nav-link" name="vendortypes" data-toggle="tab" aria-selected="false">Vendor Types</a>
         </li>
         <li class="nav-item">
             <a asp-action="Contacts" asp-route-id="@Model.CompanyID" class="nav-link">Contacts</a>
@@ -120,34 +128,47 @@
 
         </div>
 
+        <div role="tabpanel" class="tab-pane fade ml-3" id="types" aria-labelledby="types-tab">
+            <br />
+        </div>
+        <div role="tabpanel" class="tab-pane fade ml-3" id="customertypes" aria-labelledby="customertypes-tab">
+            <br />
+        </div>
+        <div role="tabpanel" class="tab-pane fade ml-3" id="contractortypes" aria-labelledby="contractortypes-tab">
+            <br />
+        </div>
+        <div role="tabpanel" class="tab-pane fade ml-3" id="vendortypes" aria-labelledby="vendortypes-tab">
+            <br />
+        </div>
+
         <div role="tabpanel" class="tab-pane fade ml-3" id="emergencycontact" aria-labelledby="moreinfo-tab">
             <br />
             <dl class="row">
                 @if (Model.Customer)
                 {
                     <dt class="col-sm-3 my-2">
-                        @Html.DisplayNameFor(model => model.CustomerType)
+                        @Html.DisplayNameFor(model => model.Customer)
                     </dt>
                     <dd class="col-sm-9 my-2">
-                        @Html.DisplayFor(model => model.CustomerType.Type)
-                    </dd>
-                }
-                @if (Model.Vendor)
-                {
-                    <dt class="col-sm-3 my-2">
-                        @Html.DisplayNameFor(model => model.VendorType)
-                    </dt>
-                    <dd class="col-sm-9 my-2">
-                        @Html.DisplayFor(model => model.VendorType.Type)
+                        @Html.DisplayFor(model => model.Customer)
                     </dd>
                 }
                 @if (Model.Contractor)
                 {
                     <dt class="col-sm-3 my-2">
-                        @Html.DisplayNameFor(model => model.ContractorType)
+                        @Html.DisplayNameFor(model => model.Contractor)
                     </dt>
                     <dd class="col-sm-9 my-2">
-                        @Html.DisplayFor(model => model.ContractorType.Type)
+                        @Html.DisplayFor(model => model.Contractor)
+                    </dd>
+                }
+                @if (Model.Vendor)
+                {
+                    <dt class="col-sm-3 my-2">
+                        @Html.DisplayNameFor(model => model.Vendor)
+                    </dt>
+                    <dd class="col-sm-9 my-2">
+                        @Html.DisplayFor(model => model.Vendor)
                     </dd>
                 }
                 <dt class="col-sm-3 my-2">
@@ -183,6 +204,23 @@
     }
 
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+            $('.nav-link').click(function () {
+                var activeTab = $(this).attr("name");
+                switch (activeTab) {
+                    case 'customertypes': $('#customertypes').load('/Companies/ListOfCustomerTypesDetails/@Model.CompanyID');
+                        break;
+                    case 'contractortypes': $('#contractortypes').load('/Companies/ListOfContractorTypesDetails/@Model.CompanyID');
+                        break;
+                    case 'vendortypes': $('#vendortypes').load('/Companies/ListOfVendorTypesDetails/@Model.CompanyID');
+                        break;
+                    default: break;
+                };
+            })
+    </script>
+}
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>

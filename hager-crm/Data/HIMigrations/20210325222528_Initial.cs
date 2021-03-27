@@ -330,6 +330,87 @@ namespace hager_crm.Data.HIMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CompanyContractors",
+                schema: "HG",
+                columns: table => new
+                {
+                    CompanyID = table.Column<int>(nullable: false),
+                    ContractorTypeID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyContractors", x => new { x.CompanyID, x.ContractorTypeID });
+                    table.ForeignKey(
+                        name: "FK_CompanyContractors_Companies_CompanyID",
+                        column: x => x.CompanyID,
+                        principalSchema: "HG",
+                        principalTable: "Companies",
+                        principalColumn: "CompanyID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CompanyContractors_ContractorTypes_ContractorTypeID",
+                        column: x => x.ContractorTypeID,
+                        principalSchema: "HG",
+                        principalTable: "ContractorTypes",
+                        principalColumn: "ContractorTypeID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CompanyTypes",
+                schema: "HG",
+                columns: table => new
+                {
+                    CompanyID = table.Column<int>(nullable: false),
+                    CustomerTypeID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyTypes", x => new { x.CompanyID, x.CustomerTypeID });
+                    table.ForeignKey(
+                        name: "FK_CompanyTypes_Companies_CompanyID",
+                        column: x => x.CompanyID,
+                        principalSchema: "HG",
+                        principalTable: "Companies",
+                        principalColumn: "CompanyID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CompanyTypes_CustomerTypes_CustomerTypeID",
+                        column: x => x.CustomerTypeID,
+                        principalSchema: "HG",
+                        principalTable: "CustomerTypes",
+                        principalColumn: "CustomerTypeID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CompanyVendors",
+                schema: "HG",
+                columns: table => new
+                {
+                    CompanyID = table.Column<int>(nullable: false),
+                    VendorTypeID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyVendors", x => new { x.CompanyID, x.VendorTypeID });
+                    table.ForeignKey(
+                        name: "FK_CompanyVendors_Companies_CompanyID",
+                        column: x => x.CompanyID,
+                        principalSchema: "HG",
+                        principalTable: "Companies",
+                        principalColumn: "CompanyID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CompanyVendors_VendorTypes_VendorTypeID",
+                        column: x => x.VendorTypeID,
+                        principalSchema: "HG",
+                        principalTable: "VendorTypes",
+                        principalColumn: "VendorTypeID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contacts",
                 schema: "HG",
                 columns: table => new
@@ -363,8 +444,8 @@ namespace hager_crm.Data.HIMigrations
                 schema: "HG",
                 columns: table => new
                 {
-                    CategoriesID = table.Column<int>(nullable: false),
-                    ContactID = table.Column<int>(nullable: false)
+                    ContactID = table.Column<int>(nullable: false),
+                    CategoriesID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -440,6 +521,24 @@ namespace hager_crm.Data.HIMigrations
                 column: "VendorTypeID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CompanyContractors_ContractorTypeID",
+                schema: "HG",
+                table: "CompanyContractors",
+                column: "ContractorTypeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CompanyTypes_CustomerTypeID",
+                schema: "HG",
+                table: "CompanyTypes",
+                column: "CustomerTypeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CompanyVendors_VendorTypeID",
+                schema: "HG",
+                table: "CompanyVendors",
+                column: "VendorTypeID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ContactCategories_ContactID",
                 schema: "HG",
                 table: "ContactCategories",
@@ -485,6 +584,18 @@ namespace hager_crm.Data.HIMigrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CompanyContractors",
+                schema: "HG");
+
+            migrationBuilder.DropTable(
+                name: "CompanyTypes",
+                schema: "HG");
+
+            migrationBuilder.DropTable(
+                name: "CompanyVendors",
+                schema: "HG");
+
             migrationBuilder.DropTable(
                 name: "ContactCategories",
                 schema: "HG");

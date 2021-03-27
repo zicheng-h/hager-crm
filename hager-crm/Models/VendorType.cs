@@ -12,14 +12,19 @@ namespace hager_crm.Models
         public VendorType()
         {
             Companies = new HashSet<Company>();
+            CompanyVendors = new HashSet<CompanyVendor>();
 
         }
         public int VendorTypeID { get; set; }
+
         [Display(Name = "Vendor Type")]
         [StringLength(40, ErrorMessage = "Please enter a Type with less than 40 characters")]
         public string Type { get; set; }
-        public ICollection<Company> Companies { get; set; }
 
+        // For Multiselect list
+        public ICollection<CompanyVendor> CompanyVendors { get; set; }
+        public ICollection<Company> Companies { get; set; }
+        
         [NotMapped]
         public override string DisplayName
         {

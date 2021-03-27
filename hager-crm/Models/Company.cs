@@ -13,6 +13,10 @@ namespace hager_crm.Models
         public Company()
         {
             Contacts = new HashSet<Contact>();
+            CompanyCustomers = new HashSet<CompanyCustomer>();
+            CompanyContractors = new HashSet<CompanyContractor>();
+            CompanyVendors = new HashSet<CompanyVendor>();
+
         }
         public int CompanyID { get; set; }
         [Display(Name = "Company Name")]
@@ -86,24 +90,36 @@ namespace hager_crm.Models
         public int? ShippingCountryID { get; set; }
         [Display(Name = "Shipping Country")]
         public Country ShippingCountry { get; set; }
+
         public bool Customer { get; set; }
         [Display(Name = "Customer Type")]
         public int? CustomerTypeID { get; set; }
+
         [Display(Name = "Customer Type")]
         public CustomerType CustomerType { get; set; }
+
         public bool Vendor { get; set; }
         [Display(Name = "Vendor Type")]
         public int? VendorTypeID { get; set; }
+
         [Display(Name = "Vendor Type")]
         public VendorType VendorType { get; set; }
+
         public bool Contractor { get; set; }
         [Display(Name = "Contractor Type")]
         public int? ContractorTypeID { get; set; }
+
         [Display(Name = "Contractor Type")]
         public ContractorType ContractorType { get; set; }
+
         public bool Active { get; set; }
         [StringLength(200)]
         public string Notes { get; set; }
         public ICollection<Contact> Contacts { get; set; }
+
+        // For multiselect list
+        public ICollection<CompanyCustomer> CompanyCustomers { get; set; }
+        public ICollection<CompanyContractor> CompanyContractors { get; set; }
+        public ICollection<CompanyVendor> CompanyVendors { get; set; }
     }
 }

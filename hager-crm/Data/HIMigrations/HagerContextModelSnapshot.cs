@@ -177,6 +177,51 @@ namespace hager_crm.Data.HIMigrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("hager_crm.Models.CompanyContractor", b =>
+                {
+                    b.Property<int>("CompanyID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ContractorTypeID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CompanyID", "ContractorTypeID");
+
+                    b.HasIndex("ContractorTypeID");
+
+                    b.ToTable("CompanyContractors");
+                });
+
+            modelBuilder.Entity("hager_crm.Models.CompanyCustomer", b =>
+                {
+                    b.Property<int>("CompanyID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CustomerTypeID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CompanyID", "CustomerTypeID");
+
+                    b.HasIndex("CustomerTypeID");
+
+                    b.ToTable("CompanyTypes");
+                });
+
+            modelBuilder.Entity("hager_crm.Models.CompanyVendor", b =>
+                {
+                    b.Property<int>("CompanyID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("VendorTypeID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CompanyID", "VendorTypeID");
+
+                    b.HasIndex("VendorTypeID");
+
+                    b.ToTable("CompanyVendors");
+                });
+
             modelBuilder.Entity("hager_crm.Models.Contact", b =>
                 {
                     b.Property<int>("ContactID")
@@ -535,6 +580,51 @@ namespace hager_crm.Data.HIMigrations
                         .WithMany("Companies")
                         .HasForeignKey("VendorTypeID")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("hager_crm.Models.CompanyContractor", b =>
+                {
+                    b.HasOne("hager_crm.Models.Company", "Company")
+                        .WithMany("CompanyContractors")
+                        .HasForeignKey("CompanyID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("hager_crm.Models.ContractorType", "ContractorType")
+                        .WithMany("CompanyContractors")
+                        .HasForeignKey("ContractorTypeID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("hager_crm.Models.CompanyCustomer", b =>
+                {
+                    b.HasOne("hager_crm.Models.Company", "Company")
+                        .WithMany("CompanyCustomers")
+                        .HasForeignKey("CompanyID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("hager_crm.Models.CustomerType", "CustomerType")
+                        .WithMany("CompanyCustomers")
+                        .HasForeignKey("CustomerTypeID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("hager_crm.Models.CompanyVendor", b =>
+                {
+                    b.HasOne("hager_crm.Models.Company", "Company")
+                        .WithMany("CompanyVendors")
+                        .HasForeignKey("CompanyID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("hager_crm.Models.VendorType", "VendorType")
+                        .WithMany("CompanyVendors")
+                        .HasForeignKey("VendorTypeID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("hager_crm.Models.Contact", b =>
