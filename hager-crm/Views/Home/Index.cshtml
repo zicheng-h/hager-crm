@@ -38,18 +38,63 @@
         <div class="card p-4 m-2">
             <h4 class="card-title">Statistics</h4>
             <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Contracts to end soon
-                <span class="badge badge-primary badge-pill">14</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Warning about company duplication
-                <span class="badge badge-primary badge-pill">2</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Employee birthday coming as a separate tab!
-                <span class="badge badge-primary badge-pill">1</span>
-              </li>
+                @*Check Active employees(Admin), active companies, maybe leave the contracts ending soon as example to stats(Admin, Supervisor).*@
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Contracts to end soon
+                    <span class="badge badge-primary badge-pill">14</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a asp-controller="Companies" asp-action="Index" asp-route-Active="true" class="text-dark nav-link" style="padding:0">
+                        Active Companies
+                    </a>
+                    <span class="badge badge-primary badge-pill">@ViewBag.ActiveCompany</span>
+                </li>
+                @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a asp-controller="Employees" asp-action="Index" asp-route-Active="true" class="text-dark nav-link" style="padding:0">
+                            Active Employees
+                        </a>
+                        <span class="badge badge-primary badge-pill">@ViewBag.ActiveEmployee</span>
+                    </li>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    @if (ViewBag.DuplicationCompany == 0)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Company Duplicates
+                            <span class="badge badge-primary badge-pill">@ViewBag.DuplicationCompany</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center alert alert-warning nav-item">
+                            <a asp-controller="Companies" asp-action="Index" asp-route-CType="All" class="text-dark nav-link" style="padding:0">
+                                Company Duplicates
+                            </a>
+                            <span class="badge badge-primary badge-pill">@ViewBag.DuplicationCompany</span>
+
+                        </li>
+                    }
+
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="col-12 col-md-7 ">
+    </div>
+    <div class="col-12 col-md-5 ">
+        <div class="card p-4 m-2">
+            <h4 class="card-title">Upcoming Birthdays</h4>
+            <ul class="list-group">
+                @*Check DOB dates and and maybe add a birthday card, img*@
+                @foreach(Employee employee in ViewBag.Birthday)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @employee.FullName - @employee.DOB?.Month/@employee.DOB?.Day
+                    </li>
+                }
             </ul>
         </div>
     </div>
