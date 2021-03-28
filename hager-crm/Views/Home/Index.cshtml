@@ -5,10 +5,10 @@
 <h1>Dashboard</h1>
 
 <div class="row">
-    <div class="col-12 col-md-7 ">
-        <div class="card p-4 m-2">
-            <h4 class="card-title">Announcements</h4>
-            <div class="card">
+    <div class="col-12 col-lg-7">
+        <div class="card h-100 p-4"> 
+            <h4 class="card-title">Announcements 📢</h4>
+            <div class="card h-100">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs" id="announcement-tab" role="tablist">
                         <li class="nav-item">
@@ -34,20 +34,22 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-md-5 ">
-        <div class="card p-4 m-2">
-            <h4 class="card-title">Statistics</h4>
+    <div class="col-12 col-lg-5">
+        <div class="card p-4 mb-2">
+            <h4 class="card-title">Statistics 📋</h4>
             <ul class="list-group">
                 @*Check Active employees(Admin), active companies, maybe leave the contracts ending soon as example to stats(Admin, Supervisor).*@
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Contracts to end soon
-                    <span class="badge badge-primary badge-pill">14</span>
+                    <span class="badge badge-primary badge-pill">14</span> 
+                    @* We hardcoded number here because we don't have too much contact to show. 
+                    This section is a proof of concept *@
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <a asp-controller="Companies" asp-action="Index" asp-route-Active="true" class="text-dark nav-link" style="padding:0">
                         Active Companies
                     </a>
-                    <span class="badge badge-primary badge-pill">@ViewBag.ActiveCompany</span>
+                    <span class="badge badge-info badge-pill">@ViewBag.ActiveCompany</span>
                 </li>
                 @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
                 {
@@ -55,7 +57,7 @@
                         <a asp-controller="Employees" asp-action="Index" asp-route-Active="true" class="text-dark nav-link" style="padding:0">
                             Active Employees
                         </a>
-                        <span class="badge badge-primary badge-pill">@ViewBag.ActiveEmployee</span>
+                        <span class="badge badge-success badge-pill">@ViewBag.ActiveEmployee</span>
                     </li>
                 }
                 @if (User.IsInRole("Admin"))
@@ -64,35 +66,37 @@
                     {
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Company Duplicates
-                            <span class="badge badge-primary badge-pill">@ViewBag.DuplicationCompany</span>
+                            <span class="badge badge-warning badge-pill">@ViewBag.DuplicationCompany</span>
                         </li>
                     }
                     else
                     {
                         <li class="list-group-item d-flex justify-content-between align-items-center alert alert-warning nav-item">
-                            <a asp-controller="Companies" asp-action="Index" asp-route-CType="All" class="text-dark nav-link" style="padding:0">
+                            <a asp-controller="Companies" asp-action="Index" asp-route-CType="All" class="text-dark p-0">
                                 Company Duplicates
                             </a>
-                            <span class="badge badge-primary badge-pill">@ViewBag.DuplicationCompany</span>
-
+                            <span class="badge badge-warning badge-pill">@ViewBag.DuplicationCompany</span>
                         </li>
                     }
-
                 }
             </ul>
         </div>
-    </div>
-    <div class="col-12 col-md-7 ">
-    </div>
-    <div class="col-12 col-md-5 ">
-        <div class="card p-4 m-2">
-            <h4 class="card-title">Upcoming Birthdays</h4>
+        <div class="card p-4">
+            <h4 class="card-title">Upcoming Birthdays 🎂</h4>
             <ul class="list-group">
                 @*Check DOB dates and and maybe add a birthday card, img*@
-                @foreach(Employee employee in ViewBag.Birthday)
+                @foreach (Employee employee in ViewBag.Birthday)
                 {
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @employee.FullName - @employee.DOB?.Month/@employee.DOB?.Day
+                        @{
+                            var birthDay = employee.DOB ?? DateTime.Today;
+                            birthDay = new DateTime(DateTime.Today.Year, birthDay.Month, birthDay.Day);
+                        }
+                        <a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.EmployeeID" class="text-dark p-0">
+                            @employee.FullName:
+                        </a>
+                        @(birthDay.ToString("d")) - 
+                        <span class="badge badge-pill badge-warning">@((birthDay - DateTime.Today).Days) day(s) left.</span>
                     </li>
                 }
             </ul>

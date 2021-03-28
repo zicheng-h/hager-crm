@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using hager_crm.Utils;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace hager_crm.Controllers
@@ -57,7 +58,7 @@ namespace hager_crm.Controllers
             return String.Format("{0:P2}", percent);
         }
 
-        public async System.Threading.Tasks.Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> Index()
         {
             ViewData["DuplicationCompany"] = GetSimillarCompaniesCount(await _context.Companies.OrderBy(c => c.CompanyID).Take(20).ToListAsync());
             ViewData["ActiveEmployee"] = GetActiveEmployee(await _context.Employees.Where(e => e.Active == true).ToListAsync(), await _context.Employees.ToListAsync());
