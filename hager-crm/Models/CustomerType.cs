@@ -14,14 +14,19 @@ namespace hager_crm.Models
         public CustomerType()
         {
             Companies = new HashSet<Company>();
+            CompanyCustomers = new HashSet<CompanyCustomer>();
         }
 
         public int CustomerTypeID { get; set; }
+
         [Display(Name = "Customer Type")]
         [StringLength(40, ErrorMessage = "Please enter a Type with less than 40 characters")]
         public string Type { get; set; }
+
+        // For Multiselect list
+        public ICollection<CompanyCustomer> CompanyCustomers { get; set; }
         public ICollection<Company> Companies { get; set; }
-        
+
         public override int GetId() => CustomerTypeID;
         
         [NotMapped]

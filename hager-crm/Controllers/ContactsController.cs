@@ -314,8 +314,7 @@ namespace hager_crm.Controllers
                 return;
             }
             var selectedOptionsHS = new HashSet<string>(selectedOptions);
-            var contactCategoriesHS = new HashSet<int>
-                (contactToUpdate.ContactCategories.Select(c => c.CategoriesID)); // current category selected
+            var contactCategoriesHS = new HashSet<int>(contactToUpdate.ContactCategories.Select(c => c.CategoriesID)); // current category selected
 
             foreach (var option in _context.Categories)
             {
@@ -336,7 +335,6 @@ namespace hager_crm.Controllers
                 }
             }
         }
-
         private bool ContactExists(int id)
         {
             return _context.Contacts.Any(e => e.ContactID == id);

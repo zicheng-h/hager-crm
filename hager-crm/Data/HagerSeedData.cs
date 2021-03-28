@@ -10,6 +10,9 @@ namespace hager_crm.Data
     {
         public static void Seed(HagerContext context, ApplicationDbContext idcontext)
         {
+            //Prepare Random
+            Random random = new Random();
+
             #region LookUpValues
             if (!context.CustomerTypes.Any())
             {
@@ -947,7 +950,7 @@ namespace hager_crm.Data
                 context.SaveChanges();
             }
 
-            if(!context.Currencies.Any())
+            if (!context.Currencies.Any())
             {
                 context.Currencies.AddRange(
                     new Currency
@@ -962,7 +965,7 @@ namespace hager_crm.Data
                 context.SaveChanges();
             }
 
-            
+
             #endregion
 
             #region Employees
@@ -1033,16 +1036,16 @@ namespace hager_crm.Data
                         Active = true
                     }
                 );
-                
+
                 context.SaveChanges();
-                
+
                 foreach (var employee in context.Employees)
                 {
                     var identity = idcontext.Users.FirstOrDefault(u => u.Email == employee.Email);
                     if (identity != null)
                         employee.UserId = identity.Id;
                 }
-                
+
                 context.SaveChanges();
             }
             #endregion
@@ -1254,10 +1257,12 @@ namespace hager_crm.Data
                         Contractor = true,
                         ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Electrical").ContractorTypeID
                     }
-                    ) ;
+                    );
                 context.SaveChanges();
             }
             #endregion
+
+
 
             #region Contact
             if (!context.Contacts.Any())
@@ -1387,7 +1392,7 @@ namespace hager_crm.Data
 
             #region Contact Categories
             if (!context.ContactCategories.Any())
-            { 
+            {
                 context.ContactCategories.AddRange(
                     // Customer Contact
                     new ContactCategories

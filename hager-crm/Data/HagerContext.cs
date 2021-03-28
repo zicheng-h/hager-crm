@@ -38,6 +38,9 @@ namespace hager_crm.Data
         public DbSet<JobPosition> JobPositions { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<VendorType> VendorTypes { get; set; }
+        public DbSet<CompanyCustomer> CompanyTypes { get; set; }
+        public DbSet<CompanyContractor> CompanyContractors { get; set; }
+        public DbSet<CompanyVendor> CompanyVendors { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<AnnouncementEmployee> AnnouncementEmployees { get; set; }
         
@@ -150,6 +153,38 @@ namespace hager_crm.Data
                 .HasMany<ContactCategories>(d => d.ContactCategories)
                 .WithOne(p => p.Categories)
                 .HasForeignKey(p => p.CategoriesID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //////////////////////////////////////////////////////////////////
+            // Many to Many Companies type PK
+            modelBuilder.Entity<CompanyCustomer>()
+                .HasKey(t => new { t.CompanyID, t.CustomerTypeID});
+
+            modelBuilder.Entity<CompanyContractor>()
+                .HasKey(t => new { t.CompanyID, t.ContractorTypeID });
+
+            modelBuilder.Entity<CompanyVendor>()
+                .HasKey(t => new { t.CompanyID, t.VendorTypeID});
+
+            // Cascade Delete Customer Type
+            modelBuilder.Entity<CustomerType>()
+                .HasMany<CompanyCustomer>(c => c.CompanyCustomers)
+                .WithOne(c => c.CustomerType)
+                .HasForeignKey(c => c.CustomerTypeID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Cascade Delete Contractor Type
+            modelBuilder.Entity<ContractorType>()
+                .HasMany<CompanyContractor>(c => c.CompanyContractors)
+                .WithOne(c => c.ContractorType)
+                .HasForeignKey(c => c.ContractorTypeID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Cascade Delete Vendor Type
+            modelBuilder.Entity<VendorType>()
+                .HasMany<CompanyVendor>(c => c.CompanyVendors)
+                .WithOne(c => c.VendorType)
+                .HasForeignKey(c => c.VendorTypeID)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
