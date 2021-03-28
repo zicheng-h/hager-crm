@@ -964,8 +964,6 @@ namespace hager_crm.Data
                     );
                 context.SaveChanges();
             }
-
-
             #endregion
 
             #region Employees
@@ -974,20 +972,21 @@ namespace hager_crm.Data
                 context.Employees.AddRange(
                     new Employee
                     {
-                        FirstName = "President",
-                        LastName = "Surname",
-                        JobPositionID = context.JobPositions.FirstOrDefault(p => p.Position == "President").JobPositionID,
+                        FirstName = "Jeremy",
+                        LastName = "Hager",
+                        JobPositionID = context.JobPositions.FirstOrDefault(p => p.Position == "Vice President").JobPositionID,
                         EmploymentTypeID = context.EmploymentTypes.FirstOrDefault(t => t.Type == "Full-Time").EmploymentTypeID,
-                        EmployeeAddress1 = "100 This St",
+                        EmployeeAddress1 = "895 Maple Ave",
+                        EmployeeCity = "Burlington",
                         EmployeeProvinceID = context.Provinces.FirstOrDefault(p => p.ProvinceName == "Ontario").ProvinceID,
-                        EmployeePostalCode = "A1B2C3",
+                        EmployeePostalCode = "L7S2H7",
                         EmployeeCountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID,
-                        WorkPhone = 1234567890,
+                        WorkPhone = 2892142825,
                         Email = "admin1@outlook.com",
-                        DOB = DateTime.Parse("1980-04-04"),
+                        DOB = DateTime.Parse("1980-03-30"),
                         Wage = 200000m,
                         Expense = 0m,
-                        DateJoined = DateTime.Now,
+                        DateJoined = DateTime.Parse("2019-01-02"),
                         KeyFob = 1234567,
                         EmergencyContactName = "Emergency",
                         EmergencyContactPhone = 1234567899,
@@ -995,20 +994,21 @@ namespace hager_crm.Data
                     },
                     new Employee
                     {
-                        FirstName = "Vice",
-                        LastName = "President",
-                        JobPositionID = context.JobPositions.FirstOrDefault(p => p.Position == "Vice President").JobPositionID,
+                        FirstName = "Darryl",
+                        LastName = "Zych",
+                        JobPositionID = context.JobPositions.FirstOrDefault(p => p.Position == "Engineering Manager").JobPositionID,
                         EmploymentTypeID = context.EmploymentTypes.FirstOrDefault(t => t.Type == "Full-Time").EmploymentTypeID,
-                        EmployeeAddress1 = "100 This St",
+                        EmployeeAddress1 = "91 2nd St.",
+                        EmployeeCity = "Stoney Creek",
                         EmployeeProvinceID = context.Provinces.FirstOrDefault(p => p.ProvinceName == "Ontario").ProvinceID,
-                        EmployeePostalCode = "A1B2C3",
+                        EmployeePostalCode = "L8G1Z2",
                         EmployeeCountryID = context.Countries.FirstOrDefault(c => c.CountryName == "Canada").CountryID,
                         WorkPhone = 1234567890,
                         Email = "super1@outlook.com",
-                        DOB = DateTime.Parse("1980-04-04"),
+                        DOB = DateTime.Parse("1974-04-04"),
                         Wage = 200000m,
                         Expense = 0m,
-                        DateJoined = DateTime.Now,
+                        DateJoined = DateTime.Parse("2004-03-20"),
                         KeyFob = 1234567,
                         EmergencyContactName = "Emergency",
                         EmergencyContactPhone = 1234567899,
@@ -1016,9 +1016,9 @@ namespace hager_crm.Data
                     },
                     new Employee
                     {
-                        FirstName = "Sales",
-                        LastName = "Manager",
-                        JobPositionID = context.JobPositions.FirstOrDefault(p => p.Position == "Sales Manager").JobPositionID,
+                        FirstName = "Padraic",
+                        LastName = "Cronnelly",
+                        JobPositionID = context.JobPositions.FirstOrDefault(p => p.Position == "Shipping Receiving").JobPositionID,
                         EmploymentTypeID = context.EmploymentTypes.FirstOrDefault(t => t.Type == "Full-Time").EmploymentTypeID,
                         EmployeeAddress1 = "100 This St",
                         EmployeeProvinceID = context.Provinces.FirstOrDefault(p => p.ProvinceName == "Ontario").ProvinceID,

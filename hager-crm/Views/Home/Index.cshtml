@@ -91,12 +91,23 @@
                         @{
                             var birthDay = employee.DOB ?? DateTime.Today;
                             birthDay = new DateTime(DateTime.Today.Year, birthDay.Month, birthDay.Day);
+                            var d = (birthDay - DateTime.Today).Days;
                         }
                         <a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.EmployeeID" class="text-dark p-0">
                             @employee.FullName:
                         </a>
-                        @(birthDay.ToString("d")) - 
-                        <span class="badge badge-pill badge-warning">@((birthDay - DateTime.Today).Days) day(s) left.</span>
+                        @(birthDay.ToString("MMM d"))
+                        <span class="badge badge-pill badge-warning">
+                            in @d
+                            @if (d > 1)
+                            {
+                                @: days
+                            }
+                            else
+                            {
+                                @: day
+                            }
+                        </span>
                     </li>
                 }
             </ul>

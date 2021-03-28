@@ -403,7 +403,7 @@ namespace hager_crm.Controllers
             {
                 return User.Identity.Name;
             }
-            return employee.FullName;
+            return employee.FirstName;
         }
     }
 }
