@@ -12,6 +12,12 @@ namespace hager_crm.Models
     //2021-01-22
     public class Employee
     {
+
+        public Employee()
+        {
+            UnreadAnnouncements = new HashSet<AnnouncementEmployee>();
+        }
+        
         public int EmployeeID { get; set; }
 
         [Required(ErrorMessage = "Please enter a First Name.")]
@@ -97,7 +103,7 @@ namespace hager_crm.Models
         public DateTime? DateJoined { get; set; }
 
         [Display(Name = "Key Fob #")]
-        [RegularExpression("^\\d{9}$", ErrorMessage = "Please enter a proper key fob number with 7 digits without spaces.")]
+        [RegularExpression("^\\d{7}$", ErrorMessage = "Please enter a proper key fob number with 7 digits without spaces.")]
         [DisplayFormat(DataFormatString = "{0:####:#####}", ApplyFormatInEditMode = false)]
         public Int32? KeyFob { get; set; }
 
@@ -123,6 +129,7 @@ namespace hager_crm.Models
 
         [Display(Name = "Full Name")]
         public string FullName => FirstName + " " + LastName;
-
+        
+        public ICollection<AnnouncementEmployee> UnreadAnnouncements { get; set; }
     }
 }

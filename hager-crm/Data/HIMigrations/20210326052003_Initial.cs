@@ -11,6 +11,23 @@ namespace hager_crm.Data.HIMigrations
                 name: "HG");
 
             migrationBuilder.CreateTable(
+                name: "Announcements",
+                schema: "HG",
+                columns: table => new
+                {
+                    AnnouncementID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(maxLength: 64, nullable: false),
+                    Message = table.Column<string>(maxLength: 256, nullable: false),
+                    PostedAt = table.Column<DateTime>(nullable: false),
+                    Severity = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Announcements", x => x.AnnouncementID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BillingTerms",
                 schema: "HG",
                 columns: table => new
@@ -330,6 +347,35 @@ namespace hager_crm.Data.HIMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AnnouncementEmployees",
+                schema: "HG",
+                columns: table => new
+                {
+                    AnnouncementEmployeeID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    EmployeeID = table.Column<int>(nullable: false),
+                    AnnouncementID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnnouncementEmployees", x => x.AnnouncementEmployeeID);
+                    table.ForeignKey(
+                        name: "FK_AnnouncementEmployees_Announcements_AnnouncementID",
+                        column: x => x.AnnouncementID,
+                        principalSchema: "HG",
+                        principalTable: "Announcements",
+                        principalColumn: "AnnouncementID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AnnouncementEmployees_Employees_EmployeeID",
+                        column: x => x.EmployeeID,
+                        principalSchema: "HG",
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contacts",
                 schema: "HG",
                 columns: table => new
@@ -384,6 +430,18 @@ namespace hager_crm.Data.HIMigrations
                         principalColumn: "ContactID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnnouncementEmployees_AnnouncementID",
+                schema: "HG",
+                table: "AnnouncementEmployees",
+                column: "AnnouncementID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnnouncementEmployees_EmployeeID",
+                schema: "HG",
+                table: "AnnouncementEmployees",
+                column: "EmployeeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_BillingCountryID",
@@ -486,7 +544,15 @@ namespace hager_crm.Data.HIMigrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AnnouncementEmployees",
+                schema: "HG");
+
+            migrationBuilder.DropTable(
                 name: "ContactCategories",
+                schema: "HG");
+
+            migrationBuilder.DropTable(
+                name: "Announcements",
                 schema: "HG");
 
             migrationBuilder.DropTable(

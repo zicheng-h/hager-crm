@@ -1440,6 +1440,32 @@ namespace hager_crm.Data
                 context.SaveChanges();
             }
             #endregion
+
+            #region Announcements
+
+            if (!context.Announcements.Any())
+            {
+                var announcement = new Announcement
+                {
+                    Title = "Test Message", 
+                    Message = "Test Message. How are you?",
+                    Severity = AnnouncementSeverity.Info,
+                    PostedAt = DateTime.Now
+                };
+                context.Announcements.Add(announcement);
+                context.SaveChanges();
+                foreach (var employee in context.Employees)
+                {
+                    context.AnnouncementEmployees.Add(new AnnouncementEmployee
+                    {
+                        EmployeeID = employee.EmployeeID, 
+                        AnnouncementID = announcement.AnnouncementID
+                    });
+                }
+                context.SaveChanges();
+            }
+
+            #endregion
         }
     }
 }

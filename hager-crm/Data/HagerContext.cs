@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using hager_crm.Controllers;
 using hager_crm.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using hager_crm.Utils;
@@ -37,7 +38,9 @@ namespace hager_crm.Data
         public DbSet<JobPosition> JobPositions { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<VendorType> VendorTypes { get; set; }
-
+        public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<AnnouncementEmployee> AnnouncementEmployees { get; set; }
+        
         public List<ILookupManage> GetLookups() => new List<ILookupManage>
         {
             new BillingTerm(),
@@ -55,6 +58,12 @@ namespace hager_crm.Data
         {
             //Default Schema
             modelBuilder.HasDefaultSchema("HG");
+
+            modelBuilder.Entity<Announcement>().HasMany(a => a.EmployeesUnread)
+                .WithOne(a => a.Announcement).OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Employee>().HasMany(e => e.UnreadAnnouncements)
+                .WithOne(a => a.Employee).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Employee>().HasIndex(e => e.Email).IsUnique();
 
