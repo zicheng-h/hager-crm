@@ -35,6 +35,8 @@ namespace hager_crm.Controllers
         // GET: Contacts
         public async Task<IActionResult> Index()
         {
+            //Clear the sort/filter/paging URL Cookie
+            CookieHelper.CookieSet(HttpContext, "ContactsURL", "", -1);
             IQueryable<Contact> query = _context.Contacts
                 .Include(c => c.Company)
                 .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
@@ -45,19 +47,32 @@ namespace hager_crm.Controllers
             ViewBag.gridFilter = _gridFilter;
             ViewData["CategoriesID"] = GetCategoriesSelectList();
 
+            await _gridFilter.GetFilteredData(query);
+            int countFilter = _gridFilter.OuterFields.Count;
+            if (countFilter > 1)
+            {
+                ViewData["ChangeColor"] = 1;
+            }
+            else
+            {
+                ViewData["ChangeColor"] = 0;
+            }
+
             return View(await _gridFilter.GetFilteredData(query));
         }
 
         // GET: Contacts/Details/5
         public async Task<IActionResult> Details(int? id, string returnURL)
         {
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
 
-            //Get the URL of the page that send us here
-            if (String.IsNullOrEmpty(returnURL))
-            {
-                returnURL = Request.Headers["Referer"].ToString();
-            }
-            ViewData["returnURL"] = returnURL;
+            ////Get the URL of the page that send us here
+            //if (String.IsNullOrEmpty(returnURL))
+            //{
+            //    returnURL = Request.Headers["Referer"].ToString();
+            //}
+            //ViewData["returnURL"] = returnURL;
 
             if (id == null)
             {
@@ -79,12 +94,15 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin, Supervisor")]
         public IActionResult Create(string returnURL)
         {
-            //Get the URL of the page that send us here
-            if (String.IsNullOrEmpty(returnURL))
-            {
-                returnURL = Request.Headers["Referer"].ToString();
-            }
-            ViewData["returnURL"] = returnURL;
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
+
+            ////Get the URL of the page that send us here
+            //if (String.IsNullOrEmpty(returnURL))
+            //{
+            //    returnURL = Request.Headers["Referer"].ToString();
+            //}
+            //ViewData["returnURL"] = returnURL;
 
             ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name");
 
@@ -103,7 +121,10 @@ namespace hager_crm.Controllers
         public async Task<IActionResult> Create([Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
             string[] selectedOptions, string CType, string returnURL)
         {
-            ViewData["returnURL"] = returnURL;
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
+
+            //ViewData["returnURL"] = returnURL;
             try
             {
                 // Adding the multi select categories
@@ -120,15 +141,17 @@ namespace hager_crm.Controllers
                 {
                     _context.Add(contact);
                     await _context.SaveChangesAsync();
-                    if(String.IsNullOrEmpty(returnURL))
-                    {
-                        return RedirectToAction(nameof(Index), new { CType = CType });
-                    }
-                    else
-                    {
-                        return Redirect(returnURL);
-                    }
-                    
+                    //if(String.IsNullOrEmpty(returnURL))
+                    //{
+                    //    return RedirectToAction(nameof(Index), new { CType = CType });
+                    //}
+                    //else
+                    //{
+                    //    return Redirect(returnURL);
+                    //}
+
+                    return Redirect(ViewData["returnURL"].ToString());
+
                 }
                 ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
                 return View(contact);
@@ -147,12 +170,15 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Edit(int? id, string returnURL)
         {
-            //Get the URL of the page that send us here
-            if (String.IsNullOrEmpty(returnURL))
-            {
-                returnURL = Request.Headers["Referer"].ToString();
-            }
-            ViewData["returnURL"] = returnURL;
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
+
+            ////Get the URL of the page that send us here
+            //if (String.IsNullOrEmpty(returnURL))
+            //{
+            //    returnURL = Request.Headers["Referer"].ToString();
+            //}
+            //ViewData["returnURL"] = returnURL;
 
             if (id == null)
             {
@@ -180,7 +206,10 @@ namespace hager_crm.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
             string[] selectedOptions, string CType, string returnURL)
         {
-            ViewData["returnURL"] = returnURL;
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
+
+            //ViewData["returnURL"] = returnURL;
             var contactToUpdate = await _context.Contacts
                 .Include(c => c.ContactCategories).ThenInclude(c => c.Categories)
                 .SingleOrDefaultAsync(c => c.ContactID == id);
@@ -215,15 +244,16 @@ namespace hager_crm.Controllers
                         throw;
                     }
                 }
-                if(String.IsNullOrEmpty(returnURL))
-                {
-                    return RedirectToAction(nameof(Index), new { CType = CType });
-                }
-                else
-                {
-                    return Redirect(returnURL);
-                }
-                
+                //if(String.IsNullOrEmpty(returnURL))
+                //{
+                //    return RedirectToAction(nameof(Index), new { CType = CType });
+                //}
+                //else
+                //{
+                //    return Redirect(returnURL);
+                //}
+                return Redirect(ViewData["returnURL"].ToString());
+
             }
 
             ViewData["CompanyID"] = new SelectList(_context.Companies, "CompanyID", "Name", contact.CompanyID);
@@ -235,12 +265,15 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Delete(int? id, string returnURL)
         {
-            //Get the URL of the page that send us here
-            if (String.IsNullOrEmpty(returnURL))
-            {
-                returnURL = Request.Headers["Referer"].ToString();
-            }
-            ViewData["returnURL"] = returnURL;
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
+
+            ////Get the URL of the page that send us here
+            //if (String.IsNullOrEmpty(returnURL))
+            //{
+            //    returnURL = Request.Headers["Referer"].ToString();
+            //}
+            //ViewData["returnURL"] = returnURL;
 
             if (id == null)
             {
@@ -264,19 +297,24 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> DeleteConfirmed(int id, string CType, string returnURL)
         {
-            ViewData["returnURL"] = returnURL;
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
+
+            //ViewData["returnURL"] = returnURL;
             var contact = await _context.Contacts.FindAsync(id);
             _context.Contacts.Remove(contact);
             await _context.SaveChangesAsync();
-            if(String.IsNullOrEmpty(returnURL))
-            {
-                return RedirectToAction(nameof(Index), new { CType = CType });
-            }
-            else
-            {
-                return Redirect(returnURL);
-            }
-            
+            //if(String.IsNullOrEmpty(returnURL))
+            //{
+            //    return RedirectToAction(nameof(Index), new { CType = CType });
+            //}
+            //else
+            //{
+            //    return Redirect(returnURL);
+            //}
+
+            return Redirect(ViewData["returnURL"].ToString());
+
         }
 
         //GET: Redirect using company name to Company's Details page

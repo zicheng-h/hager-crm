@@ -6,6 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var gridFilter = ViewBag.gridFilter;
     var sorts = gridFilter.OuterSorts;
+    int changeColer = (int)@ViewData["ChangeColor"];
 }
 
 <h1>@Context.Request.Query["CType"] @Context.Request.Query["CompanyName"] Contact list</h1>
@@ -15,7 +16,14 @@
     {
         <a class="btn btn-outline-primary my-2" asp-action="Create" asp-route-CType="@Context.Request.Query["CType"]">Add New</a>
     }
-    @Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
+    @if (changeColer == 0)
+    {
+        @Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
+    }
+    else
+    {
+        @Html.GenerateFiltered((IGridFilterFilterable)gridFilter)
+    }
 </div>
 
 <div class="overflow-auto">

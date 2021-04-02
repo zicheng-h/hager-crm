@@ -90,7 +90,9 @@
                     <div class="form-group">
                         <label asp-for="BillingCountryID" class="control-label"></label>
                         <select asp-for="BillingCountryID" class="form-control dropdown-country" data-link="link-edit-bill-province"
-                                asp-items="ViewBag.BillingCountryID"></select>
+                                asp-items="ViewBag.BillingCountryID">
+                            <option value="">-- Select Country --</option>
+                        </select>
                         <span asp-validation-for="BillingCountryID" class="text-danger"></span>
                     </div>
                 </div>
@@ -127,7 +129,9 @@
                     <div class="form-group">
                         <label asp-for="ShippingCountryID" class="control-label"></label>
                         <select asp-for="ShippingCountryID" class="form-control dropdown-country"
-                                data-link="link-edit-ship-province" asp-items="ViewBag.ShippingCountryID"></select>
+                                data-link="link-edit-ship-province" asp-items="ViewBag.ShippingCountryID">
+                            <option value="">-- Select Country --</option>
+                        </select>
                         <span asp-validation-for="ShippingCountryID" class="text-danger"></span>
                     </div>
                     <div class="form-group form-check">
@@ -193,6 +197,11 @@
                             @Html.ListBox("availOptionsVen", (MultiSelectList)ViewBag.availOptsVen, new { @size = 6, @class = "form-control" })
                         </div>
                     </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                        </label>
+                    </div>
                     <div class="form-group">
                         <label asp-for="Notes" class="control-label"></label>
                         <input asp-for="Notes" class="form-control" />
@@ -206,14 +215,16 @@
                         <input type="submit" id="btnSubmit" value="Save" class="btn btn-primary" />
                     </div>
                     <div>
-                        @if (String.IsNullOrEmpty(ViewData["returnURL"].ToString()))
+                        @*@if (String.IsNullOrEmpty(ViewData["returnURL"].ToString()))
                         {
                             <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
                         }
                         else
                         {
                             <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
-                        }
+                        }*@
+
+                        <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
                     </div>
                 </div>
 

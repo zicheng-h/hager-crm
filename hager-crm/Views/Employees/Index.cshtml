@@ -7,6 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var gridFilter = ViewBag.gridFilter;
     var sorts = gridFilter.OuterSorts;
+    int changeColer = (int)@ViewData["ChangeColor"];
 }
 
 <h1>Employee List</h1>
@@ -16,7 +17,14 @@
 <div>
     <a class="btn btn-outline-primary my-2" asp-action="Create">Create New</a>
     <button type="button" class="btn btn-outline-primary my-2" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Employees</button>
-    @Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
+    @if (changeColer == 0)
+    {
+        @Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
+    }
+    else
+    {
+        @Html.GenerateFiltered((IGridFilterFilterable)gridFilter)
+    }
     <form class="my-3" asp-action="InsertFromExcel" asp-controller="Employees" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="collapse" id="collapseImport">
@@ -44,7 +52,16 @@
     </form>
 </div>
 }
-else {@Html.GenerateFiltering((IGridFilterFilterable)gridFilter)}
+else {
+    @if (changeColer == 0)
+    {
+        @Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
+    }
+    else
+    {
+        @Html.GenerateFiltered((IGridFilterFilterable)gridFilter)
+    }
+}
 
 <div class="overflow-auto">
     <table class="table text-center">

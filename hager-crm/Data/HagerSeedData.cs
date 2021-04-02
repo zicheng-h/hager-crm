@@ -1079,7 +1079,8 @@ namespace hager_crm.Data
                         Vendor = false,
                         VendorTypeID = null,
                         Contractor = false,
-                        ContractorTypeID = null
+                        ContractorTypeID = null,
+                        Active = true
                     },
                     new Company
                     {
@@ -1101,7 +1102,8 @@ namespace hager_crm.Data
                         Customer = true,
                         CustomerTypeID = context.CustomerTypes.FirstOrDefault(b => b.Type == "Beef").CustomerTypeID,
                         Vendor = false,
-                        Contractor = false
+                        Contractor = false,
+                        Active = true
                     },
                     new Company
                     {
@@ -1123,7 +1125,8 @@ namespace hager_crm.Data
                         Customer = true,
                         CustomerTypeID = context.CustomerTypes.FirstOrDefault(b => b.Type == "Pork").CustomerTypeID,
                         Vendor = false,
-                        Contractor = false
+                        Contractor = false,
+                        Active = true
                     },
                     new Company
                     {
@@ -1145,7 +1148,8 @@ namespace hager_crm.Data
                         Customer = false,
                         Vendor = true,
                         VendorTypeID = context.VendorTypes.FirstOrDefault(b => b.Type == "Conveyor & Fabrication").VendorTypeID,
-                        Contractor = false
+                        Contractor = false,
+                        Active = true
                     },
                     new Company
                     {
@@ -1167,7 +1171,8 @@ namespace hager_crm.Data
                         Customer = false,
                         Vendor = true,
                         VendorTypeID = context.VendorTypes.FirstOrDefault(b => b.Type == "Professional Service").VendorTypeID,
-                        Contractor = false
+                        Contractor = false,
+                        Active = true
                     },
                     new Company
                     {
@@ -1189,7 +1194,8 @@ namespace hager_crm.Data
                         Customer = false,
                         Vendor = true,
                         VendorTypeID = context.VendorTypes.FirstOrDefault(b => b.Type == "Office Supplies").VendorTypeID,
-                        Contractor = false
+                        Contractor = false,
+                        Active = true
                     },
                     new Company
                     {
@@ -1211,7 +1217,8 @@ namespace hager_crm.Data
                         Customer = false,
                         Vendor = false,
                         Contractor = true,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Welding").ContractorTypeID
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Welding").ContractorTypeID,
+                        Active = true
                     },
                     new Company
                     {
@@ -1233,7 +1240,8 @@ namespace hager_crm.Data
                         Customer = false,
                         Vendor = false,
                         Contractor = true,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Plumbing").ContractorTypeID
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Plumbing").ContractorTypeID,
+                        Active = true
                     },
                     new Company
                     {
@@ -1255,7 +1263,8 @@ namespace hager_crm.Data
                         Customer = false,
                         Vendor = false,
                         Contractor = true,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Electrical").ContractorTypeID
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Electrical").ContractorTypeID,
+                        Active = true
                     }
                     );
                 context.SaveChanges();
