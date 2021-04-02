@@ -71,7 +71,7 @@ namespace hager_crm.Controllers
                 .Include(c => c.BillingTerm)
                 .Include(c => c.ShippingCountry)
                 .Include(c => c.ShippingProvince)
-                .Include(c => c.VendorType)
+                //.Include(c => c.VendorType)
                 .Include(c => c.CompanyCustomers).ThenInclude(c => c.CustomerType)
                 .Include(c => c.CompanyContractors).ThenInclude(c => c.ContractorType)
                 .Include(c => c.CompanyVendors).ThenInclude(c => c.VendorType)
@@ -128,6 +128,13 @@ namespace hager_crm.Controllers
                 return NotFound();
             }
 
+            GetTypesIn(id, out var customerTypes, out var contractorTypes, out var vendorTypes);
+            var dict = new Dictionary<string, List<CompanyTypesDto>>();
+            if (customerTypes.Count > 0) dict.Add("customer", customerTypes);
+            if (contractorTypes.Count > 0) dict.Add("contractor", contractorTypes);
+            if (vendorTypes.Count > 0) dict.Add("vendor", vendorTypes);
+            ViewData["CompanyTypes"] = dict;
+
             return View(company);
         }
 
@@ -157,9 +164,6 @@ namespace hager_crm.Controllers
             ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes.OrderBy(t => t.Order), "ContractorTypeID", "Type");
             ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes.OrderBy(t => t.Order), "VendorTypeID", "Type");
 
-            PopulateAssignedCustomerTypes(company);
-            PopulateAssignedContractorTypes(company);
-            PopulateAssignedVendorTypes(company);
             return View();
         }
         // POST: Companies/Create
@@ -169,16 +173,14 @@ namespace hager_crm.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Create([Bind("CompanyID,Name,Location,CreditCheck,DateChecked,BillingTermID,CurrencyID,Phone,Website,BillingAddress1,BillingAddress2,BillingProvinceID,BillingPostalCode,BillingCountryID,ShippingAddress1,ShippingAddress2,ShippingProvinceID,ShippingPostalCode,ShippingCountryID,Customer,CustomerTypeID,Vendor,VendorTypeID,Contractor,ContractorTypeID,Active,Notes")] 
-        Company company, string CType, string returnURL, string[] selectedOptions, string[] selectedOptionsCont, string[] selectedOptionsVen)
+        Company company, string CType, string returnURL, string companyTypes)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
             //ViewData["returnURL"] = returnURL;
             try
             {
-                UpdateCustomerType(selectedOptions, company);
-                UpdateContractorType(selectedOptionsCont, company);
-                UpdateVendorType(selectedOptionsVen, company);
+                UpdateCompanyTypes(companyTypes, company);
                 if (ModelState.IsValid)
                 {
                     _context.Add(company);
@@ -202,24 +204,9 @@ namespace hager_crm.Controllers
             }
             catch (Exception)
             {
-
                 ModelState.AddModelError("", "Unable to create new record.");
             }
-            
-            ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", company.BillingCountryID);
-            ViewData["BillingProvinceID"] = GetProvincesSelectList(company.BillingProvinceID);
-            ViewData["BillingTermID"] = new SelectList(_context.BillingTerms, "BillingTermID", "Terms", company.BillingTermID);
-            ViewData["CurrencyID"] = new SelectList(_context.Currencies, "CurrencyID", "CurrencyID", company.CurrencyID);
-            ViewData["ShippingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", company.ShippingCountryID);
-            ViewData["ShippingProvinceID"] = new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", company.ShippingProvinceID);
-            ViewData["ShippingProvinceID"] = GetProvincesSelectList(company.ShippingProvinceID);
-            ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes, "CustomerTypeID", "CustomerTypeID", company.CustomerTypeID);
-            ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes, "ContractorTypeID", "ContractorTypeID", company.ContractorTypeID);
-            ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "VendorTypeID", company.VendorTypeID);
 
-            PopulateAssignedCustomerTypes(company);
-            PopulateAssignedContractorTypes(company);
-            PopulateAssignedVendorTypes(company);
             return View(company);
         }
 
@@ -261,13 +248,7 @@ namespace hager_crm.Controllers
             ViewData["CurrencyID"] = new SelectList(_context.Currencies, "CurrencyID", "CurrencyName", company.CurrencyID);
             ViewData["ShippingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", company.ShippingCountryID);
             ViewData["ShippingProvinceID"] = GetProvincesSelectList(company.ShippingProvinceID);
-            ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes, "CustomerTypeID", "Type", company.CustomerTypeID);
-            ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes, "ContractorTypeID", "Type", company.ContractorTypeID);
-            ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "Type", company.VendorTypeID);
 
-            PopulateAssignedCustomerTypes(company);
-            PopulateAssignedContractorTypes(company);
-            PopulateAssignedVendorTypes(company);
             return View(company);
         }
         // POST: Companies/Edit/5
@@ -276,7 +257,7 @@ namespace hager_crm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Edit(int id, string CType, string returnURL, string[] selectedOptions, string[] selectedOptionsCont, string[] selectedOptionsVen)
+        public async Task<IActionResult> Edit(int id, string CType, string returnURL, string companyTypes)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
@@ -299,9 +280,7 @@ namespace hager_crm.Controllers
                 return NotFound();
             }
 
-            UpdateCustomerType(selectedOptions, companyToUpdate);
-            UpdateContractorType(selectedOptionsCont, companyToUpdate);
-            UpdateVendorType(selectedOptionsVen, companyToUpdate);
+            UpdateCompanyTypes(companyTypes, companyToUpdate);
 
             if (await TryUpdateModelAsync<Company>(companyToUpdate,"",
                 c => c.Name,
@@ -322,12 +301,6 @@ namespace hager_crm.Controllers
                 c => c.ShippingProvinceID,
                 c => c.ShippingPostalCode,
                 c => c.ShippingCountryID,
-                c => c.Customer,
-                c => c.CustomerTypeID,
-                c => c.Vendor,
-                c => c.VendorTypeID,
-                c => c.Contractor,
-                c => c.ContractorTypeID,
                 c => c.Active,
                 c => c.Notes
                 ))
@@ -362,21 +335,7 @@ namespace hager_crm.Controllers
                         throw;
                     }
                 }
-                
             }
-            ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", companyToUpdate.BillingCountryID);
-            ViewData["BillingProvinceID"] = GetProvincesSelectList(companyToUpdate.BillingProvinceID);
-            ViewData["BillingTermID"] = new SelectList(_context.BillingTerms, "BillingTermID", "Terms", companyToUpdate.BillingTermID);
-            ViewData["CurrencyID"] = new SelectList(_context.Currencies, "CurrencyID", "CurrencyName", companyToUpdate.CurrencyID);
-            ViewData["ShippingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName", companyToUpdate.ShippingCountryID);
-            ViewData["ShippingProvinceID"] = GetProvincesSelectList(companyToUpdate.ShippingProvinceID);
-            ViewData["CustomerTypeID"] = new SelectList(_context.CustomerTypes, "CustomerTypeID", "Type", companyToUpdate.CustomerTypeID);
-            ViewData["ContractorTypeID"] = new SelectList(_context.ContractorTypes, "ContractorTypeID", "Type", companyToUpdate.ContractorTypeID);
-            ViewData["VendorTypeID"] = new SelectList(_context.VendorTypes, "VendorTypeID", "Type", companyToUpdate.VendorTypeID);
-
-            PopulateAssignedCustomerTypes(companyToUpdate);
-            PopulateAssignedContractorTypes(companyToUpdate);
-            PopulateAssignedVendorTypes(companyToUpdate);
             return View(companyToUpdate);
         }
         // GET: Companies/Delete/5
@@ -402,17 +361,24 @@ namespace hager_crm.Controllers
                 .Include(c => c.BillingCountry)
                 .Include(c => c.BillingProvince)
                 .Include(c => c.BillingTerm)
-                .Include(c => c.ContractorType)
+                //.Include(c => c.ContractorType)
                 .Include(c => c.Currency)
-                .Include(c => c.CustomerType)
+                //.Include(c => c.CustomerType)
                 .Include(c => c.ShippingCountry)
                 .Include(c => c.ShippingProvince)
-                .Include(c => c.VendorType)
+                //.Include(c => c.VendorType)
                 .FirstOrDefaultAsync(m => m.CompanyID == id);
             if (company == null)
             {
                 return NotFound();
             }
+
+            GetTypesIn(id, out var customerTypes, out var contractorTypes, out var vendorTypes);
+            var dict = new Dictionary<string, List<CompanyTypesDto>>();
+            if (customerTypes.Count > 0) dict.Add("customer", customerTypes);
+            if (contractorTypes.Count > 0) dict.Add("contractor", contractorTypes);
+            if (vendorTypes.Count > 0) dict.Add("vendor", vendorTypes);
+            ViewData["CompanyTypes"] = dict;
 
             return View(company);
         }
@@ -515,14 +481,14 @@ namespace hager_crm.Controllers
                             ShippingPostalCode = workSheet.Cells[row, 19].Text,
                             ShippingCountryID = _context.Countries.FirstOrDefault(b => b.CountryName == workSheet.Cells[row, 20].Text).CountryID,
 
-                            Customer = workSheet.Cells[row, 21].Text == "1",
-                            CustomerTypeID = _context.CustomerTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 22].Text).CustomerTypeID,
+                            //Customer = workSheet.Cells[row, 21].Text == "1",
+                            //CustomerTypeID = _context.CustomerTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 22].Text).CustomerTypeID,
 
-                            Vendor = workSheet.Cells[row, 23].Text == "1",
-                            VendorTypeID = _context.VendorTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 24].Text).VendorTypeID,
+                            //Vendor = workSheet.Cells[row, 23].Text == "1",
+                            //VendorTypeID = _context.VendorTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 24].Text).VendorTypeID,
 
-                            Contractor = workSheet.Cells[row, 25].Text == "1",
-                            ContractorTypeID = _context.ContractorTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 26].Text).ContractorTypeID,
+                            //Contractor = workSheet.Cells[row, 25].Text == "1",
+                            //ContractorTypeID = _context.ContractorTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 26].Text).ContractorTypeID,
                             Active = workSheet.Cells[row, 27].Text == "1",
                             Notes = workSheet.Cells[row, 28].Text
 
@@ -750,51 +716,25 @@ namespace hager_crm.Controllers
             return RedirectToAction("Index", "Contacts", new { CompanyName = name });
         }
 
-        // Customer Types
-        private void PopulateAssignedCustomerTypes(Company company)
+        private void UpdateCompanyTypes(string companyTypes, Company companyToUpdate)
         {
-            var allOptions = _context.CustomerTypes;
-            var currentOptionsHS = new HashSet<int>(company.CompanyCustomers.Select(s => s.CustomerTypeID));
-            var selected = new List<ListOptionVM>();
-            var available = new List<ListOptionVM>();
-            foreach (var s in allOptions)
+            if (companyTypes == ";;")
             {
-                if (currentOptionsHS.Contains(s.CustomerTypeID))
-                {
-                    selected.Add(new ListOptionVM
-                    {
-                        ID = s.CustomerTypeID,
-                        DisplayText = s.Type
-                    });
-                }
-                else
-                {
-                    available.Add(new ListOptionVM
-                    {
-                        ID = s.CustomerTypeID,
-                        DisplayText = s.Type
-                    });
-                }
-            }
-
-            ViewData["selOptsCust"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "ID", "DisplayText");
-            ViewData["availOptsCust"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "ID", "DisplayText");
-        }
-        private void UpdateCustomerType(string[] selectedOptions, Company companyToUpdate)
-        {
-            if (selectedOptions == null)
-            {
-                companyToUpdate.CompanyCustomers = new List<CompanyCustomer>();
+                companyToUpdate.CompanyCustomers.Clear();
+                companyToUpdate.CompanyContractors.Clear();
+                companyToUpdate.CompanyVendors.Clear();
                 return;
             }
+            var selectedOptions = companyTypes.Split(';');
 
-            var selectedOptionsHS = new HashSet<string>(selectedOptions);
-            var currentOptionsHS = new HashSet<int>(companyToUpdate.CompanyCustomers.Select(s => s.CustomerTypeID));
+            // Customer Types
+            var selectedCustomerHS = new HashSet<string>(selectedOptions[0].Split(','));
+            var currentCustomerHS = new HashSet<int>(companyToUpdate.CompanyCustomers.Select(s => s.CustomerTypeID));
             foreach (var s in _context.CustomerTypes)
             {
-                if (selectedOptionsHS.Contains(s.CustomerTypeID.ToString()))
+                if (selectedCustomerHS.Contains(s.CustomerTypeID.ToString()))
                 {
-                    if (!currentOptionsHS.Contains(s.CustomerTypeID))
+                    if (!currentCustomerHS.Contains(s.CustomerTypeID))
                     {
                         companyToUpdate.CompanyCustomers.Add(new CompanyCustomer
                         {
@@ -805,61 +745,22 @@ namespace hager_crm.Controllers
                 }
                 else
                 {
-                    if (currentOptionsHS.Contains(s.CustomerTypeID))
+                    if (currentCustomerHS.Contains(s.CustomerTypeID))
                     {
                         CompanyCustomer specToRemove = companyToUpdate.CompanyCustomers.SingleOrDefault(c => c.CustomerTypeID == s.CustomerTypeID);
                         _context.Remove(specToRemove);
                     }
                 }
             }
-        }
 
-        //Contractor Types
-        private void PopulateAssignedContractorTypes(Company company)
-        {
-            var allOptions = _context.ContractorTypes;
-            var currentOptionsHS = new HashSet<int>(company.CompanyContractors.Select(s => s.ContractorTypeID));
-            var selected = new List<ListOptionVM>();
-            var available = new List<ListOptionVM>();
-
-            foreach (var s in allOptions)
-            {
-                if (currentOptionsHS.Contains(s.ContractorTypeID))
-                {
-                    selected.Add(new ListOptionVM
-                    {
-                        ID = s.ContractorTypeID,
-                        DisplayText = s.Type
-                    });
-                }
-                else
-                {
-                    available.Add(new ListOptionVM
-                    {
-                        ID = s.ContractorTypeID,
-                        DisplayText = s.Type
-                    });
-                }
-            }
-
-            ViewData["selOptsCont"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "ID", "DisplayText");
-            ViewData["availOptsCont"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "ID", "DisplayText");
-        }
-        private void UpdateContractorType(string[] selectedOptionsContractor, Company companyToUpdate)
-        {
-            if (selectedOptionsContractor == null)
-            {
-                companyToUpdate.CompanyContractors = new List<CompanyContractor>();
-                return;
-            }
-
-            var selectedOptionsHS = new HashSet<string>(selectedOptionsContractor);
-            var currentOptionsHS = new HashSet<int>(companyToUpdate.CompanyContractors.Select(s => s.ContractorTypeID));
+            //Contractor Types
+            var selectedContractorHS = new HashSet<string>(selectedOptions[1].Split(','));
+            var currentContractorHS = new HashSet<int>(companyToUpdate.CompanyContractors.Select(s => s.ContractorTypeID));
             foreach (var s in _context.ContractorTypes)
             {
-                if (selectedOptionsHS.Contains(s.ContractorTypeID.ToString()))
+                if (selectedContractorHS.Contains(s.ContractorTypeID.ToString()))
                 {
-                    if (!currentOptionsHS.Contains(s.ContractorTypeID))
+                    if (!currentContractorHS.Contains(s.ContractorTypeID))
                     {
                         companyToUpdate.CompanyContractors.Add(new CompanyContractor
                         {
@@ -870,61 +771,22 @@ namespace hager_crm.Controllers
                 }
                 else
                 {
-                    if (currentOptionsHS.Contains(s.ContractorTypeID))
+                    if (currentContractorHS.Contains(s.ContractorTypeID))
                     {
                         CompanyContractor specToRemove = companyToUpdate.CompanyContractors.SingleOrDefault(c => c.ContractorTypeID == s.ContractorTypeID);
                         _context.Remove(specToRemove);
                     }
                 }
             }
-        }
 
-        //Vendor Types
-        private void PopulateAssignedVendorTypes(Company company)
-        {
-            var allOptions = _context.VendorTypes;
-            var currentOptionsHS = new HashSet<int>(company.CompanyVendors.Select(s => s.VendorTypeID));
-            var selected = new List<ListOptionVM>();
-            var available = new List<ListOptionVM>();
-
-            foreach (var s in allOptions)
-            {
-                if (currentOptionsHS.Contains(s.VendorTypeID))
-                {
-                    selected.Add(new ListOptionVM
-                    {
-                        ID = s.VendorTypeID,
-                        DisplayText = s.Type
-                    });
-                }
-                else
-                {
-                    available.Add(new ListOptionVM
-                    {
-                        ID = s.VendorTypeID,
-                        DisplayText = s.Type
-                    });
-                }
-            }
-
-            ViewData["selOptsVen"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "ID", "DisplayText");
-            ViewData["availOptsVen"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "ID", "DisplayText");
-        }
-        private void UpdateVendorType(string[] selectedOptionsVen, Company companyToUpdate)
-        {
-            if (selectedOptionsVen == null)
-            {
-                companyToUpdate.CompanyVendors = new List<CompanyVendor>();
-                return;
-            }
-
-            var selectedOptionsHS = new HashSet<string>(selectedOptionsVen);
-            var currentOptionsHS = new HashSet<int>(companyToUpdate.CompanyVendors.Select(s => s.VendorTypeID));
+            //Vendor Types
+            var selectedVendorHS = new HashSet<string>(selectedOptions[2].Split(','));
+            var currentVendorHS = new HashSet<int>(companyToUpdate.CompanyVendors.Select(s => s.VendorTypeID));
             foreach (var s in _context.VendorTypes)
             {
-                if (selectedOptionsHS.Contains(s.VendorTypeID.ToString()))
+                if (selectedVendorHS.Contains(s.VendorTypeID.ToString()))
                 {
-                    if (!currentOptionsHS.Contains(s.VendorTypeID))
+                    if (!currentVendorHS.Contains(s.VendorTypeID))
                     {
                         companyToUpdate.CompanyVendors.Add(new CompanyVendor
                         {
@@ -935,7 +797,7 @@ namespace hager_crm.Controllers
                 }
                 else
                 {
-                    if (currentOptionsHS.Contains(s.VendorTypeID))
+                    if (currentVendorHS.Contains(s.VendorTypeID))
                     {
                         CompanyVendor specToRemove = companyToUpdate.CompanyVendors.SingleOrDefault(v => v.VendorTypeID == s.VendorTypeID);
                         _context.Remove(specToRemove);
@@ -944,35 +806,83 @@ namespace hager_crm.Controllers
             }
         }
 
-        //Partial View for Companies details page: CustomerTypes, ContractorTypes and VendorTypes list
-        public PartialViewResult ListOfCustomerTypesDetails(int id)
+        // GET: Companies/GetCompanyType/5
+        [Authorize(Roles = "Admin, Supervisor")]
+        public PartialViewResult GetCompanyType(int? id)
         {
-            var query = from s in _context.CompanyCustomers.Include(p => p.CustomerType)
-                        where s.CompanyID == id
-                        orderby s.CustomerType.Type
-                        select s;
+            GetTypesIn(id, out var customerTypes, out var contractorTypes, out var vendorTypes);
 
-            return PartialView("_ListOfCustomerTypes", query.ToList());
+            var customersAvailable = _context.CustomerTypes
+                .Where(ct => !customerTypes
+                                .Select(t => t.TypeID)
+                                .Contains(ct.CustomerTypeID))
+                .OrderBy(ct => ct.Order)
+                .Select(ct => new CompanyTypesDto {
+                    TypeID = ct.CustomerTypeID,
+                    DisplayName = ct.DisplayName
+                })
+                .ToList();
+            var contractorsAvailable = _context.ContractorTypes
+                .Where(ct => !contractorTypes
+                                .Select(t => t.TypeID)
+                                .Contains(ct.ContractorTypeID))
+                .OrderBy(ct => ct.Order)
+                .Select(cc => new CompanyTypesDto {
+                    TypeID = cc.ContractorTypeID,
+                    DisplayName = cc.DisplayName
+                })
+                .ToList();
+            var vendorsAvailable = _context.VendorTypes
+                .Where(vt => !vendorTypes
+                                .Select(t => t.TypeID)
+                                .Contains(vt.VendorTypeID))
+                .OrderBy(vt => vt.Order)
+                .Select(cv => new CompanyTypesDto {
+                    TypeID = cv.VendorTypeID,
+                    DisplayName = cv.DisplayName
+                })
+                .ToList();
+
+            var result = new List<CompanyTypesVM>
+            {
+                new CompanyTypesVM { TypesIn = customerTypes, TypesAvailable = customersAvailable, Category = "customer" },
+                new CompanyTypesVM { TypesIn = contractorTypes, TypesAvailable = contractorsAvailable, Category = "contractor" },
+                new CompanyTypesVM { TypesIn = vendorTypes, TypesAvailable = vendorsAvailable, Category = "vendor" }
+            };
+
+            return PartialView("_CompanyTypes", result);
         }
-        public PartialViewResult ListOfContractorTypesDetails(int id)
+
+        private void GetTypesIn(int? id, out List<CompanyTypesDto> customerTypes,
+            out List<CompanyTypesDto> contractorTypes, out List<CompanyTypesDto> vendorTypes)
         {
-            var query = from s in _context.CompanyContractors.Include(p => p.ContractorType)
-                        where s.CompanyID == id
-                        orderby s.ContractorType.Type
-                        select s;
-
-            return PartialView("_ListOfContractorTypes", query.ToList());
+            customerTypes = _context.CompanyCustomers
+                .Where(cc => cc.CompanyID == id)
+                .OrderBy(cc => cc.CustomerType.Order)
+                .Select(cc => new CompanyTypesDto
+                {
+                    TypeID = cc.CustomerTypeID,
+                    DisplayName = cc.CustomerType.DisplayName
+                })
+                .ToList();
+            contractorTypes = _context.CompanyContractors
+                 .Where(cc => cc.CompanyID == id)
+                 .OrderBy(cc => cc.ContractorType.Order)
+                 .Select(cc => new CompanyTypesDto
+                 {
+                     TypeID = cc.ContractorTypeID,
+                     DisplayName = cc.ContractorType.DisplayName
+                 })
+                 .ToList();
+            vendorTypes = _context.CompanyVendors
+                 .Where(cv => cv.CompanyID == id)
+                 .OrderBy(cv => cv.VendorType.Order)
+                 .Select(cv => new CompanyTypesDto
+                 {
+                     TypeID = cv.VendorTypeID,
+                     DisplayName = cv.VendorType.DisplayName
+                 })
+                 .ToList();
         }
-        public PartialViewResult ListOfVendorTypesDetails(int id)
-        {
-            var query = from s in _context.CompanyVendors.Include(p => p.VendorType)
-                        where s.CompanyID == id
-                        orderby s.VendorType.Type
-                        select s;
-
-            return PartialView("_ListOfVendorTypes", query.ToList());
-        }
-
-
     }
 }

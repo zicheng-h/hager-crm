@@ -130,68 +130,7 @@
                             <option value="">-- Select Country --</option>
                         </select>
                     </div>
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" id="checkcustomers" asp-for="Customer"/> @Html.DisplayNameFor(model => model.Customer)
-                        </label>
-                    </div>
-                    <div class="row" id="autoUpdate" style="display:none">
-                        <div class="form-group col-md-6">
-                            <label class="control-label"> Customer type</label>
-                            <button type="button" id="btnRight" class="btn btn-danger btn-sm">
-                                <strong>-</strong>
-                            </button>
-                            @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOptsCust, new { @size = 6, @class = "form-control" })
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="control-label"> Choose Type</label>
-                            <button type="button" id="btnLeft" class="btn btn-success btn-sm">
-                                <strong>+</strong>
-                            </button>
-                            @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOptsCust, new { @size = 6, @class = "form-control" })
-                        </div>
-                    </div>
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Contractor" id="checkcontractor"/> @Html.DisplayNameFor(model => model.Contractor)
-                        </label>
-                    </div>
-                    <div class="row" id="autoUpdateCont" style="display:none">
-                        <div class="form-group col-md-6">
-                            <label class="control-label">Contractor type</label>
-                            <button type="button" id="btnRightContractor" class="btn btn-danger btn-sm">
-                                <strong>-</strong>
-                            </button>
-                            @Html.ListBox("selectedOptionsCont", (MultiSelectList)ViewBag.selOptsCont, new { @size = 6, @class = "form-control" })
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="control-label"> Choose Type</label>
-                            <button type="button" id="btnLeftContractor" class="btn btn-success btn-sm">
-                                <strong>+</strong>
-                            </button>
-                            @Html.ListBox("availOptionsCont", (MultiSelectList)ViewBag.availOptsCont, new { @size = 6, @class = "form-control" })
-                        </div>
-                    </div>
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Vendor" id="checkvendor"/> @Html.DisplayNameFor(model => model.Vendor)
-                        </label>
-                    </div>
-                    <div class="row" id="autoUpdateVen" style="display:none">
-                        <div class="form-group col-md-6">
-                            <label class="control-label">Vendor type</label>
-                            <button type="button" id="btnRightVendor" class="btn btn-danger btn-sm">
-                                <strong>-</strong>
-                            </button>
-                            @Html.ListBox("selectedOptionsVen", (MultiSelectList)ViewBag.selOptsVen, new { @size = 6, @class = "form-control" })
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="control-label"> Choose Type</label>
-                            <button type="button" id="btnLeftVendor" class="btn btn-success btn-sm">
-                                <strong>+</strong>
-                            </button>
-                            @Html.ListBox("availOptionsVen", (MultiSelectList)ViewBag.availOptsVen, new { @size = 6, @class = "form-control" })
-                        </div>
+                    <div id="company-type" class="form-group">
                     </div>
                     <div class="form-group">
                         <label asp-for="Notes" class="control-label"></label>
@@ -213,13 +152,13 @@
                     </div>
                     <div>
                         @*@if (String.IsNullOrEmpty(ViewData["returnURL"].ToString()))
-        {
-            <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
-        }
-        else
-        {
-            <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
-        }*@
+                        {
+                            <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
+                        }
+                        else
+                        {
+                            <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
+                        }*@
 
                         <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
 
@@ -237,33 +176,6 @@
 <script>
     $(document).ready(function () {
         $("#@Context.Request.Query["CType"].ToString().ToLower()CompaniesSubmenu").attr("style", "color: #862633; background: #fff;");
+        $('#company-type').load('/Companies/GetCompanyType');
     })
 </script>
-<script>
-    $(document).ready(function () {
-        $('#checkcustomers').change(function () {
-            if (!this.checked)
-                $('#autoUpdate').hide();
-            else
-                $('#autoUpdate').show();
-        });
-    });
-    $(document).ready(function () {
-        $('#checkcontractor').change(function () {
-            if (!this.checked)
-                $('#autoUpdateCont').hide();
-            else
-                $('#autoUpdateCont').show();
-        });
-    });
-
-    $(document).ready(function () {
-        $('#checkvendor').change(function () {
-            if (!this.checked)
-                $('#autoUpdateVen').hide();
-            else
-                $('#autoUpdateVen').show();
-        });
-    });
-</script>
-

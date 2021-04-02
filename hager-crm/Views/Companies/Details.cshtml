@@ -1,36 +1,27 @@
 ﻿@model hager_crm.Models.Company
+@using static hager_crm.Utils.Capitalizator
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Company Details</h1>
 
 <div>
-    <h4>Company: @Model.Name</h4>
+    <h4>@Model.Name (@(Model.Active ? "Active" : "Inactive"))</h4>
     <hr />
 </div>
 <div>
     <ul class="nav nav-pills" id="myTabs" role="tablist">
         <li class="nav-item">
-            <a href="#basic" aria-controls="basic" role="tab" class="nav-link active" name="basic" data-toggle="tab" aria-selected="false">Basic Information</a>
-        </li>
-
-        <li class="nav-item">
-            <a href="#moreinfo" aria-controls="moreinfo" role="tab" class="nav-link" name="moreinfo" data-toggle="tab" aria-selected="false">Billing and Shipping</a>
+            <a href="#basic" aria-controls="basic-tab" role="tab" class="nav-link active" name="basic" data-toggle="tab" aria-selected="false">Basic Information</a>
         </li>
         <li class="nav-item">
-            <a href="#emergencycontact" aria-controls="emergencycontact" role="tab" class="nav-link" name="emergencycontact" data-toggle="tab" aria-selected="false">More Information</a>
+            <a href="#address" aria-controls="address-tab" role="tab" class="nav-link" name="address" data-toggle="tab" aria-selected="false">Billing and Shipping</a>
         </li>
         <li class="nav-item">
-            <a href="#customertypes" aria-controls="customertypes" role="tab" class="nav-link" name="customertypes" data-toggle="tab" aria-selected="false">Customer Types</a>
-        </li>
-        <li class="nav-item">
-            <a href="#contractortypes" aria-controls="contractortypes" role="tab" class="nav-link" name="contractortypes" data-toggle="tab" aria-selected="false">Contractor Types</a>
-        </li>
-        <li class="nav-item">
-            <a href="#vendortypes" aria-controls="vendortypes" role="tab" class="nav-link" name="vendortypes" data-toggle="tab" aria-selected="false">Vendor Types</a>
+            <a href="#moreinfo" aria-controls="moreinfo-tab" role="tab" class="nav-link" name="moreinfo" data-toggle="tab" aria-selected="false">More Information</a>
         </li>
         <li class="nav-item">
             <a asp-action="Contacts" asp-route-id="@Model.CompanyID" class="nav-link">Contacts</a>
@@ -38,7 +29,7 @@
     </ul>
 
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade ml-3 show active" id="basic">
+        <div role="tabpanel" class="tab-pane fade ml-3 show active" id="basic" aria-labelledby="basic-tab">
             <br />
             <dl class="row">
                 <dt class="col-sm-3 my-2">
@@ -90,10 +81,9 @@
                     @Html.DisplayFor(model => model.Website)
                 </dd>
             </dl>
-
         </div>
 
-        <div role="tabpanel" class="tab-pane fade ml-3" id="moreinfo" aria-labelledby="moreinfo-tab">
+        <div role="tabpanel" class="tab-pane fade ml-3" id="address" aria-labelledby="address-tab">
             <br />
             <dl class="row">
                 <dt class="col-sm-3 mt-2 mb-0">
@@ -102,13 +92,16 @@
                 <dd class="col-sm-9 mt-2 mb-0">
                     @Html.DisplayFor(model => model.BillingAddress1)@if (!String.IsNullOrEmpty(Model.BillingAddress2))
                     {
-                        Html.DisplayFor(model => model.BillingAddress2);
-                    }, @Html.DisplayFor(model => model.BillingPostalCode)
+                        @:, @Html.DisplayFor(model => model.BillingAddress2),
+                    } @Html.DisplayFor(model => model.BillingPostalCode)
                 </dd>
                 <dt class="col-sm-3 mt-0 mb-2">
                 </dt>
                 <dd class="col-sm-9 mt-0 mb-2">
-                    @Html.DisplayFor(model => model.BillingProvince.ProvinceName), @Html.DisplayFor(model => model.BillingCountry.CountryName)
+                    @Html.DisplayFor(model => model.BillingProvince.ProvinceName)@if (!String.IsNullOrEmpty(Model.BillingCountry.CountryName))
+                    {
+                        @:, @Html.DisplayFor(model => model.BillingCountry.CountryName)
+                    }
                 </dd>
                 <dt class="col-sm-3 mt-2 mb-0">
                     Shipping Address
@@ -116,77 +109,53 @@
                 <dd class="col-sm-9 mt-2 mb-0">
                     @Html.DisplayFor(model => model.ShippingAddress1)@if (!String.IsNullOrEmpty(Model.ShippingAddress2))
                     {
-                        Html.DisplayFor(model => model.ShippingAddress2);
-                    }, @Html.DisplayFor(model => model.ShippingPostalCode)
+                        @:, @Html.DisplayFor(model => model.ShippingAddress2),
+                    }@Html.DisplayFor(model => model.ShippingPostalCode)
                 </dd>
                 <dt class="col-sm-3 mt-0 mb-2">
                 </dt>
                 <dd class="col-sm-9 mt-0 mb-2">
-                    @Html.DisplayFor(model => model.ShippingProvince.ProvinceName), @Html.DisplayFor(model => model.ShippingCountry.CountryName)
+                    @Html.DisplayFor(model => model.ShippingProvince.ProvinceName)@if (!String.IsNullOrEmpty(Model.ShippingCountry.CountryName))
+                    {
+                        @:, @Html.DisplayFor(model => model.ShippingCountry.CountryName)
+                    }
                 </dd>
             </dl>
-
         </div>
 
-        <div role="tabpanel" class="tab-pane fade ml-3" id="types" aria-labelledby="types-tab">
+        <div role="tabpanel" class="tab-pane fade ml-3" id="moreinfo" aria-labelledby="moreinfo-tab">
             <br />
-        </div>
-        <div role="tabpanel" class="tab-pane fade ml-3" id="customertypes" aria-labelledby="customertypes-tab">
-            <br />
-        </div>
-        <div role="tabpanel" class="tab-pane fade ml-3" id="contractortypes" aria-labelledby="contractortypes-tab">
-            <br />
-        </div>
-        <div role="tabpanel" class="tab-pane fade ml-3" id="vendortypes" aria-labelledby="vendortypes-tab">
-            <br />
-        </div>
-
-        <div role="tabpanel" class="tab-pane fade ml-3" id="emergencycontact" aria-labelledby="moreinfo-tab">
-            <br />
-            <dl class="row">
-                @if (Model.Customer)
+            <div class="row">
+                @foreach (var cat in (Dictionary<string, List<hager_crm.ViewModels.CompanyTypesDto>>)ViewData["CompanyTypes"])
                 {
-                    <dt class="col-sm-3 my-2">
-                        @Html.DisplayNameFor(model => model.Customer)
-                    </dt>
-                    <dd class="col-sm-9 my-2">
-                        @Html.DisplayFor(model => model.Customer)
-                    </dd>
+                    <div class="col-xl-4 col-md-6 col-12 p-4">
+                        <div class="card">
+                            <div class="card-header">
+                                @cat.Key.Capitalize() Types
+                            </div>
+                            <div class="list-group" style="overflow-y: auto; height: 355px">
+                                @foreach (var item in cat.Value)
+                                {
+                                    <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
+                                         data-item-id="@item.TypeID"
+                                         href="#">
+                                        <div class="display-name d-flex m-auto">@item.DisplayName</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
                 }
-                @if (Model.Contractor)
-                {
-                    <dt class="col-sm-3 my-2">
-                        @Html.DisplayNameFor(model => model.Contractor)
-                    </dt>
-                    <dd class="col-sm-9 my-2">
-                        @Html.DisplayFor(model => model.Contractor)
-                    </dd>
-                }
-                @if (Model.Vendor)
-                {
-                    <dt class="col-sm-3 my-2">
-                        @Html.DisplayNameFor(model => model.Vendor)
-                    </dt>
-                    <dd class="col-sm-9 my-2">
-                        @Html.DisplayFor(model => model.Vendor)
-                    </dd>
-                }
-                <dt class="col-sm-3 my-2">
-                    @Html.DisplayNameFor(model => model.Active)
-                </dt>
-                <dd class="col-sm-9 my-2">
-                    @Html.DisplayFor(model => model.Active)
-                </dd>
-                <dt class="col-sm-3 my-2">
-                    @Html.DisplayNameFor(model => model.Notes)
-                </dt>
-                <dd class="col-sm-9 my-2">
-                    @Html.DisplayFor(model => model.Notes)
-                </dd>
-            </dl>
-
+                <div class="col-xl-4 col-md-6 col-12 p-4">
+                    <div class="card">
+                        <div class="card-header">Notes</div>
+                        <div class="p-4" style="overflow-y: auto; height: 355px">
+                            @Html.DisplayFor(model => model.Notes)
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
 </div>
 <div>
@@ -206,23 +175,6 @@
     <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
 
 </div>
-
-@section Scripts {
-    <script type="text/javascript">
-            $('.nav-link').click(function () {
-                var activeTab = $(this).attr("name");
-                switch (activeTab) {
-                    case 'customertypes': $('#customertypes').load('/Companies/ListOfCustomerTypesDetails/@Model.CompanyID');
-                        break;
-                    case 'contractortypes': $('#contractortypes').load('/Companies/ListOfContractorTypesDetails/@Model.CompanyID');
-                        break;
-                    case 'vendortypes': $('#vendortypes').load('/Companies/ListOfVendorTypesDetails/@Model.CompanyID');
-                        break;
-                    default: break;
-                };
-            })
-    </script>
-}
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>

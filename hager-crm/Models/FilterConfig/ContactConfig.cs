@@ -116,9 +116,9 @@ namespace hager_crm.Models.FilterConfig
                     "CType", new ConfigAction<Contact>
                     {
                         OnFilter = (p, q) =>
-                            q.Where(i => (((string) p == "Customer" && i.Company.Customer) ||
-                                ((string) p == "Vendor" && i.Company.Vendor) ||
-                                ((string) p == "Contractor" && i.Company.Contractor) ||
+                            q.Where(i => (((string) p == "Customer" && i.Company.CompanyCustomers.Count > 0) ||
+                                ((string) p == "Vendor" && i.Company.CompanyVendors.Count > 0) ||
+                                ((string) p == "Contractor" && i.Company.CompanyContractors.Count > 0) ||
                                 ((string) p == "All")
                             ))
                     }

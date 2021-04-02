@@ -29,14 +29,14 @@ namespace hager_crm.Data
         public DbSet<Company> Companies { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<ContactCategories> ContactCategories { get; set; }
-        public DbSet<ContractorType> ContractorTypes { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Currency> Currencies { get; set; }
-        public DbSet<CustomerType> CustomerTypes { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmploymentType> EmploymentTypes { get; set; }
         public DbSet<JobPosition> JobPositions { get; set; }
         public DbSet<Province> Provinces { get; set; }
+        public DbSet<ContractorType> ContractorTypes { get; set; }
+        public DbSet<CustomerType> CustomerTypes { get; set; }
         public DbSet<VendorType> VendorTypes { get; set; }
         public DbSet<CompanyCustomer> CompanyCustomers { get; set; }
         public DbSet<CompanyContractor> CompanyContractors { get; set; }
@@ -113,27 +113,6 @@ namespace hager_crm.Data
                 .HasForeignKey(p => p.EmployeeProvinceID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //From Contractor Type to Company.
-            modelBuilder.Entity<ContractorType>()
-                .HasMany<Company>(d => d.Companies)
-                .WithOne(p => p.ContractorType)
-                .HasForeignKey(p => p.ContractorTypeID)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            //From Customer Type to Company.
-            modelBuilder.Entity<CustomerType>()
-                .HasMany<Company>(d => d.Companies)
-                .WithOne(p => p.CustomerType)
-                .HasForeignKey(p => p.CustomerTypeID)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            //From Vendor Type to Company.
-            modelBuilder.Entity<VendorType>()
-                .HasMany<Company>(d => d.Companies)
-                .WithOne(p => p.VendorType)
-                .HasForeignKey(p => p.VendorTypeID)
-                .OnDelete(DeleteBehavior.Restrict);
-
             //From Job Position to Employee.
             modelBuilder.Entity<JobPosition>()
                 .HasMany<Employee>(d => d.Employees)
@@ -172,6 +151,11 @@ namespace hager_crm.Data
                 .WithOne(c => c.CustomerType)
                 .HasForeignKey(c => c.CustomerTypeID)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Company>()
+                .HasMany<CompanyCustomer>(c => c.CompanyCustomers)
+                .WithOne(c => c.Company)
+                .HasForeignKey(c => c.CustomerTypeID)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Cascade Delete Contractor Type
             modelBuilder.Entity<ContractorType>()
@@ -179,11 +163,21 @@ namespace hager_crm.Data
                 .WithOne(c => c.ContractorType)
                 .HasForeignKey(c => c.ContractorTypeID)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Company>()
+                .HasMany<CompanyContractor>(c => c.CompanyContractors)
+                .WithOne(c => c.Company)
+                .HasForeignKey(c => c.ContractorTypeID)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Cascade Delete Vendor Type
             modelBuilder.Entity<VendorType>()
                 .HasMany<CompanyVendor>(c => c.CompanyVendors)
                 .WithOne(c => c.VendorType)
+                .HasForeignKey(c => c.VendorTypeID)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Company>()
+                .HasMany<CompanyVendor>(c => c.CompanyVendors)
+                .WithOne(c => c.Company)
                 .HasForeignKey(c => c.VendorTypeID)
                 .OnDelete(DeleteBehavior.Restrict);
         }

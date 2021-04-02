@@ -23,7 +23,7 @@
 </ul>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
-    $.get("Employees/GetSignedIn", function (data) {
+    $.get("/Employees/GetSignedIn", function (data) {
         $("#user").html(data);
     });
 </script>
