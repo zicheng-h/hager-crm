@@ -212,14 +212,16 @@
                         <input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" />
                     </div>
                     <div>
-                        @if (String.IsNullOrEmpty(ViewData["returnURL"].ToString()))
-                        {
-                            <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
-                        }
-                        else
-                        {
-                            <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
-                        }
+                        @*@if (String.IsNullOrEmpty(ViewData["returnURL"].ToString()))
+        {
+            <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
+        }
+        else
+        {
+            <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
+        }*@
+
+                        <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
 
                     </div>
                 </div>

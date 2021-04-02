@@ -45,6 +45,9 @@ namespace hager_crm.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
+            //Clear the sort/filter/paging URL Cookie
+            CookieHelper.CookieSet(HttpContext, "EmployeesURL", "", -1);
+
             var query = _context.Employees
                 .Include(e => e.EmployeeCountry)
                 .Include(e => e.EmployeeProvince)
@@ -55,13 +58,27 @@ namespace hager_crm.Controllers
             ViewBag.gridFilter = _gridFilter;
             ViewData["EmploymentTypeID"] = GetEmploymentTypesSelectList();
             ViewData["JobPositionID"] = GetPositionsSelectList();
-            
+
+            await _gridFilter.GetFilteredData(query);
+            int countFilter = _gridFilter.OuterFields.Count;
+            if (countFilter > 2)
+            {
+                ViewData["ChangeColor"] = 1;
+            }
+            else
+            {
+                ViewData["ChangeColor"] = 0;
+            }
+
             return View(await _gridFilter.GetFilteredData(query));
         }
 
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             if (id == null)
             {
                 return NotFound();
@@ -85,6 +102,9 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             ViewData["EmployeeCountryID"] = GetCountriesSelectList();
             ViewData["EmployeeProvinceID"] = GetProvincesSelectList();
             ViewData["EmploymentTypeID"] = GetEmploymentTypesSelectList();
@@ -104,6 +124,9 @@ namespace hager_crm.Controllers
             string userRepeatPassword,
             bool isUser)
         {
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             if (ModelState.IsValid)
             {
                 try
@@ -114,7 +137,8 @@ namespace hager_crm.Controllers
                     {
                         _context.Add(employee);
                         await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                        //return RedirectToAction(nameof(Index));
+                        return Redirect(ViewData["returnURL"].ToString());
                     }
                 }
                 catch (Exception e)
@@ -133,6 +157,9 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             if (id == null)
             {
                 return NotFound();
@@ -162,6 +189,9 @@ namespace hager_crm.Controllers
             string userRepeatPassword,
             bool isUser)
         {
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             if (id == null)
             {
                 return NotFound();
@@ -211,7 +241,8 @@ namespace hager_crm.Controllers
                         if (res)
                         {
                             await _context.SaveChangesAsync();
-                            return RedirectToAction(nameof(Index));
+                            //return RedirectToAction(nameof(Index));
+                            return Redirect(ViewData["returnURL"].ToString());
                         }
                     }
                         
@@ -233,6 +264,9 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             if (id == null)
             {
                 return NotFound();
@@ -259,13 +293,17 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Employees");
+
             var employee = await _context.Employees.FindAsync(id);
             var identity = await _userManager.FindByIdAsync(employee.UserId);
             if (identity != null)
                 await _userManager.DeleteAsync(identity);
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return Redirect(ViewData["returnURL"].ToString());
         }
 
         private bool ValidateCreateUserVM(string email, string password, string repeatPassword)

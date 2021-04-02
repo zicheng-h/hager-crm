@@ -7,6 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var gridFilter = ViewBag.gridFilter;
     var sorts = gridFilter.OuterSorts;
+    int changeColer = (int)@ViewData["ChangeColor"];
 }
 
 <h1>@Context.Request.Query["CType"] Company List</h1>
@@ -33,82 +34,90 @@
 
 @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
 {
-    <div>
-        <a class="btn btn-outline-primary my-2" asp-action="Create" asp-route-CType="@Context.Request.Query["CType"]">Add New</a>
-        <button type="button" class="btn btn-outline-primary my-2" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Companies</button>
-        <button type="button"
-                class="btn btn-outline-primary my-2"
-                data-toggle="collapse"
-                data-target="#collapseMerge"
-                aria-expanded="false"
-                aria-controls="collapseMerge">
-            Merge Companies
-        </button>
+<div>
+    <a class="btn btn-outline-primary my-2" asp-action="Create" asp-route-CType="@Context.Request.Query["CType"]">Add New</a>
+    <button type="button" class="btn btn-outline-primary my-2" data-toggle="collapse" data-target="#collapseImport" aria-expanded="false" aria-controls="collapseImport">Import Companies</button>
+    <button type="button"
+            class="btn btn-outline-primary my-2"
+            data-toggle="collapse"
+            data-target="#collapseMerge"
+            aria-expanded="false"
+            aria-controls="collapseMerge">
+        Merge Companies
+    </button>
+    @if (changeColer == 0)
+    {
         @Html.GenerateFiltering((IGridFilterFilterable)gridFilter)
-        <form class="collapse my-3" id="collapseImport" asp-action="InsertFromExcelCompany" asp-controller="Companies" method="post" enctype="multipart/form-data">
-            <div class="form-horizontal">
-                <div class="card card-body bg-light">
-                    <div class="row">
-                        <div class="custom-file col-md-4">
-                            <label for="theExcel" class="custom-file-label">
-                                Upload Excel File:
-                            </label>
-                            <input id="theExcel" name="theExcel" type="file" class="custom-file-input">
+    }
+    else
+    {
+        @Html.GenerateFiltered((IGridFilterFilterable)gridFilter)
+    }
+
+    <form class="collapse my-3" id="collapseImport" asp-action="InsertFromExcelCompany" asp-controller="Companies" method="post" enctype="multipart/form-data">
+        <div class="form-horizontal">
+            <div class="card card-body bg-light">
+                <div class="row">
+                    <div class="custom-file col-md-4">
+                        <label for="theExcel" class="custom-file-label">
+                            Upload Excel File:
+                        </label>
+                        <input id="theExcel" name="theExcel" type="file" class="custom-file-input">
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="submit" value="Upload Data" class="btn btn-primary" />
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <input type="submit" value="Upload Data" class="btn btn-primary" />
-                            </div>
-                        </div>
-                        <div class="custom-file col-md-4">
-                            <p><a href="/TemplateFile/Companies_Import_Template_V4.xlsx" download> Click to Download Template</a></p>
-                        </div>
+                    </div>
+                    <div class="custom-file col-md-4">
+                        <p><a href="/TemplateFile/Companies_Import_Template_V4.xlsx" download> Click to Download Template</a></p>
                     </div>
                 </div>
             </div>
-        </form>
-        <div class="collapse my-3" id="collapseMerge">
-            <div class="form-horizontal">
-                <div class="card card-body bg-light">
-                    <div class="row">
-                        <div class="form-group col-md-4">
-                            <label for="leftMerge">
-                                From Company
-                            </label>
-                            <div class="input-group mb-3">
-                                <input id="leftMerge" name="leftMerge" class="form-control" disabled data-id="">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-danger merge-company-remove">
-                                        &times;
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="rightMerge">
-                                To Company
-                            </label>
-                            <div class="input-group mb-3">
-                                <input id="rightMerge" name="rightMerge" class="form-control" disabled data-id="">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-danger merge-company-remove">
-                                        &times;
-                                    </button>
-                                </div>
+        </div>
+    </form>
+    <div class="collapse my-3" id="collapseMerge">
+        <div class="form-horizontal">
+            <div class="card card-body bg-light">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label for="leftMerge">
+                            From Company
+                        </label>
+                        <div class="input-group mb-3">
+                            <input id="leftMerge" name="leftMerge" class="form-control" disabled data-id="">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-danger merge-company-remove">
+                                    &times;
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <input type="submit" value="Compare Companies" class="btn btn-primary merge-company-compare" />
+                    <div class="form-group col-md-4">
+                        <label for="rightMerge">
+                            To Company
+                        </label>
+                        <div class="input-group mb-3">
+                            <input id="rightMerge" name="rightMerge" class="form-control" disabled data-id="">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-danger merge-company-remove">
+                                    &times;
+                                </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="submit" value="Compare Companies" class="btn btn-primary merge-company-compare" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 }
 else
 {

@@ -62,6 +62,9 @@ namespace hager_crm.Controllers
         // GET: Companies
         public async Task<IActionResult> Index()
         {
+            //Clear the sort/filter/paging URL Cookie
+            CookieHelper.CookieSet(HttpContext, "CompaniesURL", "", -1);
+
             IQueryable<Company> query = _context.Companies
                 .Include(c => c.BillingCountry)
                 .Include(c => c.BillingProvince)
@@ -79,23 +82,37 @@ namespace hager_crm.Controllers
             ViewData["CountryID"] = GetCountriesSelectList();
             ViewData["ProvinceID"] = GetProvincesSelectList();
             ViewData["DuplicationCompany"] = GetSimillarCompanies(await _context.Companies.OrderBy(c => c.CompanyID).Take(20).ToListAsync());
+            //string urlcheck = _gridFilter.GetFilteredData(query).Ur
+            await _gridFilter.GetFilteredData(query);
+            int countFilter = _gridFilter.OuterFields.Count;
+            if(countFilter > 1)
+            {
+                ViewData["ChangeColor"] = 1;
+            }
+            else
+            {
+                ViewData["ChangeColor"] = 0;
+            }
             return View(await _gridFilter.GetFilteredData(query));
         }
 
         // GET: Companies/Details/5
         public async Task<IActionResult> Details(int? id, string returnURL)
         {
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
+
             if (id == null)
             {
                 return NotFound();
             }
 
             //Get the URL of the page that send us here
-            if (String.IsNullOrEmpty(returnURL))
-            {
-                returnURL = Request.Headers["Referer"].ToString();
-            }
-            ViewData["returnURL"] = returnURL;
+            //if (String.IsNullOrEmpty(returnURL))
+            //{
+            //    returnURL = Request.Headers["Referer"].ToString();
+            //}
+            //ViewData["returnURL"] = returnURL;
 
             var company = await _context.Companies
                 .Include(c => c.BillingCountry)
@@ -118,13 +135,15 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin, Supervisor")]
         public IActionResult Create(string CType, string returnURL)
         {
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
             Company company = new Company();
 
-            //Get the URL of the page that send us here
-            if (String.IsNullOrEmpty(returnURL))
-            {
-                returnURL = Request.Headers["Referer"].ToString();
-            }
+            ////Get the URL of the page that send us here
+            //if (String.IsNullOrEmpty(returnURL))
+            //{
+            //    returnURL = Request.Headers["Referer"].ToString();
+            //}
 
             ViewData["returnURL"] = returnURL;
             ViewData["CType"] = CType;
@@ -152,7 +171,9 @@ namespace hager_crm.Controllers
         public async Task<IActionResult> Create([Bind("CompanyID,Name,Location,CreditCheck,DateChecked,BillingTermID,CurrencyID,Phone,Website,BillingAddress1,BillingAddress2,BillingProvinceID,BillingPostalCode,BillingCountryID,ShippingAddress1,ShippingAddress2,ShippingProvinceID,ShippingPostalCode,ShippingCountryID,Customer,CustomerTypeID,Vendor,VendorTypeID,Contractor,ContractorTypeID,Active,Notes")] 
         Company company, string CType, string returnURL, string[] selectedOptions, string[] selectedOptionsCont, string[] selectedOptionsVen)
         {
-            ViewData["returnURL"] = returnURL;
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
+            //ViewData["returnURL"] = returnURL;
             try
             {
                 UpdateCustomerType(selectedOptions, company);
@@ -163,14 +184,16 @@ namespace hager_crm.Controllers
                     _context.Add(company);
                     await _context.SaveChangesAsync();
                     //If no referrer then go back to index
-                    if (String.IsNullOrEmpty(returnURL))
-                    {
-                        return RedirectToAction(nameof(Index), new { CType = CType });
-                    }
-                    else
-                    {
-                        return Redirect(returnURL);
-                    }
+                    //if (String.IsNullOrEmpty(returnURL))
+                    //{
+                    //    return RedirectToAction(nameof(Index), new { CType = CType });
+                    //}
+                    //else
+                    //{
+                    //    return Redirect(returnURL);
+                    //}
+                    //return RedirectToAction("Details", new { company.CompanyID });
+                    return Redirect(ViewData["returnURL"].ToString());
                 }
             }
             catch (RetryLimitExceededException)
@@ -204,14 +227,17 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Edit(int? id, string CType, string returnURL)
         {
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
+
             ViewData["CType"] = CType;
 
-            //Get the URL of the page that send us here
-            if (String.IsNullOrEmpty(returnURL))
-            {
-                returnURL = Request.Headers["Referer"].ToString();
-            }
-            ViewData["returnURL"] = returnURL;
+            ////Get the URL of the page that send us here
+            //if (String.IsNullOrEmpty(returnURL))
+            //{
+            //    returnURL = Request.Headers["Referer"].ToString();
+            //}
+            //ViewData["returnURL"] = returnURL;
 
             if (id == null)
             {
@@ -252,7 +278,10 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Edit(int id, string CType, string returnURL, string[] selectedOptions, string[] selectedOptionsCont, string[] selectedOptionsVen)
         {
-            ViewData["returnURL"] = returnURL;
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
+
+            //ViewData["returnURL"] = returnURL;
             var companyToUpdate = await _context.Companies
                 .Include(c => c.BillingTerm)
                 .Include(c => c.Currency)
@@ -306,15 +335,17 @@ namespace hager_crm.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    if(String.IsNullOrEmpty(returnURL))
-                    {
-                        return RedirectToAction(nameof(Index), new { CType = CType });
-                    }
-                    else
-                    {
-                        return Redirect(returnURL);
-                    }
-                    
+                    //if(String.IsNullOrEmpty(returnURL))
+                    //{
+                    //    return RedirectToAction(nameof(Index), new { CType = CType });
+                    //}
+                    //else
+                    //{
+                    //    return Redirect(returnURL);
+                    //}
+
+                    //return RedirectToAction("Details", new { companyToUpdate.CompanyID });
+                    return Redirect(ViewData["returnURL"].ToString());
                 }
                 catch (RetryLimitExceededException)
                 {
@@ -352,12 +383,15 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Delete(int? id, string returnURL)
         {
-            //Get the URL of the page that send us here
-            if (String.IsNullOrEmpty(returnURL))
-            {
-                returnURL = Request.Headers["Referer"].ToString();
-            }
-            ViewData["returnURL"] = returnURL;
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
+
+            ////Get the URL of the page that send us here
+            //if (String.IsNullOrEmpty(returnURL))
+            //{
+            //    returnURL = Request.Headers["Referer"].ToString();
+            //}
+            //ViewData["returnURL"] = returnURL;
 
             if (id == null)
             {
@@ -389,21 +423,25 @@ namespace hager_crm.Controllers
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> DeleteConfirmed(int id, string CType, string returnURL)
         {
-            ViewData["returnURL"] = returnURL;
+            //Get the URL with the last filter, sort and page parameters
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
+
+            //ViewData["returnURL"] = returnURL;
             var company = await _context.Companies.FindAsync(id);
             try
             {
                 _context.Companies.Remove(company);
                 await _context.SaveChangesAsync();
-                if(String.IsNullOrEmpty(returnURL))
-                {
-                    return RedirectToAction(nameof(Index), new { CType = CType });
-                }
-                else
-                {
-                    return Redirect(returnURL);
-                }
-                
+                //if(String.IsNullOrEmpty(returnURL))
+                //{
+                //    return RedirectToAction(nameof(Index), new { CType = CType });
+                //}
+                //else
+                //{
+                //    return Redirect(returnURL);
+                //}
+                return Redirect(ViewData["returnURL"].ToString());
+
             }
             catch (DbUpdateException dex)
             {

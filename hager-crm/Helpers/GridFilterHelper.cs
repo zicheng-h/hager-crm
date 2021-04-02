@@ -119,5 +119,35 @@ namespace hager_crm.Helpers
             ";
             return new HtmlString(result);
         }
+
+        public static HtmlString GenerateFiltered(this IHtmlHelper html, IGridFilterFilterable gridFilter)
+        {
+            var result = $@"
+                <button class=""btn btn-warning my-2"" 
+                        type=""button"" 
+                        data-toggle=""collapse"" 
+                        data-target=""#filter-data-collapse"" 
+                        aria-expanded=""false"" 
+                        aria-controls=""filter-data-collapse"">
+                    Open Filtering Menu
+                </button>
+                <div class=""grid-filter-panel my-3"">
+                    <div id=""filter-data-collapse"" class=""card card-body collapse"">
+                        <div class=""row"">
+                            {string.Join('\n', gridFilter.FilterRules.Select(html.GetFilteringOption))}
+                        </div>
+                        <div class=""row"">
+                            <div class=""col"">
+                                <div class=""form-group mt-2"">
+                                    <button class=""btn btn-primary data-search-btn"">Filter</button>
+                                    <button class=""btn btn-primary data-reset-btn ml-2"">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ";
+            return new HtmlString(result);
+        }
     }
 }

@@ -168,7 +168,7 @@
         {
             <a asp-action="Edit" asp-route-id="@Model.EmployeeID">Edit</a> @:|
         }
-        <a asp-action="Index">Back to List</a>
+        <a href='@ViewData["returnURL"]'>Back to List</a>
     </div>
 </div>
 
