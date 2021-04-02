@@ -1,4 +1,5 @@
 ﻿@model hager_crm.Models.Company
+@using static hager_crm.Utils.Capitalizator
 
 @{
     ViewData["Title"] = "Delete";
@@ -16,198 +17,145 @@
         <hr />
         <ul class="nav nav-pills" id="myTabs" role="tablist">
             <li class="nav-item">
-                <a href="#basic" aria-controls="basic" role="tab" class="nav-link active" name="basic" data-toggle="tab" aria-selected="false">Basic Information</a>
+                <a href="#basic" aria-controls="basic-tab" role="tab" class="nav-link active" name="basic" data-toggle="tab" aria-selected="false">Basic Information</a>
             </li>
-
             <li class="nav-item">
-                <a href="#moreinfo" aria-controls="moreinfo" role="tab" class="nav-link" name="moreinfo" data-toggle="tab" aria-selected="false">Billing and Shipping</a>
+                <a href="#address" aria-controls="address-tab" role="tab" class="nav-link" name="address" data-toggle="tab" aria-selected="false">Billing and Shipping</a>
             </li>
-
             <li class="nav-item">
-                <a href="#emergencycontact" aria-controls="emergencycontact" role="tab" class="nav-link" name="emergencycontact" data-toggle="tab" aria-selected="false">More Information</a>
+                <a href="#moreinfo" aria-controls="moreinfo-tab" role="tab" class="nav-link" name="moreinfo" data-toggle="tab" aria-selected="false">More Information</a>
             </li>
         </ul>
 
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade ml-3 show active" id="basic">
+            <div role="tabpanel" class="tab-pane fade ml-3 show active" id="basic" aria-labelledby="basic-tab">
                 <br />
                 <dl class="row">
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.Name)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.Name)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.Location)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.Location)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.CreditCheck)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.CreditCheck)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.DateChecked)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.DateChecked)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.BillingTerm)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.BillingTerm.Terms)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.Currency)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.Currency.CurrencyName)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.Phone)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.Phone)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.Website)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.Website)
                     </dd>
                 </dl>
+            </div>
 
+            <div role="tabpanel" class="tab-pane fade ml-3" id="address" aria-labelledby="address-tab">
+                <br />
+                <dl class="row">
+                    <dt class="col-sm-3 mt-2 mb-0">
+                        Billing Address
+                    </dt>
+                    <dd class="col-sm-9 mt-2 mb-0">
+                        @Html.DisplayFor(model => model.BillingAddress1)@if (!String.IsNullOrEmpty(Model.BillingAddress2))
+                        {
+                            @:, @Html.DisplayFor(model => model.BillingAddress2),
+                        } @Html.DisplayFor(model => model.BillingPostalCode)
+                    </dd>
+                    <dt class="col-sm-3 mt-0 mb-2">
+                    </dt>
+                    <dd class="col-sm-9 mt-0 mb-2">
+                        @Html.DisplayFor(model => model.BillingProvince.ProvinceName)@if (!String.IsNullOrEmpty(Model.BillingCountry.CountryName))
+                        {
+                            @:, @Html.DisplayFor(model => model.BillingCountry.CountryName)
+                        }
+                    </dd>
+                    <dt class="col-sm-3 mt-2 mb-0">
+                        Shipping Address
+                    </dt>
+                    <dd class="col-sm-9 mt-2 mb-0">
+                        @Html.DisplayFor(model => model.ShippingAddress1)@if (!String.IsNullOrEmpty(Model.ShippingAddress2))
+                        {
+                            @:, @Html.DisplayFor(model => model.ShippingAddress2),
+                        }@Html.DisplayFor(model => model.ShippingPostalCode)
+                    </dd>
+                    <dt class="col-sm-3 mt-0 mb-2">
+                    </dt>
+                    <dd class="col-sm-9 mt-0 mb-2">
+                        @Html.DisplayFor(model => model.ShippingProvince.ProvinceName)@if (!String.IsNullOrEmpty(Model.ShippingCountry.CountryName))
+                        {
+                            @:, @Html.DisplayFor(model => model.ShippingCountry.CountryName)
+                        }
+                    </dd>
+                </dl>
             </div>
 
             <div role="tabpanel" class="tab-pane fade ml-3" id="moreinfo" aria-labelledby="moreinfo-tab">
                 <br />
-                <dl class="row">
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.BillingAddress1)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.BillingAddress1)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.BillingAddress2)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.BillingAddress2)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.BillingProvince)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.BillingProvince.ProvinceName)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.BillingPostalCode)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.BillingPostalCode)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.BillingCountry)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.BillingCountry.CountryName)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.ShippingAddress1)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.ShippingAddress1)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.ShippingAddress2)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.ShippingAddress2)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.ShippingProvince)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.ShippingProvince.ProvinceName)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.ShippingPostalCode)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.ShippingPostalCode)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.ShippingCountry)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.ShippingCountry.CountryName)
-                    </dd>
-                </dl>
-
+                <div class="row">
+                    @foreach (var cat in (Dictionary<string, List<hager_crm.ViewModels.CompanyTypesDto>>)ViewData["CompanyTypes"])
+                    {
+                        <div class="col-xl-4 col-md-6 col-12 p-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    @cat.Key.Capitalize() Types
+                                </div>
+                                <div class="list-group" style="overflow-y: auto; height: 355px">
+                                    @foreach (var item in cat.Value)
+                                    {
+                                        <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
+                                             data-item-id="@item.TypeID"
+                                             href="#">
+                                            <div class="display-name d-flex m-auto">@item.DisplayName</div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-xl-4 col-md-6 col-12 p-4">
+                        <div class="card">
+                            <div class="card-header">Notes</div>
+                            <div class="p-4" style="overflow-y: auto; height: 355px">
+                                @Html.DisplayFor(model => model.Notes)
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div role="tabpanel" class="tab-pane fade ml-3" id="emergencycontact" aria-labelledby="moreinfo-tab">
-                <br />
-                <dl class="row">
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Customer)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Customer)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.CustomerType)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.CustomerType.Type)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Vendor)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Vendor)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.VendorType)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.VendorType.Type)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Contractor)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Contractor)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.ContractorType)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.ContractorType.Type)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Active)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Active)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Notes)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Notes)
-                    </dd>
-                </dl>
-
-            </div>
-
         </div>
-
 
         <input type="hidden" asp-for="CompanyID" />
         <input type="hidden" name="CType" id="CType" value="@Context.Request.Query["CType"]" />

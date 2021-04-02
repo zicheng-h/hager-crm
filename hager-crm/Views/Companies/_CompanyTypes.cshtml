@@ -1,0 +1,137 @@
+﻿@model List<hager_crm.ViewModels.CompanyTypesVM>
+@using static hager_crm.Utils.Capitalizator;
+<input type="hidden" id="companyTypes" name="companyTypes" value=";;" />
+<label for="typeCard" class="control-label">
+    Company Type
+    <span id="typeBadge" class="badge badge-info">@Model.Where(x => x.TypesIn.Count() > 0).Count()</span>
+</label>
+<div id="typeCard" class="card">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs" id="typeTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="customer-tab" data-toggle="tab" href="#customer-panel" role="tab" aria-controls="roles-tab" aria-selected="true">Customer</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contractor-tab" data-toggle="tab" href="#contractor-panel" role="tab" aria-controls="contractor-tab" aria-selected="false">Contractor</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="vendor-tab" data-toggle="tab" href="#vendor-panel" role="tab" aria-controls="vendor-tab" aria-selected="false">Vendor</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="typeContent">
+            @foreach (var cat in Model)
+            {
+                <div class="tab-pane fade
+                    @if (cat.Category == "customer")
+                    {
+                        @: active show
+                    }" id="@cat.Category-panel" role="tabpanel" aria-labelledby="@cat.Category-tab">
+                    <label class="control-label">@cat.Category.Capitalize() Types</label>
+                    <div id="@cat.Category-types" data-type="@cat.Category-types"
+                         class="list-group connectedSortable @cat.Category"
+                         style="overflow-y: auto; height: 175px">
+                        @foreach (var item in cat.TypesIn)
+                        {
+                            <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
+                                 data-item-id="@item.TypeID"
+                                 href="#">
+                                <div name="@cat.Category-handle" class="btn-group handle" role="group" aria-label="List Sort Handle">
+                                    <a class="btn btn-sm btn-outline-secondary disabled">⥯</a>
+                                </div>
+                                <div class="display-name d-flex m-auto">@item.DisplayName</div>
+                            </div>
+                        }
+                    </div>
+                    <label class="control-label">Types Available</label>
+                    <div id="@cat.Category-available" data-type="@cat.Category-available-types"
+                         class="list-group connectedSortable @cat.Category"
+                         style="overflow-y: auto; height: 175px">
+                        @foreach (var item in cat.TypesAvailable)
+                        {
+                            <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
+                                 data-item-id="@item.TypeID"
+                                 href="#">
+                                <div name="@cat.Category-handle" class="btn-group handle" role="group" aria-label="List Sort Handle">
+                                    <a class="btn btn-sm btn-outline-secondary disabled">⥯</a>
+                                </div>
+                                <div class="display-name d-flex m-auto">@item.DisplayName</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery-ui.js"></script>
+<script>
+    $(function () {
+        function updateForm() {
+            var cnt = 0;
+            if ($('#customer-types')[0].children.length > 0) cnt++;
+            if ($('#contractor-types')[0].children.length > 0) cnt++;
+            if ($('#vendor-types')[0].children.length > 0) cnt++;
+            $('#typeBadge').html(cnt);
+
+            $('#companyTypes').val(
+                $('.customer').sortable('toArray', { attribute: "data-item-id" }).join(',') + ';' +
+                $('.contractor').sortable('toArray', { attribute: "data-item-id" }).join(',') + ';' +
+                $('.vendor').sortable('toArray', { attribute: "data-item-id" }).join(',')
+            );
+        }
+
+        $('.customer').sortable({
+            connectWith: ".connectedSortable",
+            handle: '[name="customer-handle"]',
+            stop: updateForm
+        }).disableSelection();
+
+        $('.contractor').sortable({
+            connectWith: ".connectedSortable",
+            handle: '[name="contractor-handle"]',
+            stop: updateForm
+        }).disableSelection();
+
+        $('.vendor').sortable({
+            connectWith: ".connectedSortable",
+            handle: '[name="vendor-handle"]',
+            stop: updateForm
+        }).disableSelection();
+
+        $(".handle").bind('touchstart', function (event) {
+            var touch = event.originalEvent.touches[0];
+            var mouseDownEvent = new MouseEvent('mousedown', {
+                clientX: touch.pageX,
+                clientY: touch.pageY,
+                bubbles: true,
+                cancelable: true
+            });
+
+            event.currentTarget.dispatchEvent(mouseDownEvent);
+            event.preventDefault();
+        });
+        $(".handle").bind('touchmove', function (event) {
+            var touch = event.originalEvent.touches[0];
+            var mouseMoveEvent = new MouseEvent('mousemove', {
+                clientX: touch.pageX,
+                clientY: touch.pageY,
+                bubbles: true,
+                cancelable: true
+            });
+
+            event.currentTarget.dispatchEvent(mouseMoveEvent);
+            event.preventDefault();
+        });
+        $(".handle").bind('touchend', function (event) {
+            var mouseUpEvent = new MouseEvent('mouseup', {
+                bubbles: true,
+                cancelable: true
+            });
+
+            event.currentTarget.dispatchEvent(mouseUpEvent);
+            event.preventDefault();
+        });
+    });
+</script>

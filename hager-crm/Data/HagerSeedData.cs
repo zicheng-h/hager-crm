@@ -19,75 +19,93 @@ namespace hager_crm.Data
                 context.CustomerTypes.AddRange(
                     new CustomerType
                     {
-                        Type = "Poultry"
+                        Type = "Poultry",
+                        Order = 1
                     },
                     new CustomerType
                     {
-                        Type = "Beef"
+                        Type = "Beef",
+                        Order = 2
                     },
                     new CustomerType
                     {
-                        Type = "Pork"
+                        Type = "Pork",
+                        Order = 3
                     },
                     new CustomerType
                     {
-                        Type = "Bakery"
+                        Type = "Bakery",
+                        Order = 4
                     },
                     new CustomerType
                     {
-                        Type = "Vegetarian"
+                        Type = "Vegetarian",
+                        Order = 5
                     },
                     new CustomerType
                     {
-                        Type = "Vegetables & Produce"
+                        Type = "Vegetables & Produce",
+                        Order = 6
                     },
                     new CustomerType
                     {
-                        Type = "Other Food"
+                        Type = "Other Food",
+                        Order = 7
                     },
                     new CustomerType
                     {
-                        Type = "Compressed Gas"
+                        Type = "Compressed Gas",
+                        Order = 8
                     },
                     new CustomerType
                     {
-                        Type = "Cryogenic Pipe"
+                        Type = "Cryogenic Pipe",
+                        Order = 9
                     },
                     new CustomerType
                     {
-                        Type = "Custom Fabrication"
+                        Type = "Custom Fabrication",
+                        Order = 10
                     },
                     new CustomerType
                     {
-                        Type = "IQF Exhaust"
+                        Type = "IQF Exhaust",
+                        Order = 11
                     },
                     new CustomerType
                     {
-                        Type = "NFPA Exhaust"
+                        Type = "NFPA Exhaust",
+                        Order = 12
                     },
                     new CustomerType
                     {
-                        Type = "Construction"
+                        Type = "Construction",
+                        Order = 13
                     },
                     new CustomerType
                     {
-                        Type = "Conveyors"
+                        Type = "Conveyors",
+                        Order = 14
                     },
                     new CustomerType
                     {
-                        Type = "Manifolds"
+                        Type = "Manifolds",
+                        Order = 15
                     },
                     new CustomerType
                     {
-                        Type = "Plumbing"
+                        Type = "Plumbing",
+                        Order = 16
                     },
                     new CustomerType
                     {
-                        Type = "Beverage"
+                        Type = "Beverage",
+                        Order = 17
                     },
                     new CustomerType
                     {
-                        Type = "HPP"
+                        Type = "HPP",
+                        Order = 18
                     }
                 );
                 context.SaveChanges();
@@ -98,43 +116,53 @@ namespace hager_crm.Data
                 context.VendorTypes.AddRange(
                     new VendorType
                     {
-                        Type = "Conveyor & Fabrication"
+                        Type = "Conveyor & Fabrication",
+                        Order = 1
                     },
                     new VendorType
                     {
-                        Type = "Professional Service"
+                        Type = "Professional Service",
+                        Order = 2
                     },
                     new VendorType
                     {
-                        Type = "Office Supplies"
+                        Type = "Office Supplies",
+                        Order = 3
                     },
                     new VendorType
                     {
-                        Type = "Shop Supplies"
+                        Type = "Shop Supplies",
+                        Order = 4
                     },
                     new VendorType
                     {
-                        Type = "Cryogenic"
+                        Type = "Cryogenic",
+                        Order = 5
                     },
                     new VendorType
                     {
-                        Type = "Plumbing / Piping"
+                        Type = "Plumbing / Piping",
+                        Order = 6
                     },
                     new VendorType
                     {
-                        Type = "Transportation"
+                        Type = "Transportation",
+                        Order = 7
                     },
                     new VendorType
                     {
-                        Type = "HVAC & Exhaust Systems"
+                        Type = "HVAC & Exhaust Systems",
+                        Order = 8
                     },
                     new VendorType
                     {
-                        Type = "Outsourced Fabrication & Services"
+                        Type = "Outsourced Fabrication & Services",
+                        Order = 9
                     },
                     new VendorType
                     {
-                        Type = "Electrical Components"
+                        Type = "Electrical Components",
+                        Order = 10
                     }
                 );
                 context.SaveChanges();
@@ -145,35 +173,43 @@ namespace hager_crm.Data
                 context.ContractorTypes.AddRange(
                     new ContractorType
                     {
-                        Type = "Welding"
+                        Type = "Welding",
+                        Order = 1
                     },
                     new ContractorType
                     {
-                        Type = "Plumbing"
+                        Type = "Plumbing",
+                        Order = 2
                     },
                     new ContractorType
                     {
-                        Type = "Electrical"
+                        Type = "Electrical",
+                        Order = 3
                     },
                     new ContractorType
                     {
-                        Type = "Engineering"
+                        Type = "Engineering",
+                        Order = 4
                     },
                     new ContractorType
                     {
-                        Type = "Fabrication"
+                        Type = "Fabrication",
+                        Order = 5
                     },
                     new ContractorType
                     {
-                        Type = "General Contractor"
+                        Type = "General Contractor",
+                        Order = 7
                     },
                     new ContractorType
                     {
-                        Type = "Metal Forming"
+                        Type = "Metal Forming",
+                        Order = 8
                     },
                     new ContractorType
                     {
-                        Type = "Metal Cutting"
+                        Type = "Metal Cutting",
+                        Order = 9
                     }
                 );
                 context.SaveChanges();
@@ -184,39 +220,48 @@ namespace hager_crm.Data
                 context.BillingTerms.AddRange(
                     new BillingTerm
                     {
-                        Terms = "40% down, balance net 15"
+                        Terms = "40% down, balance net 15",
+                        Order = 1
                     },
                     new BillingTerm
                     {
-                        Terms = "40% down, balance net 30"
+                        Terms = "40% down, balance net 30",
+                        Order = 2
                     },
                     new BillingTerm
                     {
-                        Terms = "40% down, balance net 45"
+                        Terms = "40% down, balance net 45",
+                        Order = 3
                     },
                     new BillingTerm
                     {
-                        Terms = "40% down, balance net 90"
+                        Terms = "40% down, balance net 90",
+                        Order = 4
                     },
                     new BillingTerm
                     {
-                        Terms = "Due on receipt"
+                        Terms = "Due on receipt",
+                        Order = 5
                     },
                     new BillingTerm
                     {
-                        Terms = "Net 15"
+                        Terms = "Net 15",
+                        Order = 6
                     },
                     new BillingTerm
                     {
-                        Terms = "Net 30"
+                        Terms = "Net 30",
+                        Order = 7
                     },
                     new BillingTerm
                     {
-                        Terms = "Net 45"
+                        Terms = "Net 45",
+                        Order = 8
                     },
                     new BillingTerm
                     {
-                        Terms = "Net 90"
+                        Terms = "Net 90",
+                        Order = 9
                     }
                 );
                 context.SaveChanges();
@@ -227,79 +272,98 @@ namespace hager_crm.Data
                 context.JobPositions.AddRange(
                     new JobPosition
                     {
-                        Position = "Jr. Fabricator"
+                        Position = "Jr. Fabricator",
+                        Order = 1
                     },
                     new JobPosition
                     {
-                        Position = "Fabricator"
+                        Position = "Fabricator",
+                        Order = 2
                     },
                     new JobPosition
                     {
-                        Position = "Sr. Fabricator"
+                        Position = "Sr. Fabricator",
+                        Order = 3
                     },
                     new JobPosition
                     {
-                        Position = "Foreman"
+                        Position = "Foreman",
+                        Order = 4
                     },
                     new JobPosition
                     {
-                        Position = "Apprentice Plumber"
+                        Position = "Apprentice Plumber",
+                        Order = 5
                     },
                     new JobPosition
                     {
-                        Position = "Plumber"
+                        Position = "Plumber",
+                        Order = 6
                     },
                     new JobPosition
                     {
-                        Position = "Field Supervisor"
+                        Position = "Field Supervisor",
+                        Order = 7
                     },
                     new JobPosition
                     {
-                        Position = "General Labourer"
+                        Position = "General Labourer",
+                        Order = 8
                     },
                     new JobPosition
                     {
-                        Position = "Shipping Receiving"
+                        Position = "Shipping Receiving",
+                        Order = 9
                     },
                     new JobPosition
                     {
-                        Position = "Controller"
+                        Position = "Controller",
+                        Order = 10
                     },
                     new JobPosition
                     {
-                        Position = "President"
+                        Position = "President",
+                        Order = 11
                     },
                     new JobPosition
                     {
-                        Position = "Vice President"
+                        Position = "Vice President",
+                        Order = 12
                     },
                     new JobPosition
                     {
-                        Position = "Jr. Draftsperson"
+                        Position = "Jr. Draftsperson",
+                        Order = 13
                     },
                     new JobPosition
                     {
-                        Position = "Mechanical Designer"
+                        Position = "Mechanical Designer",
+                        Order = 14
                     },
                     new JobPosition
                     {
-                        Position = "Professional Engineer"
+                        Position = "Professional Engineer",
+                        Order = 15
                     },
                     new JobPosition
                     {
-                        Position = "Engineering Manager"
+                        Position = "Engineering Manager",
+                        Order = 16
                     },
                     new JobPosition
                     {
-                        Position = "Mechanical Estimator/Purchaser"
+                        Position = "Mechanical Estimator/Purchaser",
+                        Order = 17
                     },
                     new JobPosition
                     {
-                        Position = "Estimator"
+                        Position = "Estimator",
+                        Order = 18
                     },
                     new JobPosition
                     {
-                        Position = "Sales Manager"
+                        Position = "Sales Manager",
+                        Order = 19
                     }
                 );
                 context.SaveChanges();
@@ -310,23 +374,28 @@ namespace hager_crm.Data
                 context.EmploymentTypes.AddRange(
                     new EmploymentType
                     {
-                        Type = "Full-Time"
+                        Type = "Full-Time",
+                        Order = 1
                     },
                     new EmploymentType
                     {
-                        Type = "Part-Time"
+                        Type = "Part-Time",
+                        Order = 2
                     },
                     new EmploymentType
                     {
-                        Type = "Contract"
+                        Type = "Contract",
+                        Order = 3
                     },
                     new EmploymentType
                     {
-                        Type = "Seasonal"
+                        Type = "Seasonal",
+                        Order = 4
                     },
                     new EmploymentType
                     {
-                        Type = "Co-op Student"
+                        Type = "Co-op Student",
+                        Order = 5
                     }
                 );
                 context.SaveChanges();
@@ -337,15 +406,18 @@ namespace hager_crm.Data
                 context.Categories.AddRange(
                     new Categories
                     {
-                        Category = "Christmas Card"
+                        Category = "Christmas Card",
+                        Order = 1
                     },
                     new Categories
                     {
-                        Category = "Marketing Material"
+                        Category = "Marketing Material",
+                        Order = 2
                     },
                     new Categories
                     {
-                        Category = "Newsletter"
+                        Category = "Newsletter",
+                        Order = 3
                     }
                 );
                 context.SaveChanges();
@@ -955,11 +1027,13 @@ namespace hager_crm.Data
                 context.Currencies.AddRange(
                     new Currency
                     {
-                        CurrencyName = "CAD"
+                        CurrencyName = "CAD",
+                        Order = 1
                     },
                     new Currency
                     {
-                        CurrencyName = "USD"
+                        CurrencyName = "USD",
+                        Order = 2
                     }
                     );
                 context.SaveChanges();
@@ -1057,10 +1131,10 @@ namespace hager_crm.Data
                     new Company
                     {
                         Name = "Eco Focus",
-                        Location = "Niagara Fall",
+                        Location = "Niagara Falls",
                         DateChecked = DateTime.Now,
                         BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
-                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        //BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
                         CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
                         BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
                         Phone = 1234567890,
@@ -1071,23 +1145,15 @@ namespace hager_crm.Data
                         ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
                         ShippingPostalCode = "L2C1A1",
                         ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
-                        Customer = true,
-                        //CustomerTypeID = 1,
-                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(b => b.Type == "Poultry").CustomerTypeID,
-                        //CustomerType = context.CustomerTypes.FirstOrDefault(b => b.Type == "Poultry"),
-                        Vendor = false,
-                        VendorTypeID = null,
-                        Contractor = false,
-                        ContractorTypeID = null
-                    }
-                    ,
+                        Active = true
+                    },
                     new Company
                     {
-                        Name = "Meet lovers",
-                        Location = "Niagara Fall",
+                        Name = "Meat lovers",
+                        Location = "Montreal",
                         DateChecked = DateTime.Now,
                         BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
-                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        //BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
                         CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
                         BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
                         Phone = 1234567890,
@@ -1098,18 +1164,15 @@ namespace hager_crm.Data
                         ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
                         ShippingPostalCode = "L2C1A1",
                         ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
-                        Customer = true,
-                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(b => b.Type == "Beef").CustomerTypeID,
-                        Vendor = false,
-                        Contractor = false
+                        Active = true
                     },
                     new Company
                     {
                         Name = "Bacon lovers",
-                        Location = "Niagara Fall",
+                        Location = "Halifax",
                         DateChecked = DateTime.Now,
                         BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
-                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        //BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
                         CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
                         BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
                         Phone = 1234567890,
@@ -1120,18 +1183,15 @@ namespace hager_crm.Data
                         ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
                         ShippingPostalCode = "L2C1A1",
                         ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
-                        Customer = true,
-                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(b => b.Type == "Pork").CustomerTypeID,
-                        Vendor = false,
-                        Contractor = false
+                        Active = true
                     },
                     new Company
                     {
                         Name = "Tele-Transporters",
-                        Location = "Niagara Fall",
+                        Location = "Toronto",
                         DateChecked = DateTime.Now,
                         BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
-                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        //BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
                         CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
                         BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
                         Phone = 1234567890,
@@ -1142,18 +1202,15 @@ namespace hager_crm.Data
                         ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
                         ShippingPostalCode = "L2C1A1",
                         ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
-                        Customer = false,
-                        Vendor = true,
-                        VendorTypeID = context.VendorTypes.FirstOrDefault(b => b.Type == "Conveyor & Fabrication").VendorTypeID,
-                        Contractor = false
+                        Active = true
                     },
                     new Company
                     {
                         Name = "Mr. All Services",
-                        Location = "Niagara Fall",
+                        Location = "Quebec City",
                         DateChecked = DateTime.Now,
                         BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
-                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        //BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
                         CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
                         BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
                         Phone = 1234567890,
@@ -1164,40 +1221,34 @@ namespace hager_crm.Data
                         ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
                         ShippingPostalCode = "L2C1A1",
                         ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
-                        Customer = false,
-                        Vendor = true,
-                        VendorTypeID = context.VendorTypes.FirstOrDefault(b => b.Type == "Professional Service").VendorTypeID,
-                        Contractor = false
+                        Active = true
                     },
                     new Company
                     {
                         Name = "Dunder Mifflin",
-                        Location = "Niagara Fall",
+                        Location = "Victoria",
                         DateChecked = DateTime.Now,
                         BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
-                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        //BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
                         CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
-                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "British Columbia").ProvinceID,
                         Phone = 1234567890,
                         BillingAddress1 = "First Avenue",
                         BillingPostalCode = "L3C1A1",
                         BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
                         ShippingAddress1 = "First Avenue",
-                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "British Columbia").ProvinceID,
                         ShippingPostalCode = "L2C1A1",
                         ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
-                        Customer = false,
-                        Vendor = true,
-                        VendorTypeID = context.VendorTypes.FirstOrDefault(b => b.Type == "Office Supplies").VendorTypeID,
-                        Contractor = false
+                        Active = true
                     },
                     new Company
                     {
                         Name = "IronMen",
-                        Location = "Niagara Fall",
+                        Location = "Niagara Falls",
                         DateChecked = DateTime.Now,
                         BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
-                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        //BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
                         CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
                         BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
                         Phone = 1234567890,
@@ -1208,61 +1259,176 @@ namespace hager_crm.Data
                         ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Ontario").ProvinceID,
                         ShippingPostalCode = "L2C1A1",
                         ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
-                        Customer = false,
-                        Vendor = false,
-                        Contractor = true,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Welding").ContractorTypeID
+                        Active = true
                     },
                     new Company
                     {
                         Name = "Mario Brothers",
-                        Location = "Niagara Fall",
+                        Location = "Vancouver",
                         DateChecked = DateTime.Now,
                         BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
-                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        //BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
                         CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
-                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "British Columbia").ProvinceID,
                         Phone = 1234567890,
                         BillingAddress1 = "First Avenue",
                         BillingPostalCode = "L3C1A1",
                         BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
                         ShippingAddress1 = "First Avenue",
-                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Quebec").ProvinceID,
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "British Columbia").ProvinceID,
                         ShippingPostalCode = "L2C1A1",
                         ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
-                        Customer = false,
-                        Vendor = false,
-                        Contractor = true,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Plumbing").ContractorTypeID
+                        Active = true
                     },
                     new Company
                     {
                         Name = "Static Shock",
-                        Location = "Niagara Fall",
+                        Location = "Winnipeg",
                         DateChecked = DateTime.Now,
                         BillingTermID = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15").BillingTermID,
-                        BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
+                        //BillingTerm = context.BillingTerms.FirstOrDefault(b => b.Terms == "40% down, balance net 15"),
                         CurrencyID = context.Currencies.FirstOrDefault(b => b.CurrencyName == "CAD").CurrencyID,
-                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
+                        BillingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Manitoba").ProvinceID,
                         Phone = 1234567890,
                         BillingAddress1 = "First Avenue",
                         BillingPostalCode = "L3C1A1",
                         BillingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
                         ShippingAddress1 = "First Avenue",
-                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Nova Scotia").ProvinceID,
+                        ShippingProvinceID = context.Provinces.FirstOrDefault(b => b.ProvinceName == "Manitoba").ProvinceID,
                         ShippingPostalCode = "L2C1A1",
                         ShippingCountryID = context.Countries.FirstOrDefault(b => b.CountryName == "Canada").CountryID,
-                        Customer = false,
-                        Vendor = false,
-                        Contractor = true,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(b => b.Type == "Electrical").ContractorTypeID
+                        Active = true
+                    }
+                    );
+                context.SaveChanges();
+            }
+
+            if (!context.CompanyContractors.Any())
+            {
+                context.CompanyContractors.AddRange(
+                    new CompanyContractor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Eco Focus").CompanyID,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Welding").ContractorTypeID
+                    },
+                    new CompanyContractor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Eco Focus").CompanyID,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Electrical").ContractorTypeID
+                    },
+                    new CompanyContractor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Eco Focus").CompanyID,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Engineering").ContractorTypeID
+                    },
+                    new CompanyContractor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Meat lovers").CompanyID,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Plumbing").ContractorTypeID
+                    },
+                    new CompanyContractor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Bacon lovers").CompanyID,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Welding").ContractorTypeID
+                    },
+                    new CompanyContractor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Bacon lovers").CompanyID,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Fabrication").ContractorTypeID
+                    },
+                    new CompanyContractor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Bacon lovers").CompanyID,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "General Contractor").ContractorTypeID
+                    },
+                    new CompanyContractor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Tele-Transporters").CompanyID,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Welding").ContractorTypeID
+                    },
+                    new CompanyContractor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Mr. All Services").CompanyID,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "General Contractor").ContractorTypeID
+                    },
+                    new CompanyContractor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Mr. All Services").CompanyID,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Metal Forming").ContractorTypeID
+                    },
+                    new CompanyContractor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Mr. All Services").CompanyID,
+                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Metal Cutting").ContractorTypeID
+                    }
+                    );
+                context.SaveChanges();
+            }
+
+            if (!context.CompanyCustomers.Any())
+            {
+                context.CompanyCustomers.AddRange(
+                    new CompanyCustomer
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "IronMen").CompanyID,
+                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(c => c.Type == "Vegetarian").CustomerTypeID
+                    },
+                    new CompanyCustomer
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "IronMen").CompanyID,
+                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(c => c.Type == "Vegetables & Produce").CustomerTypeID
+                    },
+                    new CompanyCustomer
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "IronMen").CompanyID,
+                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(c => c.Type == "Other Food").CustomerTypeID
+                    },
+                    new CompanyCustomer
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "IronMen").CompanyID,
+                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(c => c.Type == "Compressed Gas").CustomerTypeID
+                    },
+                    new CompanyCustomer
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "IronMen").CompanyID,
+                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(c => c.Type == "Cryogenic Pipe").CustomerTypeID
+                    },
+                    new CompanyCustomer
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Dunder Mifflin").CompanyID,
+                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(c => c.Type == "Compressed Gas").CustomerTypeID
+                    },
+                    new CompanyCustomer
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Static Shock").CompanyID,
+                        CustomerTypeID = context.CustomerTypes.FirstOrDefault(c => c.Type == "Other Food").CustomerTypeID
+                    }
+                    );
+                context.SaveChanges();
+            }
+            
+            if (!context.CompanyVendors.Any())
+            {
+                context.CompanyVendors.AddRange(
+                    new CompanyVendor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Static Shock").CompanyID,
+                        VendorTypeID = context.VendorTypes.FirstOrDefault(c => c.Type == "Cryogenic").VendorTypeID
+                    },
+                    new CompanyVendor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Mr. All Services").CompanyID,
+                        VendorTypeID = context.VendorTypes.FirstOrDefault(c => c.Type == "Plumbing / Piping").VendorTypeID
+                    },
+                    new CompanyVendor
+                    {
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Tele-Transporters").CompanyID,
+                        VendorTypeID = context.VendorTypes.FirstOrDefault(c => c.Type == "Transportation").VendorTypeID
                     }
                     );
                 context.SaveChanges();
             }
             #endregion
-
-
 
             #region Contact
             if (!context.Contacts.Any())
@@ -1291,7 +1457,7 @@ namespace hager_crm.Data
                         Email = "elicia@example.com",
                         Active = true,
                         Notes = "Just an example of text. This text is just a random note for this example.",
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Meet lovers").CompanyID
+                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Meat lovers").CompanyID
                     },
 
                     new Contact // Customer Contact 3

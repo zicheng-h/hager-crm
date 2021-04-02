@@ -9,7 +9,7 @@ using hager_crm.Data;
 namespace hager_crm.Data.HIMigrations
 {
     [DbContext(typeof(HagerContext))]
-    [Migration("20210328160731_Initial")]
+    [Migration("20210402122916_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,9 +137,6 @@ namespace hager_crm.Data.HIMigrations
                     b.Property<int?>("BillingTermID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("Contractor")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int?>("ContractorTypeID")
                         .HasColumnType("INTEGER");
 
@@ -147,9 +144,6 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("CurrencyID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Customer")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("CustomerTypeID")
@@ -192,9 +186,6 @@ namespace hager_crm.Data.HIMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("ShippingProvinceID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Vendor")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("VendorTypeID")
@@ -254,7 +245,7 @@ namespace hager_crm.Data.HIMigrations
 
                     b.HasIndex("CustomerTypeID");
 
-                    b.ToTable("CompanyTypes");
+                    b.ToTable("CompanyCustomers");
                 });
 
             modelBuilder.Entity("hager_crm.Models.CompanyVendor", b =>
@@ -619,19 +610,17 @@ namespace hager_crm.Data.HIMigrations
                         .HasForeignKey("BillingTermID")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("hager_crm.Models.ContractorType", "ContractorType")
+                    b.HasOne("hager_crm.Models.ContractorType", null)
                         .WithMany("Companies")
-                        .HasForeignKey("ContractorTypeID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ContractorTypeID");
 
                     b.HasOne("hager_crm.Models.Currency", "Currency")
                         .WithMany("Companies")
                         .HasForeignKey("CurrencyID");
 
-                    b.HasOne("hager_crm.Models.CustomerType", "CustomerType")
+                    b.HasOne("hager_crm.Models.CustomerType", null)
                         .WithMany("Companies")
-                        .HasForeignKey("CustomerTypeID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("CustomerTypeID");
 
                     b.HasOne("hager_crm.Models.Country", "ShippingCountry")
                         .WithMany()
@@ -641,18 +630,17 @@ namespace hager_crm.Data.HIMigrations
                         .WithMany()
                         .HasForeignKey("ShippingProvinceID");
 
-                    b.HasOne("hager_crm.Models.VendorType", "VendorType")
+                    b.HasOne("hager_crm.Models.VendorType", null)
                         .WithMany("Companies")
-                        .HasForeignKey("VendorTypeID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("VendorTypeID");
                 });
 
             modelBuilder.Entity("hager_crm.Models.CompanyContractor", b =>
                 {
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyContractors")
-                        .HasForeignKey("CompanyID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("ContractorTypeID")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("hager_crm.Models.ContractorType", "ContractorType")
@@ -666,8 +654,8 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyCustomers")
-                        .HasForeignKey("CompanyID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("CustomerTypeID")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("hager_crm.Models.CustomerType", "CustomerType")
@@ -681,8 +669,8 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyVendors")
-                        .HasForeignKey("CompanyID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("VendorTypeID")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("hager_crm.Models.VendorType", "VendorType")

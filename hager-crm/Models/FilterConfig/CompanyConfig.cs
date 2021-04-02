@@ -91,35 +91,11 @@ namespace hager_crm.Models.FilterConfig
                     "CType", new ConfigAction<Company>
                     {
                         OnFilter = (p, q) =>
-                            q.Where(i => (((string) p == "Customer" && i.Customer) ||
-                                ((string) p == "Vendor" && i.Vendor) ||
-                                ((string) p == "Contractor" && i.Contractor) ||
+                            q.Where(i => ((string) p == "Customer" && i.CompanyCustomers.Count > 0) ||
+                                ((string) p == "Vendor" && i.CompanyVendors.Count > 0) ||
+                                ((string) p == "Contractor" && i.CompanyContractors.Count > 0) ||
                                 ((string) p == "All")
-                            ))
-                    }
-                },
-                {
-                    "CustomerType", new ConfigAction<Company>
-                    {
-                        OnSort = (p, q) =>
-                            (string) p == "DESC" ? q.OrderByDescending(i => i.CustomerType.Type) :
-                                q.OrderBy(i => i.CustomerType.Type)
-                    }
-                },
-                {
-                    "VendorType", new ConfigAction<Company>
-                    {
-                        OnSort = (p, q) =>
-                            (string) p == "DESC" ? q.OrderByDescending(i => i.VendorType.Type) :
-                                q.OrderBy(i => i.VendorType.Type)
-                    }
-                },
-                {
-                    "ContractorType", new ConfigAction<Company>
-                    {
-                        OnSort = (p, q) =>
-                            (string) p == "DESC" ? q.OrderByDescending(i => i.ContractorType.Type) :
-                                q.OrderBy(i => i.ContractorType.Type)
+                            )
                     }
                 }
             };
