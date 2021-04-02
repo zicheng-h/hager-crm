@@ -111,11 +111,10 @@
                             <option value="">-- Select Province --</option>
                             @foreach (var item in ViewBag.ShippingProvinceID.Items)
                             {
-                                <option value="@item.Value.Split(';')[0]"
-                                        data-country="@item.Value.Split(';')[1]">
-                                    @item.Text
-                                </option>
-                            }
+                <option value="@item.Value.Split(';')[0]"
+                        data-country="@item.Value.Split(';')[1]">
+                    @item.Text
+                </option>}
                         </select>
                         <span asp-validation-for="ShippingProvinceID" class="text-danger"></span>
                     </div>
@@ -137,6 +136,11 @@
                         <label asp-for="Notes" class="control-label"></label>
                         <input asp-for="Notes" class="form-control" />
                         <span asp-validation-for="Notes" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                        </label>
                     </div>
                 </div>
             </div>

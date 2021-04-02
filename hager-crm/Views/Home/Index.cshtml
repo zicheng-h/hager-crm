@@ -117,7 +117,6 @@
 
 @section Scripts {
     <script type="text/javascript">
-        
         function ReadAnnouncement(target){
             $.post( "Announcement/ReadAnnouncement", { id: $(target).data('id')}, function() {
               refreshTab('news-unread-tab');
@@ -126,7 +125,7 @@
                 alert( "Something went wrong" );
             });
         }
-        
+
         function refreshTab(activeTab) {
             switch (activeTab) {
                 case 'news-unread-tab': $('#news-unread-panel').load('/Announcement/GetUnreadAnnouncements');
@@ -144,6 +143,7 @@
         window.onload = function () {
             $('#news-unread-panel').load('/Announcement/GetUnreadAnnouncements');
             $('#news-unread-panel').addClass("show active in");
+            $("#homeSubmenu").attr("style", "color: #862633; background: #fff;");
         }
     </script>
     @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))

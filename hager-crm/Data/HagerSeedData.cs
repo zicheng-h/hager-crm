@@ -1303,102 +1303,51 @@ namespace hager_crm.Data
                     );
                 context.SaveChanges();
             }
+            #endregion
+
+            #region CompaniesTypes
+            int n = context.Companies.Count();
 
             if (!context.CompanyContractors.Any())
             {
-                context.CompanyContractors.AddRange(
-                    new CompanyContractor
+                var cntTypes = context.ContractorTypes.ToList();
+                foreach (var company in context.Companies.Take(n / 3))
+                {
+                    context.CompanyContractors.Add(new CompanyContractor
                     {
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Eco Focus").CompanyID,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Welding").ContractorTypeID
-                    },
-                    new CompanyContractor
-                    {
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Eco Focus").CompanyID,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Electrical").ContractorTypeID
-                    },
-                    new CompanyContractor
-                    {
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Eco Focus").CompanyID,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Engineering").ContractorTypeID
-                    },
-                    new CompanyContractor
-                    {
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Meat lovers").CompanyID,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Plumbing").ContractorTypeID
-                    },
-                    new CompanyContractor
-                    {
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Bacon lovers").CompanyID,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Welding").ContractorTypeID
-                    },
-                    new CompanyContractor
-                    {
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Bacon lovers").CompanyID,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Fabrication").ContractorTypeID
-                    },
-                    new CompanyContractor
-                    {
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Bacon lovers").CompanyID,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "General Contractor").ContractorTypeID
-                    },
-                    new CompanyContractor
-                    {
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Tele-Transporters").CompanyID,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Welding").ContractorTypeID
-                    },
-                    new CompanyContractor
-                    {
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Mr. All Services").CompanyID,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "General Contractor").ContractorTypeID
-                    },
-                    new CompanyContractor
-                    {
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Mr. All Services").CompanyID,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Metal Forming").ContractorTypeID
-                    },
-                    new CompanyContractor
-                    {
-                        CompanyID = context.Companies.FirstOrDefault(c => c.Name == "Mr. All Services").CompanyID,
-                        ContractorTypeID = context.ContractorTypes.FirstOrDefault(c => c.Type == "Metal Cutting").ContractorTypeID
-                    }
-                    );
+                        CompanyID = company.CompanyID,
+                        ContractorTypeID = cntTypes[random.Next(cntTypes.Count)].ContractorTypeID
+                    });
+                }
                 context.SaveChanges();
             }
 
-            #region CompaniesTypes
+            if (!context.CompanyVendors.Any())
+            {
+                var vndTypes = context.VendorTypes.ToList();
+                foreach (var company in context.Companies.Skip(n / 3).Take(n / 3))
+                {
+                    context.CompanyVendors.Add(new CompanyVendor()
+                    {
+                        CompanyID = company.CompanyID, 
+                        VendorTypeID = vndTypes[random.Next(vndTypes.Count)].VendorTypeID
+                    });
+                }
+                context.SaveChanges();
+            }
 
-            var cntTypes = context.ContractorTypes.ToList();
-            foreach (var company in context.Companies.Take(3))
+            if (!context.CompanyCustomers.Any())
             {
-                company.Contractor = true;
-                context.CompanyContractors.Add(new CompanyContractor
+                var cstTypes = context.CustomerTypes.ToList();
+                foreach (var company in context.Companies.Skip(n / 3 * 2).Take(n - n / 3 * 2))
                 {
-                    CompanyID = company.CompanyID, 
-                    ContractorTypeID = cntTypes[random.Next(cntTypes.Count)].ContractorTypeID
-                });
-            }
-            
-            var vndTypes = context.VendorTypes.ToList();
-            foreach (var company in context.Companies.Skip(3).Take(3))
-            {
-                company.Vendor = true;
-                context.CompanyVendors.Add(new CompanyVendor()
-                {
-                    CompanyID = company.CompanyID, 
-                    VendorTypeID = vndTypes[random.Next(vndTypes.Count)].VendorTypeID
-                });
-            }
-            
-            var cstTypes = context.CustomerTypes.ToList();
-            foreach (var company in context.Companies.Skip(6).Take(3))
-            {
-                company.Customer = true;
-                context.CompanyCustomers.Add(new CompanyCustomer
-                {
-                    CompanyID = company.CompanyID, 
-                    CustomerTypeID = cstTypes[random.Next(cstTypes.Count)].CustomerTypeID
-                });
+                    context.CompanyCustomers.Add(new CompanyCustomer
+                    {
+                        CompanyID = company.CompanyID,
+                        CustomerTypeID = cstTypes[random.Next(cstTypes.Count)].CustomerTypeID
+                    });
+                }
+                context.SaveChanges();
             }
             
             #endregion

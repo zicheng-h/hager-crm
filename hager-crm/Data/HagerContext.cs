@@ -60,7 +60,7 @@ namespace hager_crm.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Default Schema
-            modelBuilder.HasDefaultSchema("HG");
+            //modelBuilder.HasDefaultSchema("HG");
 
             modelBuilder.Entity<Announcement>().HasMany(a => a.EmployeesUnread)
                 .WithOne(a => a.Announcement).OnDelete(DeleteBehavior.Cascade);
@@ -154,7 +154,7 @@ namespace hager_crm.Data
             modelBuilder.Entity<Company>()
                 .HasMany<CompanyCustomer>(c => c.CompanyCustomers)
                 .WithOne(c => c.Company)
-                .HasForeignKey(c => c.CustomerTypeID)
+                .HasForeignKey(c => c.CompanyID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Cascade Delete Contractor Type
@@ -166,7 +166,7 @@ namespace hager_crm.Data
             modelBuilder.Entity<Company>()
                 .HasMany<CompanyContractor>(c => c.CompanyContractors)
                 .WithOne(c => c.Company)
-                .HasForeignKey(c => c.ContractorTypeID)
+                .HasForeignKey(c => c.CompanyID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Cascade Delete Vendor Type
@@ -178,7 +178,7 @@ namespace hager_crm.Data
             modelBuilder.Entity<Company>()
                 .HasMany<CompanyVendor>(c => c.CompanyVendors)
                 .WithOne(c => c.Company)
-                .HasForeignKey(c => c.VendorTypeID)
+                .HasForeignKey(c => c.CompanyID)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

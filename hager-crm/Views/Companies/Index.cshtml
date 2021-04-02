@@ -149,9 +149,6 @@ else
                         </span>
                     </a>
                 </th>
-                @*<th>
-                    Types:
-                </th>*@
                 <th></th>
             </tr>
         </thead>
@@ -163,7 +160,13 @@ else
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.Location), @Html.DisplayFor(modelItem => item.BillingProvince.ProvinceAbbr), @Html.DisplayFor(modelItem => item.BillingCountry.CountryAbbr)
+                        @Html.DisplayFor(modelItem => item.Location)@if (!String.IsNullOrEmpty(item.BillingProvince?.ProvinceAbbr))
+                        {
+                            @:, @Html.DisplayFor(modelItem => item.BillingProvince.ProvinceAbbr)
+                        }@if (!String.IsNullOrEmpty(item.BillingCountry?.CountryAbbr))
+                        {
+                            @:, @Html.DisplayFor(modelItem => item.BillingCountry.CountryAbbr)
+                        }
                     </td>
                     <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Phone)

@@ -14,7 +14,6 @@ namespace hager_crm.Data.HIMigrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("HG")
                 .HasAnnotation("ProductVersion", "3.1.11");
 
             modelBuilder.Entity("hager_crm.Models.Announcement", b =>
@@ -637,7 +636,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyContractors")
-                        .HasForeignKey("ContractorTypeID")
+                        .HasForeignKey("CompanyID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -652,7 +651,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyCustomers")
-                        .HasForeignKey("CustomerTypeID")
+                        .HasForeignKey("CompanyID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -667,7 +666,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyVendors")
-                        .HasForeignKey("VendorTypeID")
+                        .HasForeignKey("CompanyID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

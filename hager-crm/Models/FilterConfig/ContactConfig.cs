@@ -101,8 +101,8 @@ namespace hager_crm.Models.FilterConfig
                     {
                         OnSort = (p, q) => q,
                         OnFilter = (p, q) =>
-                            q.Where(i => ((string) p != "true" && (string) p != "false") ||
-                                ((string) p == "true" ? i.Active : !i.Active))
+                            q.Where(i => ((string) p == "off") ||
+                                ((string) p == "false" ? !i.Active : i.Active))
                     }
                 },
                 {

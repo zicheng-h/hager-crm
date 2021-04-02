@@ -9,7 +9,7 @@ using hager_crm.Data;
 namespace hager_crm.Data.AppMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210402122921_Initial")]
+    [Migration("20210402210033_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -307,30 +307,10 @@
                         </div>
                     </div>
                     <hr />
-                    @*<div class="row">
-                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
-                            <label class="form-check-label">
-                                <label class="control-label mr-4">From: </label>
-                                <input class="form-check-input" asp-for="First().Customer" disabled /> @Html.DisplayNameFor(model => model[0].Customer)
-                            </label>
-                        </div>
-                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Customer" /> Merge
-                            </label>
-                        </div>
-                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
-                            <label class="form-check-label">
-                                <label class="control-label mr-4">To: </label>
-                                <input class="form-check-input" asp-for="Last().Customer" disabled /> @Html.DisplayNameFor(model => model[1].Customer)
-                            </label>
-                        </div>
-                    </div>
-                    <hr />
                     <div class="row">
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">From: </label>
-                            <label asp-for="First().CustomerTypeID" class="control-label"></label>
+                            <label class="control-label">Customer Type</label>
                             <ul class="list-group">
                                 @foreach (var type in (SelectList)ViewBag.LeftMerge["CustomerTypes"])
                                 {
@@ -349,7 +329,7 @@
                         </div>
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">To: </label>
-                            <label asp-for="Last().CustomerTypeID" class="control-label"></label>
+                            <label class="control-label">Customer Type</label>
                             <ul class="list-group">
                                 @foreach (var type in (SelectList)ViewBag.RightMerge["CustomerTypes"])
                                 {
@@ -364,29 +344,9 @@
                     </div>
                     <hr />
                     <div class="row">
-                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
-                            <label class="form-check-label">
-                                <label class="control-label mr-4">From: </label>
-                                <input class="form-check-input" asp-for="First().Vendor" disabled /> @Html.DisplayNameFor(model => model[0].Vendor)
-                            </label>
-                        </div>
-                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Vendor" /> Merge
-                            </label>
-                        </div>
-                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
-                            <label class="form-check-label">
-                                <label class="control-label mr-4">To: </label>
-                                <input class="form-check-input" asp-for="Last().Vendor" disabled /> @Html.DisplayNameFor(model => model[1].Vendor)
-                            </label>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">From: </label>
-                            <label asp-for="First().VendorTypeID" class="control-label"></label>
+                            <label class="control-label">Vendor Type</label>
                             <ul class="list-group">
                                 @foreach (var type in (SelectList)ViewBag.LeftMerge["VendorTypes"])
                                 {
@@ -405,7 +365,7 @@
                         </div>
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">To: </label>
-                            <label asp-for="Last().VendorTypeID" class="control-label"></label>
+                            <label class="control-label">Vendor Type</label>
                             <ul class="list-group">
                                 @foreach (var type in (SelectList)ViewBag.RightMerge["VendorTypes"])
                                 {
@@ -420,29 +380,9 @@
                     </div>
                     <hr />
                     <div class="row">
-                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
-                            <label class="form-check-label">
-                                <label class="control-label mr-4">From: </label>
-                                <input class="form-check-input" asp-for="First().Contractor" disabled /> @Html.DisplayNameFor(model => model[0].Contractor)
-                            </label>
-                        </div>
-                        <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="Contractor" /> Merge
-                            </label>
-                        </div>
-                        <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">
-                            <label class="form-check-label">
-                                <label class="control-label mr-4">To: </label>
-                                <input class="form-check-input" asp-for="Last().Contractor" disabled /> @Html.DisplayNameFor(model => model[1].Contractor)
-                            </label>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">From: </label>
-                            <label asp-for="First().ContractorTypeID" class="control-label"></label>
+                            <label class="control-label">Contractor Type</label>
                             <ul class="list-group">
                                 @foreach (var type in (SelectList)ViewBag.LeftMerge["ContractorTypes"])
                                 {
@@ -461,7 +401,7 @@
                         </div>
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">To: </label>
-                            <label asp-for="Last().ContractorTypeID" class="control-label"></label>
+                            <label class="control-label">Contractor Type</label>
                             <ul class="list-group">
                                 @foreach (var type in (SelectList)ViewBag.RightMerge["ContractorTypes"])
                                 {
@@ -473,7 +413,7 @@
                                 }
                             </ul>
                         </div>
-                    </div>*@
+                    </div>
                     <hr />
                     <div class="row">
                         <div class="col-12 col-md-5 form-group d-flex justify-content-center align-items-center">

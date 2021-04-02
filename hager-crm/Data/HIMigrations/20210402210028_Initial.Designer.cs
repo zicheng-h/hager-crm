@@ -9,14 +9,13 @@ using hager_crm.Data;
 namespace hager_crm.Data.HIMigrations
 {
     [DbContext(typeof(HagerContext))]
-    [Migration("20210402122916_Initial")]
+    [Migration("20210402210028_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("HG")
                 .HasAnnotation("ProductVersion", "3.1.11");
 
             modelBuilder.Entity("hager_crm.Models.Announcement", b =>
@@ -639,7 +638,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyContractors")
-                        .HasForeignKey("ContractorTypeID")
+                        .HasForeignKey("CompanyID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -654,7 +653,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyCustomers")
-                        .HasForeignKey("CustomerTypeID")
+                        .HasForeignKey("CompanyID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -669,7 +668,7 @@ namespace hager_crm.Data.HIMigrations
                 {
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyVendors")
-                        .HasForeignKey("VendorTypeID")
+                        .HasForeignKey("CompanyID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

@@ -97,7 +97,7 @@ namespace hager_crm.Controllers
         }
 
         // GET: Companies/Details/5
-        public async Task<IActionResult> Details(int? id, string returnURL)
+        public async Task<IActionResult> Details(int? id)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
@@ -140,7 +140,7 @@ namespace hager_crm.Controllers
 
         // GET: Companies/Create
         [Authorize(Roles = "Admin, Supervisor")]
-        public IActionResult Create(string CType, string returnURL)
+        public IActionResult Create(string CType)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
@@ -152,7 +152,7 @@ namespace hager_crm.Controllers
             //    returnURL = Request.Headers["Referer"].ToString();
             //}
 
-            ViewData["returnURL"] = returnURL;
+            //ViewData["returnURL"] = returnURL;
             ViewData["CType"] = CType;
             ViewData["BillingCountryID"] = new SelectList(_context.Countries, "CountryID", "CountryName");
             ViewData["BillingProvinceID"] = GetProvincesSelectList();
@@ -173,7 +173,7 @@ namespace hager_crm.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Create([Bind("CompanyID,Name,Location,CreditCheck,DateChecked,BillingTermID,CurrencyID,Phone,Website,BillingAddress1,BillingAddress2,BillingProvinceID,BillingPostalCode,BillingCountryID,ShippingAddress1,ShippingAddress2,ShippingProvinceID,ShippingPostalCode,ShippingCountryID,Customer,CustomerTypeID,Vendor,VendorTypeID,Contractor,ContractorTypeID,Active,Notes")] 
-        Company company, string CType, string returnURL, string companyTypes)
+        Company company, string CType, string companyTypes)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
@@ -212,7 +212,7 @@ namespace hager_crm.Controllers
 
         // GET: Companies/Edit/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Edit(int? id, string CType, string returnURL)
+        public async Task<IActionResult> Edit(int? id, string CType)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
@@ -257,7 +257,7 @@ namespace hager_crm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Edit(int id, string CType, string returnURL, string companyTypes)
+        public async Task<IActionResult> Edit(int id, string CType, string companyTypes)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
@@ -340,7 +340,7 @@ namespace hager_crm.Controllers
         }
         // GET: Companies/Delete/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Delete(int? id, string returnURL)
+        public async Task<IActionResult> Delete(int? id)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
@@ -387,7 +387,7 @@ namespace hager_crm.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> DeleteConfirmed(int id, string CType, string returnURL)
+        public async Task<IActionResult> DeleteConfirmed(int id, string CType)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
@@ -649,11 +649,11 @@ namespace hager_crm.Controllers
                     case "ShippingCountryID":
                         rightCompany.ShippingCountryID = leftCompany.ShippingCountryID;
                         break;
-                    case "Customer":
-                        rightCompany.Customer = leftCompany.Customer;
-                        break;
+                    //case "Customer":
+                    //    rightCompany.Customer = leftCompany.Customer;
+                    //    break;
                     case "CustomerTypes":
-                        rightCompany.CustomerTypeID = leftCompany.CustomerTypeID;
+                        //rightCompany.CustomerTypeID = leftCompany.CustomerTypeID;
                         leftCompany.CompanyCustomers.ToList()
                             .ForEach(c => {
                                 if (rightCompany.CompanyCustomers.All(rc => rc.CustomerTypeID != c.CustomerTypeID))
@@ -661,9 +661,9 @@ namespace hager_crm.Controllers
                                         {CompanyID = rightCompany.CompanyID, CustomerTypeID = c.CustomerTypeID});
                             });
                         break;
-                    case "Vendor":
-                        rightCompany.Vendor = leftCompany.Vendor;
-                        break;
+                    //case "Vendor":
+                    //    rightCompany.Vendor = leftCompany.Vendor;
+                    //    break;
                     case "VendorTypes":
                         leftCompany.CompanyVendors.ToList()
                             .ForEach(c => {
@@ -672,9 +672,9 @@ namespace hager_crm.Controllers
                                         {CompanyID = rightCompany.CompanyID, VendorTypeID = c.VendorTypeID});
                             });
                         break;
-                    case "Contractor":
-                        rightCompany.Contractor = leftCompany.Contractor;
-                        break;
+                    //case "Contractor":
+                    //    rightCompany.Contractor = leftCompany.Contractor;
+                    //    break;
                     case "ContractorTypes":
                         leftCompany.CompanyContractors.ToList()
                             .ForEach(c => {
@@ -702,6 +702,11 @@ namespace hager_crm.Controllers
                 contacts.ForEach(c => c.CompanyID = rightCompany.CompanyID);
                 await _context.SaveChangesAsync();
             }
+
+            _context.CompanyCustomers.RemoveRange(leftCompany.CompanyCustomers);
+            _context.CompanyContractors.RemoveRange(leftCompany.CompanyContractors);
+            _context.CompanyVendors.RemoveRange(leftCompany.CompanyVendors);
+
             _context.Companies.Remove(leftCompany);
             await _context.SaveChangesAsync();
 
@@ -718,6 +723,7 @@ namespace hager_crm.Controllers
 
         private void UpdateCompanyTypes(string companyTypes, Company companyToUpdate)
         {
+            if (String.IsNullOrEmpty(companyTypes)) return;
             if (companyTypes == ";;")
             {
                 companyToUpdate.CompanyCustomers.Clear();

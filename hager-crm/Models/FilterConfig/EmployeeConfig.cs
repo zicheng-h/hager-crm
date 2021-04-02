@@ -118,18 +118,18 @@ namespace hager_crm.Models.FilterConfig
                     "IsUser", new ConfigAction<Employee>
                     {
                         OnSort = (p, q) => q,
-                        OnFilter = (p, q) => 
-                            q.Where(i => ((string) p != "true" && (string) p != "false") ||
-                                ((string) p == "true" ? i.UserId != null : i.UserId == null))
+                        OnFilter = (p, q) =>
+                            q.Where(i => ((string) p == "off") ||
+                                ((string) p == "false" ? !i.IsUser : i.IsUser))
                     }
                 },
                 {
                     "Active", new ConfigAction<Employee>
                     {
                         OnSort = (p, q) => q,
-                        OnFilter = (p, q) => 
-                            q.Where(i => ((string) p != "true" && (string) p != "false") ||
-                                ((string) p == "true" ? i.Active : !i.Active))
+                        OnFilter = (p, q) =>
+                            q.Where(i => ((string) p == "off") ||
+                                ((string) p == "false" ? !i.Active : i.Active))
                     }
                 }
             };

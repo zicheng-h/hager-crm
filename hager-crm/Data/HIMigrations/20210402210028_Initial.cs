@@ -7,12 +7,8 @@ namespace hager_crm.Data.HIMigrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "HG");
-
             migrationBuilder.CreateTable(
                 name: "Announcements",
-                schema: "HG",
                 columns: table => new
                 {
                     AnnouncementID = table.Column<int>(nullable: false)
@@ -29,7 +25,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "BillingTerms",
-                schema: "HG",
                 columns: table => new
                 {
                     BillingTermID = table.Column<int>(nullable: false)
@@ -44,7 +39,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "Categories",
-                schema: "HG",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
@@ -59,7 +53,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "ContractorTypes",
-                schema: "HG",
                 columns: table => new
                 {
                     ContractorTypeID = table.Column<int>(nullable: false)
@@ -74,7 +67,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "Countries",
-                schema: "HG",
                 columns: table => new
                 {
                     CountryID = table.Column<int>(nullable: false)
@@ -89,7 +81,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "Currencies",
-                schema: "HG",
                 columns: table => new
                 {
                     CurrencyID = table.Column<int>(nullable: false)
@@ -104,7 +95,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "CustomerTypes",
-                schema: "HG",
                 columns: table => new
                 {
                     CustomerTypeID = table.Column<int>(nullable: false)
@@ -119,7 +109,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "EmploymentTypes",
-                schema: "HG",
                 columns: table => new
                 {
                     EmploymentTypeID = table.Column<int>(nullable: false)
@@ -134,7 +123,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "JobPositions",
-                schema: "HG",
                 columns: table => new
                 {
                     JobPositionID = table.Column<int>(nullable: false)
@@ -149,7 +137,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "Provinces",
-                schema: "HG",
                 columns: table => new
                 {
                     ProvinceID = table.Column<int>(nullable: false)
@@ -165,7 +152,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "VendorTypes",
-                schema: "HG",
                 columns: table => new
                 {
                     VendorTypeID = table.Column<int>(nullable: false)
@@ -180,7 +166,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "Employees",
-                schema: "HG",
                 columns: table => new
                 {
                     EmployeeID = table.Column<int>(nullable: false)
@@ -215,28 +200,24 @@ namespace hager_crm.Data.HIMigrations
                     table.ForeignKey(
                         name: "FK_Employees_Countries_EmployeeCountryID",
                         column: x => x.EmployeeCountryID,
-                        principalSchema: "HG",
                         principalTable: "Countries",
                         principalColumn: "CountryID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Employees_Provinces_EmployeeProvinceID",
                         column: x => x.EmployeeProvinceID,
-                        principalSchema: "HG",
                         principalTable: "Provinces",
                         principalColumn: "ProvinceID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Employees_EmploymentTypes_EmploymentTypeID",
                         column: x => x.EmploymentTypeID,
-                        principalSchema: "HG",
                         principalTable: "EmploymentTypes",
                         principalColumn: "EmploymentTypeID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Employees_JobPositions_JobPositionID",
                         column: x => x.JobPositionID,
-                        principalSchema: "HG",
                         principalTable: "JobPositions",
                         principalColumn: "JobPositionID",
                         onDelete: ReferentialAction.Restrict);
@@ -244,7 +225,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "Companies",
-                schema: "HG",
                 columns: table => new
                 {
                     CompanyID = table.Column<int>(nullable: false)
@@ -269,14 +249,11 @@ namespace hager_crm.Data.HIMigrations
                     ShippingProvinceID = table.Column<int>(nullable: true),
                     ShippingPostalCode = table.Column<string>(nullable: true),
                     ShippingCountryID = table.Column<int>(nullable: true),
-                    Customer = table.Column<bool>(nullable: false),
-                    CustomerTypeID = table.Column<int>(nullable: true),
-                    Vendor = table.Column<bool>(nullable: false),
-                    VendorTypeID = table.Column<int>(nullable: true),
-                    Contractor = table.Column<bool>(nullable: false),
-                    ContractorTypeID = table.Column<int>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
-                    Notes = table.Column<string>(maxLength: 200, nullable: true)
+                    Notes = table.Column<string>(maxLength: 200, nullable: true),
+                    ContractorTypeID = table.Column<int>(nullable: true),
+                    CustomerTypeID = table.Column<int>(nullable: true),
+                    VendorTypeID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -284,63 +261,54 @@ namespace hager_crm.Data.HIMigrations
                     table.ForeignKey(
                         name: "FK_Companies_Countries_BillingCountryID",
                         column: x => x.BillingCountryID,
-                        principalSchema: "HG",
                         principalTable: "Countries",
                         principalColumn: "CountryID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Companies_Provinces_BillingProvinceID",
                         column: x => x.BillingProvinceID,
-                        principalSchema: "HG",
                         principalTable: "Provinces",
                         principalColumn: "ProvinceID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Companies_BillingTerms_BillingTermID",
                         column: x => x.BillingTermID,
-                        principalSchema: "HG",
                         principalTable: "BillingTerms",
                         principalColumn: "BillingTermID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Companies_ContractorTypes_ContractorTypeID",
                         column: x => x.ContractorTypeID,
-                        principalSchema: "HG",
                         principalTable: "ContractorTypes",
                         principalColumn: "ContractorTypeID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Companies_Currencies_CurrencyID",
                         column: x => x.CurrencyID,
-                        principalSchema: "HG",
                         principalTable: "Currencies",
                         principalColumn: "CurrencyID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Companies_CustomerTypes_CustomerTypeID",
                         column: x => x.CustomerTypeID,
-                        principalSchema: "HG",
                         principalTable: "CustomerTypes",
                         principalColumn: "CustomerTypeID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Companies_Countries_ShippingCountryID",
                         column: x => x.ShippingCountryID,
-                        principalSchema: "HG",
                         principalTable: "Countries",
                         principalColumn: "CountryID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Companies_Provinces_ShippingProvinceID",
                         column: x => x.ShippingProvinceID,
-                        principalSchema: "HG",
                         principalTable: "Provinces",
                         principalColumn: "ProvinceID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Companies_VendorTypes_VendorTypeID",
                         column: x => x.VendorTypeID,
-                        principalSchema: "HG",
                         principalTable: "VendorTypes",
                         principalColumn: "VendorTypeID",
                         onDelete: ReferentialAction.Restrict);
@@ -348,7 +316,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "AnnouncementEmployees",
-                schema: "HG",
                 columns: table => new
                 {
                     AnnouncementEmployeeID = table.Column<int>(nullable: false)
@@ -362,14 +329,12 @@ namespace hager_crm.Data.HIMigrations
                     table.ForeignKey(
                         name: "FK_AnnouncementEmployees_Announcements_AnnouncementID",
                         column: x => x.AnnouncementID,
-                        principalSchema: "HG",
                         principalTable: "Announcements",
                         principalColumn: "AnnouncementID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AnnouncementEmployees_Employees_EmployeeID",
                         column: x => x.EmployeeID,
-                        principalSchema: "HG",
                         principalTable: "Employees",
                         principalColumn: "EmployeeID",
                         onDelete: ReferentialAction.Cascade);
@@ -377,7 +342,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "CompanyContractors",
-                schema: "HG",
                 columns: table => new
                 {
                     CompanyID = table.Column<int>(nullable: false),
@@ -389,14 +353,12 @@ namespace hager_crm.Data.HIMigrations
                     table.ForeignKey(
                         name: "FK_CompanyContractors_Companies_CompanyID",
                         column: x => x.CompanyID,
-                        principalSchema: "HG",
                         principalTable: "Companies",
                         principalColumn: "CompanyID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CompanyContractors_ContractorTypes_ContractorTypeID",
                         column: x => x.ContractorTypeID,
-                        principalSchema: "HG",
                         principalTable: "ContractorTypes",
                         principalColumn: "ContractorTypeID",
                         onDelete: ReferentialAction.Restrict);
@@ -404,7 +366,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "CompanyCustomers",
-                schema: "HG",
                 columns: table => new
                 {
                     CompanyID = table.Column<int>(nullable: false),
@@ -416,14 +377,12 @@ namespace hager_crm.Data.HIMigrations
                     table.ForeignKey(
                         name: "FK_CompanyCustomers_Companies_CompanyID",
                         column: x => x.CompanyID,
-                        principalSchema: "HG",
                         principalTable: "Companies",
                         principalColumn: "CompanyID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CompanyCustomers_CustomerTypes_CustomerTypeID",
                         column: x => x.CustomerTypeID,
-                        principalSchema: "HG",
                         principalTable: "CustomerTypes",
                         principalColumn: "CustomerTypeID",
                         onDelete: ReferentialAction.Restrict);
@@ -431,7 +390,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "CompanyVendors",
-                schema: "HG",
                 columns: table => new
                 {
                     CompanyID = table.Column<int>(nullable: false),
@@ -443,14 +401,12 @@ namespace hager_crm.Data.HIMigrations
                     table.ForeignKey(
                         name: "FK_CompanyVendors_Companies_CompanyID",
                         column: x => x.CompanyID,
-                        principalSchema: "HG",
                         principalTable: "Companies",
                         principalColumn: "CompanyID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CompanyVendors_VendorTypes_VendorTypeID",
                         column: x => x.VendorTypeID,
-                        principalSchema: "HG",
                         principalTable: "VendorTypes",
                         principalColumn: "VendorTypeID",
                         onDelete: ReferentialAction.Restrict);
@@ -458,7 +414,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "Contacts",
-                schema: "HG",
                 columns: table => new
                 {
                     ContactID = table.Column<int>(nullable: false)
@@ -479,7 +434,6 @@ namespace hager_crm.Data.HIMigrations
                     table.ForeignKey(
                         name: "FK_Contacts_Companies_CompanyID",
                         column: x => x.CompanyID,
-                        principalSchema: "HG",
                         principalTable: "Companies",
                         principalColumn: "CompanyID",
                         onDelete: ReferentialAction.Restrict);
@@ -487,7 +441,6 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateTable(
                 name: "ContactCategories",
-                schema: "HG",
                 columns: table => new
                 {
                     ContactID = table.Column<int>(nullable: false),
@@ -499,14 +452,12 @@ namespace hager_crm.Data.HIMigrations
                     table.ForeignKey(
                         name: "FK_ContactCategories_Categories_CategoriesID",
                         column: x => x.CategoriesID,
-                        principalSchema: "HG",
                         principalTable: "Categories",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ContactCategories_Contacts_ContactID",
                         column: x => x.ContactID,
-                        principalSchema: "HG",
                         principalTable: "Contacts",
                         principalColumn: "ContactID",
                         onDelete: ReferentialAction.Cascade);
@@ -514,128 +465,107 @@ namespace hager_crm.Data.HIMigrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_AnnouncementEmployees_AnnouncementID",
-                schema: "HG",
                 table: "AnnouncementEmployees",
                 column: "AnnouncementID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AnnouncementEmployees_EmployeeID",
-                schema: "HG",
                 table: "AnnouncementEmployees",
                 column: "EmployeeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_BillingCountryID",
-                schema: "HG",
                 table: "Companies",
                 column: "BillingCountryID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_BillingProvinceID",
-                schema: "HG",
                 table: "Companies",
                 column: "BillingProvinceID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_BillingTermID",
-                schema: "HG",
                 table: "Companies",
                 column: "BillingTermID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_ContractorTypeID",
-                schema: "HG",
                 table: "Companies",
                 column: "ContractorTypeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_CurrencyID",
-                schema: "HG",
                 table: "Companies",
                 column: "CurrencyID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_CustomerTypeID",
-                schema: "HG",
                 table: "Companies",
                 column: "CustomerTypeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_ShippingCountryID",
-                schema: "HG",
                 table: "Companies",
                 column: "ShippingCountryID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_ShippingProvinceID",
-                schema: "HG",
                 table: "Companies",
                 column: "ShippingProvinceID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_VendorTypeID",
-                schema: "HG",
                 table: "Companies",
                 column: "VendorTypeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CompanyContractors_ContractorTypeID",
-                schema: "HG",
                 table: "CompanyContractors",
                 column: "ContractorTypeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CompanyCustomers_CustomerTypeID",
-                schema: "HG",
                 table: "CompanyCustomers",
                 column: "CustomerTypeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CompanyVendors_VendorTypeID",
-                schema: "HG",
                 table: "CompanyVendors",
                 column: "VendorTypeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ContactCategories_ContactID",
-                schema: "HG",
                 table: "ContactCategories",
                 column: "ContactID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contacts_CompanyID",
-                schema: "HG",
                 table: "Contacts",
                 column: "CompanyID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_Email",
-                schema: "HG",
                 table: "Employees",
                 column: "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_EmployeeCountryID",
-                schema: "HG",
                 table: "Employees",
                 column: "EmployeeCountryID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_EmployeeProvinceID",
-                schema: "HG",
                 table: "Employees",
                 column: "EmployeeProvinceID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_EmploymentTypeID",
-                schema: "HG",
                 table: "Employees",
                 column: "EmploymentTypeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_JobPositionID",
-                schema: "HG",
                 table: "Employees",
                 column: "JobPositionID");
         }
@@ -643,80 +573,61 @@ namespace hager_crm.Data.HIMigrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AnnouncementEmployees",
-                schema: "HG");
+                name: "AnnouncementEmployees");
 
             migrationBuilder.DropTable(
-                name: "CompanyContractors",
-                schema: "HG");
+                name: "CompanyContractors");
 
             migrationBuilder.DropTable(
-                name: "CompanyCustomers",
-                schema: "HG");
+                name: "CompanyCustomers");
 
             migrationBuilder.DropTable(
-                name: "CompanyVendors",
-                schema: "HG");
+                name: "CompanyVendors");
 
             migrationBuilder.DropTable(
-                name: "ContactCategories",
-                schema: "HG");
+                name: "ContactCategories");
 
             migrationBuilder.DropTable(
-                name: "Announcements",
-                schema: "HG");
+                name: "Announcements");
 
             migrationBuilder.DropTable(
-                name: "Employees",
-                schema: "HG");
+                name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "Categories",
-                schema: "HG");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Contacts",
-                schema: "HG");
+                name: "Contacts");
 
             migrationBuilder.DropTable(
-                name: "EmploymentTypes",
-                schema: "HG");
+                name: "EmploymentTypes");
 
             migrationBuilder.DropTable(
-                name: "JobPositions",
-                schema: "HG");
+                name: "JobPositions");
 
             migrationBuilder.DropTable(
-                name: "Companies",
-                schema: "HG");
+                name: "Companies");
 
             migrationBuilder.DropTable(
-                name: "Countries",
-                schema: "HG");
+                name: "Countries");
 
             migrationBuilder.DropTable(
-                name: "Provinces",
-                schema: "HG");
+                name: "Provinces");
 
             migrationBuilder.DropTable(
-                name: "BillingTerms",
-                schema: "HG");
+                name: "BillingTerms");
 
             migrationBuilder.DropTable(
-                name: "ContractorTypes",
-                schema: "HG");
+                name: "ContractorTypes");
 
             migrationBuilder.DropTable(
-                name: "Currencies",
-                schema: "HG");
+                name: "Currencies");
 
             migrationBuilder.DropTable(
-                name: "CustomerTypes",
-                schema: "HG");
+                name: "CustomerTypes");
 
             migrationBuilder.DropTable(
-                name: "VendorTypes",
-                schema: "HG");
+                name: "VendorTypes");
         }
     }
 }

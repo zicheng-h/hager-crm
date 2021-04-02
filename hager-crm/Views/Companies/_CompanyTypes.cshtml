@@ -1,6 +1,6 @@
 ﻿@model List<hager_crm.ViewModels.CompanyTypesVM>
 @using static hager_crm.Utils.Capitalizator;
-<input type="hidden" id="companyTypes" name="companyTypes" value=";;" />
+<input type="hidden" id="companyTypes" name="companyTypes"/>
 <label for="typeCard" class="control-label">
     Company Type
     <span id="typeBadge" class="badge badge-info">@Model.Where(x => x.TypesIn.Count() > 0).Count()</span>
@@ -31,7 +31,7 @@
                     <label class="control-label">@cat.Category.Capitalize() Types</label>
                     <div id="@cat.Category-types" data-type="@cat.Category-types"
                          class="list-group connectedSortable @cat.Category"
-                         style="overflow-y: auto; height: 175px">
+                         style="overflow-y: auto; height: 155px">
                         @foreach (var item in cat.TypesIn)
                         {
                             <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
@@ -47,7 +47,7 @@
                     <label class="control-label">Types Available</label>
                     <div id="@cat.Category-available" data-type="@cat.Category-available-types"
                          class="list-group connectedSortable @cat.Category"
-                         style="overflow-y: auto; height: 175px">
+                         style="overflow-y: auto; height: 155px">
                         @foreach (var item in cat.TypesAvailable)
                         {
                             <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
@@ -68,18 +68,21 @@
 <script src="~/js/jquery-ui.js"></script>
 <script>
     $(function () {
+        function saveTypes() {
+            $('#companyTypes').val(
+                $('.customer').sortable('toArray', { attribute: "data-item-id" }).join(',') + ';' +
+                $('.contractor').sortable('toArray', { attribute: "data-item-id" }).join(',') + ';' +
+                $('.vendor').sortable('toArray', { attribute: "data-item-id" }).join(',')
+            );
+        }
+
         function updateForm() {
             var cnt = 0;
             if ($('#customer-types')[0].children.length > 0) cnt++;
             if ($('#contractor-types')[0].children.length > 0) cnt++;
             if ($('#vendor-types')[0].children.length > 0) cnt++;
             $('#typeBadge').html(cnt);
-
-            $('#companyTypes').val(
-                $('.customer').sortable('toArray', { attribute: "data-item-id" }).join(',') + ';' +
-                $('.contractor').sortable('toArray', { attribute: "data-item-id" }).join(',') + ';' +
-                $('.vendor').sortable('toArray', { attribute: "data-item-id" }).join(',')
-            );
+            saveTypes();
         }
 
         $('.customer').sortable({
