@@ -1,4 +1,5 @@
-﻿@model hager_crm.Models.Company[]
+﻿@using Microsoft.EntityFrameworkCore.Internal
+@model hager_crm.Models.Company[]
 
 @{
     ViewData["Title"] = "Compare Companies";
@@ -224,7 +225,7 @@
                         </div>
                         <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="BillingProvinceID" /> Merge
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="BillingCountryID" /> Merge
                             </label>
                         </div>
                         <div class="col-12 col-md-5 form-group">
@@ -260,7 +261,7 @@
                         </div>
                         <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="BillingProvinceID" /> Merge
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="ShippingProvinceID" /> Merge
                             </label>
                         </div>
                         <div class="col-12 col-md-5 form-group">
@@ -296,7 +297,7 @@
                         </div>
                         <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="BillingProvinceID" /> Merge
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="ShippingCountryID" /> Merge
                             </label>
                         </div>
                         <div class="col-12 col-md-5 form-group">
@@ -330,17 +331,35 @@
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">From: </label>
                             <label asp-for="First().CustomerTypeID" class="control-label"></label>
-                            <select asp-for="First().CustomerTypeID" class="form-control" asp-items="@ViewBag.LeftMerge["CustomerTypeID"]" disabled></select>
+                            <ul class="list-group">
+                                @foreach (var type in (SelectList)ViewBag.LeftMerge["CustomerTypes"])
+                                {
+                                    <li class="list-group-item">@type.Text</li>
+                                }
+                                @if (!((SelectList)ViewBag.LeftMerge["CustomerTypes"]).Items.Any())
+                                {
+                                    <li class="list-group-item">No Customers</li>
+                                }
+                            </ul>
                         </div>
                         <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="CustomerTypeID" /> Merge
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="CustomerTypes" /> Merge
                             </label>
                         </div>
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">To: </label>
                             <label asp-for="Last().CustomerTypeID" class="control-label"></label>
-                            <select asp-for="Last().CustomerTypeID" class="form-control" asp-items="@ViewBag.RightMerge["CustomerTypeID"]" disabled></select>
+                            <ul class="list-group">
+                                @foreach (var type in (SelectList)ViewBag.RightMerge["CustomerTypes"])
+                                {
+                                    <li class="list-group-item">@type.Text</li>
+                                }
+                                @if (!((SelectList)ViewBag.RightMerge["CustomerTypes"]).Items.Any())
+                                {
+                                    <li class="list-group-item">No Customers</li>
+                                }
+                            </ul>
                         </div>
                     </div>
                     <hr />
@@ -368,17 +387,35 @@
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">From: </label>
                             <label asp-for="First().VendorTypeID" class="control-label"></label>
-                            <select asp-for="First().VendorTypeID" class="form-control" asp-items="@ViewBag.LeftMerge["VendorTypeID"]" disabled></select>
+                            <ul class="list-group">
+                                @foreach (var type in (SelectList)ViewBag.LeftMerge["VendorTypes"])
+                                {
+                                    <li class="list-group-item">@type.Text</li>
+                                }
+                                @if (!((SelectList)ViewBag.LeftMerge["VendorTypes"]).Items.Any())
+                                {
+                                    <li class="list-group-item">No Vendors</li>
+                                }
+                            </ul>
                         </div>
                         <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="VendorTypeID" /> Merge
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="VendorTypes" /> Merge
                             </label>
                         </div>
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">To: </label>
                             <label asp-for="Last().VendorTypeID" class="control-label"></label>
-                            <select asp-for="Last().VendorTypeID" class="form-control" asp-items="@ViewBag.RightMerge["VendorTypeID"]" disabled></select>
+                            <ul class="list-group">
+                                @foreach (var type in (SelectList)ViewBag.RightMerge["VendorTypes"])
+                                {
+                                    <li class="list-group-item">@type.Text</li>
+                                }
+                                @if (!((SelectList)ViewBag.RightMerge["VendorTypes"]).Items.Any())
+                                {
+                                    <li class="list-group-item">No Vendors</li>
+                                }
+                            </ul>
                         </div>
                     </div>
                     <hr />
@@ -406,17 +443,35 @@
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">From: </label>
                             <label asp-for="First().ContractorTypeID" class="control-label"></label>
-                            <select asp-for="First().ContractorTypeID" class="form-control" asp-items="@ViewBag.LeftMerge["ContractorTypeID"]" disabled></select>
+                            <ul class="list-group">
+                                @foreach (var type in (SelectList)ViewBag.LeftMerge["ContractorTypes"])
+                                {
+                                    <li class="list-group-item">@type.Text</li>
+                                }
+                                @if (!((SelectList)ViewBag.LeftMerge["ContractorTypes"]).Items.Any())
+                                {
+                                    <li class="list-group-item">No Contractors</li>
+                                }
+                            </ul>
                         </div>
                         <div class="col-12 col-md-2 form-group form-check d-flex justify-content-center align-items-center">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="ContractorTypeID" /> Merge
+                                <input class="form-check-input" type="checkbox" name="fieldsToMerge" value="ContractorTypes" /> Merge
                             </label>
                         </div>
                         <div class="col-12 col-md-5 form-group">
                             <label class="control-label">To: </label>
                             <label asp-for="Last().ContractorTypeID" class="control-label"></label>
-                            <select asp-for="Last().ContractorTypeID" class="form-control" asp-items="@ViewBag.RightMerge["ContractorTypeID"]" disabled></select>
+                            <ul class="list-group">
+                                @foreach (var type in (SelectList)ViewBag.RightMerge["ContractorTypes"])
+                                {
+                                    <li class="list-group-item">@type.Text</li>
+                                }
+                                @if (!((SelectList)ViewBag.RightMerge["ContractorTypes"]).Items.Any())
+                                {
+                                    <li class="list-group-item">No Contractors</li>
+                                }
+                            </ul>
                         </div>
                     </div>
                     <hr />

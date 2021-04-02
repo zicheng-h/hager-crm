@@ -252,7 +252,7 @@ namespace hager_crm.Data.HIMigrations
 
                     b.HasIndex("CustomerTypeID");
 
-                    b.ToTable("CompanyTypes");
+                    b.ToTable("CompanyCustomers");
                 });
 
             modelBuilder.Entity("hager_crm.Models.CompanyVendor", b =>

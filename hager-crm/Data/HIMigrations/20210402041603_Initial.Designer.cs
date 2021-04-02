@@ -9,7 +9,7 @@ using hager_crm.Data;
 namespace hager_crm.Data.HIMigrations
 {
     [DbContext(typeof(HagerContext))]
-    [Migration("20210328160731_Initial")]
+    [Migration("20210402041603_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -254,7 +254,7 @@ namespace hager_crm.Data.HIMigrations
 
                     b.HasIndex("CustomerTypeID");
 
-                    b.ToTable("CompanyTypes");
+                    b.ToTable("CompanyCustomers");
                 });
 
             modelBuilder.Entity("hager_crm.Models.CompanyVendor", b =>

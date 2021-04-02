@@ -38,7 +38,7 @@ namespace hager_crm.Data
         public DbSet<JobPosition> JobPositions { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<VendorType> VendorTypes { get; set; }
-        public DbSet<CompanyCustomer> CompanyTypes { get; set; }
+        public DbSet<CompanyCustomer> CompanyCustomers { get; set; }
         public DbSet<CompanyContractor> CompanyContractors { get; set; }
         public DbSet<CompanyVendor> CompanyVendors { get; set; }
         public DbSet<Announcement> Announcements { get; set; }

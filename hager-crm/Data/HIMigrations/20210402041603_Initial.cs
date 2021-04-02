@@ -403,7 +403,7 @@ namespace hager_crm.Data.HIMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompanyTypes",
+                name: "CompanyCustomers",
                 schema: "HG",
                 columns: table => new
                 {
@@ -412,16 +412,16 @@ namespace hager_crm.Data.HIMigrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CompanyTypes", x => new { x.CompanyID, x.CustomerTypeID });
+                    table.PrimaryKey("PK_CompanyCustomers", x => new { x.CompanyID, x.CustomerTypeID });
                     table.ForeignKey(
-                        name: "FK_CompanyTypes_Companies_CompanyID",
+                        name: "FK_CompanyCustomers_Companies_CompanyID",
                         column: x => x.CompanyID,
                         principalSchema: "HG",
                         principalTable: "Companies",
                         principalColumn: "CompanyID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CompanyTypes_CustomerTypes_CustomerTypeID",
+                        name: "FK_CompanyCustomers_CustomerTypes_CustomerTypeID",
                         column: x => x.CustomerTypeID,
                         principalSchema: "HG",
                         principalTable: "CustomerTypes",
@@ -585,9 +585,9 @@ namespace hager_crm.Data.HIMigrations
                 column: "ContractorTypeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompanyTypes_CustomerTypeID",
+                name: "IX_CompanyCustomers_CustomerTypeID",
                 schema: "HG",
-                table: "CompanyTypes",
+                table: "CompanyCustomers",
                 column: "CustomerTypeID");
 
             migrationBuilder.CreateIndex(
@@ -651,7 +651,7 @@ namespace hager_crm.Data.HIMigrations
                 schema: "HG");
 
             migrationBuilder.DropTable(
-                name: "CompanyTypes",
+                name: "CompanyCustomers",
                 schema: "HG");
 
             migrationBuilder.DropTable(

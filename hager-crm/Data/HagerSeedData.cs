@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace hager_crm.Data
 {
@@ -1079,8 +1080,7 @@ namespace hager_crm.Data
                         VendorTypeID = null,
                         Contractor = false,
                         ContractorTypeID = null
-                    }
-                    ,
+                    },
                     new Company
                     {
                         Name = "Meet lovers",
@@ -1262,7 +1262,42 @@ namespace hager_crm.Data
             }
             #endregion
 
+            #region CompaniesTypes
 
+            var cntTypes = context.ContractorTypes.ToList();
+            foreach (var company in context.Companies.Take(3))
+            {
+                company.Contractor = true;
+                context.CompanyContractors.Add(new CompanyContractor
+                {
+                    CompanyID = company.CompanyID, 
+                    ContractorTypeID = cntTypes[random.Next(cntTypes.Count)].ContractorTypeID
+                });
+            }
+            
+            var vndTypes = context.VendorTypes.ToList();
+            foreach (var company in context.Companies.Skip(3).Take(3))
+            {
+                company.Vendor = true;
+                context.CompanyVendors.Add(new CompanyVendor()
+                {
+                    CompanyID = company.CompanyID, 
+                    VendorTypeID = vndTypes[random.Next(vndTypes.Count)].VendorTypeID
+                });
+            }
+            
+            var cstTypes = context.CustomerTypes.ToList();
+            foreach (var company in context.Companies.Skip(6).Take(3))
+            {
+                company.Customer = true;
+                context.CompanyCustomers.Add(new CompanyCustomer
+                {
+                    CompanyID = company.CompanyID, 
+                    CustomerTypeID = cstTypes[random.Next(cstTypes.Count)].CustomerTypeID
+                });
+            }
+            
+            #endregion
 
             #region Contact
             if (!context.Contacts.Any())

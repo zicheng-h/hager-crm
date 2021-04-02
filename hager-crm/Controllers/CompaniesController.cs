@@ -513,8 +513,22 @@ namespace hager_crm.Controllers
         [Route("Company/Compare/{leftCompanyId}/with/{rightCompanyId}")]
         public async Task<IActionResult> Compare(int leftCompanyId, int rightCompanyId)
         {
-            var leftCompany = _context.Companies.FirstOrDefault(c => c.CompanyID == leftCompanyId);
-            var rightCompany = _context.Companies.FirstOrDefault(c => c.CompanyID == rightCompanyId);
+            var leftCompany = _context.Companies
+                .Include(c => c.CompanyContractors)
+                .ThenInclude(c => c.ContractorType)
+                .Include(c => c.CompanyCustomers)
+                .ThenInclude(c => c.CustomerType)
+                .Include(c => c.CompanyVendors)
+                .ThenInclude(c => c.VendorType)
+                .FirstOrDefault(c => c.CompanyID == leftCompanyId);
+            var rightCompany = _context.Companies
+                .Include(c => c.CompanyContractors)
+                .ThenInclude(c => c.ContractorType)
+                .Include(c => c.CompanyCustomers)
+                .ThenInclude(c => c.CustomerType)
+                .Include(c => c.CompanyVendors)
+                .ThenInclude(c => c.VendorType)
+                .FirstOrDefault(c => c.CompanyID == rightCompanyId);
             if (leftCompany == null || rightCompany == null)
                 return NotFound();
 
@@ -523,24 +537,30 @@ namespace hager_crm.Controllers
                 { "BillingCountryID", new SelectList(_context.Countries, "CountryID", "CountryName", leftCompany.BillingCountryID) },
                 { "BillingProvinceID", new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", leftCompany.BillingProvinceID) },
                 { "BillingTermID", new SelectList(_context.BillingTerms, "BillingTermID", "Terms", leftCompany.BillingTermID) },
-                { "ContractorTypeID", new SelectList(_context.ContractorTypes, "ContractorTypeID", "Type", leftCompany.ContractorTypeID) },
+                { "ContractorTypes", new SelectList(leftCompany.CompanyContractors.Select(c => c.ContractorType), 
+                    "ContractorTypeID", "Type") },
+                { "CustomerTypes", new SelectList(leftCompany.CompanyCustomers.Select(c => c.CustomerType), 
+                    "CustomerTypeID", "Type") },
+                { "VendorTypes", new SelectList(leftCompany.CompanyVendors.Select(c => c.VendorType), 
+                    "VendorTypeID", "Type") },
                 { "CurrencyID", new SelectList(_context.Currencies, "CurrencyID", "CurrencyName", leftCompany.CurrencyID) },
-                { "CustomerTypeID", new SelectList(_context.CustomerTypes, "CustomerTypeID", "Type", leftCompany.CustomerTypeID) },
                 { "ShippingCountryID", new SelectList(_context.Countries, "CountryID", "CountryName", leftCompany.ShippingCountryID) },
                 { "ShippingProvinceID", new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", leftCompany.ShippingProvinceID) },
-                { "VendorTypeID", new SelectList(_context.VendorTypes, "VendorTypeID", "Type", leftCompany.VendorTypeID) },
             };
             ViewData["RightMerge"] = new Dictionary<string, SelectList>
             {
                 { "BillingCountryID", new SelectList(_context.Countries, "CountryID", "CountryName", rightCompany.BillingCountryID) },
                 { "BillingProvinceID", new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", rightCompany.BillingProvinceID) },
                 { "BillingTermID", new SelectList(_context.BillingTerms, "BillingTermID", "Terms", rightCompany.BillingTermID) },
-                { "ContractorTypeID", new SelectList(_context.ContractorTypes, "ContractorTypeID", "Type", rightCompany.ContractorTypeID) },
+                { "ContractorTypes", new SelectList(rightCompany.CompanyContractors.Select(c => c.ContractorType), 
+                    "ContractorTypeID", "Type") },
+                { "CustomerTypes", new SelectList(rightCompany.CompanyCustomers.Select(c => c.CustomerType), 
+                    "CustomerTypeID", "Type") },
+                { "VendorTypes", new SelectList(rightCompany.CompanyVendors.Select(c => c.VendorType), 
+                    "VendorTypeID", "Type") },
                 { "CurrencyID", new SelectList(_context.Currencies, "CurrencyID", "CurrencyName", rightCompany.CurrencyID) },
-                { "CustomerTypeID", new SelectList(_context.CustomerTypes, "CustomerTypeID", "Type", rightCompany.CustomerTypeID) },
                 { "ShippingCountryID", new SelectList(_context.Countries, "CountryID", "CountryName", rightCompany.ShippingCountryID) },
                 { "ShippingProvinceID", new SelectList(_context.Provinces, "ProvinceID", "ProvinceName", rightCompany.ShippingProvinceID) },
-                { "VendorTypeID", new SelectList(_context.VendorTypes, "VendorTypeID", "Type", rightCompany.VendorTypeID) },
             };
             return View(new Company[]{ leftCompany, rightCompany });
         }
@@ -552,9 +572,15 @@ namespace hager_crm.Controllers
         {
             var leftCompany = _context.Companies
                 .Include(c => c.Contacts)
+                .Include(c => c.CompanyContractors)
+                .Include(c => c.CompanyCustomers)
+                .Include(c => c.CompanyVendors)
                 .FirstOrDefault(c => c.CompanyID == leftCompanyId);
             var rightCompany = _context.Companies
                 .Include(c => c.Contacts)
+                .Include(c => c.CompanyContractors)
+                .Include(c => c.CompanyCustomers)
+                .Include(c => c.CompanyVendors)
                 .FirstOrDefault(c => c.CompanyID == rightCompanyId);
             if (leftCompany == null || rightCompany == null)
                 return NotFound();
@@ -622,17 +648,36 @@ namespace hager_crm.Controllers
                     case "Customer":
                         rightCompany.Customer = leftCompany.Customer;
                         break;
-                    case "CustomerTypeID":
+                    case "CustomerTypes":
                         rightCompany.CustomerTypeID = leftCompany.CustomerTypeID;
+                        leftCompany.CompanyCustomers.ToList()
+                            .ForEach(c => {
+                                if (rightCompany.CompanyCustomers.All(rc => rc.CustomerTypeID != c.CustomerTypeID))
+                                    rightCompany.CompanyCustomers.Add(new CompanyCustomer
+                                        {CompanyID = rightCompany.CompanyID, CustomerTypeID = c.CustomerTypeID});
+                            });
                         break;
                     case "Vendor":
-                        rightCompany.VendorTypeID = leftCompany.VendorTypeID;
+                        rightCompany.Vendor = leftCompany.Vendor;
+                        break;
+                    case "VendorTypes":
+                        leftCompany.CompanyVendors.ToList()
+                            .ForEach(c => {
+                                if (rightCompany.CompanyVendors.All(rc => rc.VendorTypeID != c.VendorTypeID))
+                                    rightCompany.CompanyVendors.Add(new CompanyVendor
+                                        {CompanyID = rightCompany.CompanyID, VendorTypeID = c.VendorTypeID});
+                            });
                         break;
                     case "Contractor":
                         rightCompany.Contractor = leftCompany.Contractor;
                         break;
-                    case "ContractorTypeID":
-                        rightCompany.ContractorTypeID = leftCompany.ContractorTypeID;
+                    case "ContractorTypes":
+                        leftCompany.CompanyContractors.ToList()
+                            .ForEach(c => {
+                                if (rightCompany.CompanyContractors.All(rc => rc.ContractorTypeID != c.ContractorTypeID))
+                                    rightCompany.CompanyContractors.Add(new CompanyContractor
+                                        {CompanyID = rightCompany.CompanyID, ContractorTypeID = c.ContractorTypeID});
+                            });
                         break;
                     case "Active":
                         rightCompany.Active = leftCompany.Active;
@@ -640,7 +685,6 @@ namespace hager_crm.Controllers
                     case "Notes":
                         rightCompany.Notes = leftCompany.Notes;
                         break;
-
                 }
 
             if (leftCompany.Contacts.Any())
@@ -657,8 +701,7 @@ namespace hager_crm.Controllers
             _context.Companies.Remove(leftCompany);
             await _context.SaveChangesAsync();
 
-
-            return RedirectToAction(nameof(Details), new { id = rightCompanyId });
+            return RedirectToAction(nameof(Edit), new { id = rightCompanyId, returnURL = Url.Action(nameof(Index), new { CType="All" }) });
         }
 
         //GET: Redirect using company name to Contact's Index page with filter set for Company's name.
@@ -866,7 +909,7 @@ namespace hager_crm.Controllers
         //Partial View for Companies details page: CustomerTypes, ContractorTypes and VendorTypes list
         public PartialViewResult ListOfCustomerTypesDetails(int id)
         {
-            var query = from s in _context.CompanyTypes.Include(p => p.CustomerType)
+            var query = from s in _context.CompanyCustomers.Include(p => p.CustomerType)
                         where s.CompanyID == id
                         orderby s.CustomerType.Type
                         select s;
