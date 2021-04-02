@@ -166,8 +166,8 @@ else
                         @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
                         {
                             <div class="row w-100">
-                                <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
-                                <a class="btn btn-sm btn-light col-12 col-xl-6" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
+                                <a class="btn btn-sm btn-outline-primary col-12 col-xl-6" asp-action="Details" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Details</a>
+                                <a class="btn btn-sm btn-outline-info col-12 col-xl-6" asp-action="Edit" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Edit</a>
                                 <button class="btn btn-sm btn-outline-secondary col-12 col-xl-6 merge-company-select" data-id="@item.CompanyID" data-companyname="@item.Name">Select for merge</button>
                                 <a class="btn btn-sm btn-outline-danger col-12 col-xl-6" asp-action="Delete" asp-route-id="@item.CompanyID" asp-route-CType="@Context.Request.Query["CType"]">Delete</a>
                             </div>

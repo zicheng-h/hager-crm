@@ -85,7 +85,7 @@ namespace hager_crm.Models.FilterConfig
                 <label for=""{FieldName + "FilterFalse"}"">No</label>
                 <input id=""{FieldName + "FilterOff"}"" class=""data-filterable"" name=""{FieldName}""
                    data-name=""{FieldName}"" type=""radio"" value=""off"" {(inputValue == "off" ? "checked" : "")}/>
-                <label for=""{FieldName + "FilterOff"}"">Off</label>
+                <label for=""{FieldName + "FilterOff"}"">All</label>
             </div>";
         }
     }
