@@ -49,7 +49,7 @@ namespace hager_crm.Controllers
 
             await _gridFilter.GetFilteredData(query);
             int countFilter = _gridFilter.OuterFields.Count;
-            if (countFilter > 1)
+            if (countFilter > 2)
             {
                 ViewData["ChangeColor"] = 1;
             }

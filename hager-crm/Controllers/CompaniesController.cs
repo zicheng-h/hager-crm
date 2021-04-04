@@ -85,7 +85,7 @@ namespace hager_crm.Controllers
             //string urlcheck = _gridFilter.GetFilteredData(query).Ur
             await _gridFilter.GetFilteredData(query);
             int countFilter = _gridFilter.OuterFields.Count;
-            if(countFilter > 1)
+            if(countFilter > 2)
             {
                 ViewData["ChangeColor"] = 1;
             }
@@ -445,6 +445,9 @@ namespace hager_crm.Controllers
 
             //Start a new list to hold imported objects
             List<Company> companies = new List<Company>();
+            List<CompanyVendor> companyVendors = new List<CompanyVendor>();
+            List<CompanyContractor> companyContractors = new List<CompanyContractor>();
+            List<CompanyCustomer> companyCustomers = new List<CompanyCustomer>();
 
             for (int row = start.Row + 1; row <= end.Row; row++)
             {
@@ -481,14 +484,7 @@ namespace hager_crm.Controllers
                             ShippingPostalCode = workSheet.Cells[row, 19].Text,
                             ShippingCountryID = _context.Countries.FirstOrDefault(b => b.CountryName == workSheet.Cells[row, 20].Text).CountryID,
 
-                            //Customer = workSheet.Cells[row, 21].Text == "1",
-                            //CustomerTypeID = _context.CustomerTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 22].Text).CustomerTypeID,
-
-                            //Vendor = workSheet.Cells[row, 23].Text == "1",
-                            //VendorTypeID = _context.VendorTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 24].Text).VendorTypeID,
-
-                            //Contractor = workSheet.Cells[row, 25].Text == "1",
-                            //ContractorTypeID = _context.ContractorTypes.FirstOrDefault(b => b.Type == workSheet.Cells[row, 26].Text).ContractorTypeID,
+                            
                             Active = workSheet.Cells[row, 27].Text == "1",
                             Notes = workSheet.Cells[row, 28].Text
 
@@ -503,6 +499,42 @@ namespace hager_crm.Controllers
                 }
             }
             _context.Companies.AddRange(companies);
+            _context.SaveChanges();
+
+            for (int row = start.Row + 1; row <= end.Row; row++)
+            {
+                try
+                    {
+                        
+                        CompanyCustomer e = new CompanyCustomer
+                        {
+                            CompanyID = _context.Companies.FirstOrDefault(e => e.Name == workSheet.Cells[row, 1].Text).CompanyID,
+                            CustomerTypeID = _context.CustomerTypes.FirstOrDefault(e => e.Type == workSheet.Cells[row, 22].Text).CustomerTypeID
+                        };
+                        companyCustomers.Add(e);
+                        CompanyVendor f = new CompanyVendor
+                        {
+                            CompanyID = _context.Companies.FirstOrDefault(f => f.Name == workSheet.Cells[row, 1].Text).CompanyID,
+                            VendorTypeID = _context.VendorTypes.FirstOrDefault(f => f.Type == workSheet.Cells[row, 24].Text).VendorTypeID
+                        };
+                        companyVendors.Add(f);
+                        CompanyContractor g = new CompanyContractor
+                        {
+                            CompanyID = _context.Companies.FirstOrDefault(g => g.Name == workSheet.Cells[row, 1].Text).CompanyID,
+                            ContractorTypeID = _context.ContractorTypes.FirstOrDefault(g => g.Type == workSheet.Cells[row, 26].Text).ContractorTypeID
+                        };
+                        companyContractors.Add(g);
+                    }
+                    catch (Exception)
+                    {
+                        ModelState.AddModelError("Error", "Error while parsing the file");
+                        return RedirectToAction(nameof(Index));
+                    }
+            }
+
+            _context.CompanyCustomers.AddRange(companyCustomers);
+            _context.CompanyVendors.AddRange(companyVendors);
+            _context.CompanyContractors.AddRange(companyContractors);
             _context.SaveChanges();
 
             return RedirectToAction(nameof(Index));
