@@ -376,6 +376,30 @@ namespace hager_crm.Data.HIMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Calendars",
+                schema: "HG",
+                columns: table => new
+                {
+                    CalendarId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    CompanyId = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Calendars", x => x.CalendarId);
+                    table.ForeignKey(
+                        name: "FK_Calendars_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalSchema: "HG",
+                        principalTable: "Companies",
+                        principalColumn: "CompanyID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contacts",
                 schema: "HG",
                 columns: table => new
@@ -442,6 +466,12 @@ namespace hager_crm.Data.HIMigrations
                 schema: "HG",
                 table: "AnnouncementEmployees",
                 column: "EmployeeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Calendars_CompanyId",
+                schema: "HG",
+                table: "Calendars",
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_BillingCountryID",
@@ -545,6 +575,10 @@ namespace hager_crm.Data.HIMigrations
         {
             migrationBuilder.DropTable(
                 name: "AnnouncementEmployees",
+                schema: "HG");
+
+            migrationBuilder.DropTable(
+                name: "Calendars",
                 schema: "HG");
 
             migrationBuilder.DropTable(

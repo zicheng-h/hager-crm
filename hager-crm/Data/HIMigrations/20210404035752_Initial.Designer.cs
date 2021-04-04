@@ -9,7 +9,7 @@ using hager_crm.Data;
 namespace hager_crm.Data.HIMigrations
 {
     [DbContext(typeof(HagerContext))]
-    [Migration("20210326052003_Initial")]
+    [Migration("20210404035752_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,6 +84,31 @@ namespace hager_crm.Data.HIMigrations
                     b.HasKey("BillingTermID");
 
                     b.ToTable("BillingTerms");
+                });
+
+            modelBuilder.Entity("hager_crm.Models.Calendar", b =>
+                {
+                    b.Property<int>("CalendarId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CalendarId");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Calendars");
                 });
 
             modelBuilder.Entity("hager_crm.Models.Categories", b =>
@@ -553,6 +578,15 @@ namespace hager_crm.Data.HIMigrations
                     b.HasOne("hager_crm.Models.Employee", "Employee")
                         .WithMany("UnreadAnnouncements")
                         .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("hager_crm.Models.Calendar", b =>
+                {
+                    b.HasOne("hager_crm.Models.Company", "Company")
+                        .WithMany("Calendars")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

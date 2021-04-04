@@ -10,6 +10,9 @@ using hager_crm.Utils;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace hager_crm.Controllers
 {
@@ -60,10 +63,13 @@ namespace hager_crm.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewData["Company"] = await _context.Companies.OrderBy(c => c.Name).ToListAsync();
+
             ViewData["DuplicationCompany"] = GetSimillarCompaniesCount(await _context.Companies.OrderBy(c => c.CompanyID).Take(20).ToListAsync());
             ViewData["ActiveEmployee"] = GetActiveEmployee(await _context.Employees.Where(e => e.Active == true).ToListAsync(), await _context.Employees.ToListAsync());
             ViewData["ActiveCompany"] = GetActiveCompany(await _context.Companies.Where(e => e.Active == true).ToListAsync(), await _context.Companies.ToListAsync());
             ViewData["Birthday"] = Statistics.Birthdays(await _context.Employees.OrderByDescending(e => e.DOB).ToListAsync());
+            ViewData["Event"] = Statistics.Event(await _context.Calendars.OrderBy(e => e.Date).ToListAsync());
             return View();
         }
 
@@ -77,5 +83,7 @@ namespace hager_crm.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        
     }
 }

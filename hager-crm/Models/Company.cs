@@ -13,6 +13,7 @@ namespace hager_crm.Models
         public Company()
         {
             Contacts = new HashSet<Contact>();
+            Calendars = new HashSet<Calendar>();
         }
         public int CompanyID { get; set; }
         [Display(Name = "Company Name")]
@@ -105,5 +106,6 @@ namespace hager_crm.Models
         [StringLength(200)]
         public string Notes { get; set; }
         public ICollection<Contact> Contacts { get; set; }
+        public ICollection<Calendar> Calendars { get; set; }
     }
 }

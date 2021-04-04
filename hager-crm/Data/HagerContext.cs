@@ -40,6 +40,7 @@ namespace hager_crm.Data
         public DbSet<VendorType> VendorTypes { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<AnnouncementEmployee> AnnouncementEmployees { get; set; }
+        public DbSet<Calendar> Calendars { get; set; }
         
         public List<ILookupManage> GetLookups() => new List<ILookupManage>
         {
@@ -59,15 +60,21 @@ namespace hager_crm.Data
             //Default Schema
             modelBuilder.HasDefaultSchema("HG");
 
+            modelBuilder.Entity<Employee>().HasIndex(e => e.Email).IsUnique();
+
+            modelBuilder.Entity<ContactCategories>().HasKey(c => new { c.CategoriesID, c.ContactID });
+
             modelBuilder.Entity<Announcement>().HasMany(a => a.EmployeesUnread)
                 .WithOne(a => a.Announcement).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Employee>().HasMany(e => e.UnreadAnnouncements)
                 .WithOne(a => a.Employee).OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Employee>().HasIndex(e => e.Email).IsUnique();
-
-            modelBuilder.Entity<ContactCategories>().HasKey(c => new { c.CategoriesID, c.ContactID });
+            //From Company to Calendar
+            modelBuilder.Entity<Company>()
+                .HasMany<Calendar>(c => c.Calendars)
+                .WithOne(c => c.Company)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Prevent Cascading Delete
             //From Company to Contacts.

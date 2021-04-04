@@ -80,26 +80,84 @@
                     }
                 }
             </ul>
+
         </div>
-        <div class="card p-4">
-            <h4 class="card-title">Upcoming Birthdays 🎂</h4>
-            <ul class="list-group">
-                @*Check DOB dates and and maybe add a birthday card, img*@
-                @foreach (Employee employee in ViewBag.Birthday)
+        <div class="card p-4" id="events">
+            <h4 class="card-title">Important Dates 📅</h4>
+            <div class="accordion">
+                @{ var count = 0;}
+                @foreach (Calendar calendar in ViewBag.Event)
                 {
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @{
-                            var birthDay = employee.DOB ?? DateTime.Today;
-                            birthDay = new DateTime(DateTime.Today.Year, birthDay.Month, birthDay.Day);
-                        }
-                        <a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.EmployeeID" class="text-dark p-0">
-                            @employee.FullName:
-                        </a>
-                        @(birthDay.ToString("d")) - 
-                        <span class="badge badge-pill badge-warning">@((birthDay - DateTime.Today).Days) day(s) left.</span>
-                    </li>
+                    count += 1;
+
+                    <div class="accordion-item d-block" id="accordionCalendar">
+                        <h5 class="accordion-header" id="heading-@count">
+                            <button class="btn btn-lg btn-light nav-fill collapsed" type="button" data-toggle="collapse" data-target="#collapse-@count" aria-controls="collapse-@count">
+                                @calendar.Title - @calendar.Company.Name
+                                <span class="badge badge-pill badge-warning">@calendar.Date.ToString("dd/MM")</span>
+                            </button>
+                        </h5>
+                        <div id="collapse-@count" class="accordion-collapse collapse" aria-labelledby="#heading-@count" data-parent="#accordionCalendar">
+                            <div class="accordion-body list-group-item d-flex justify-content-between align-items-center">
+                                @calendar.Description
+                                <button type="button" class="close" aria-label="Close" data-id="@calendar.CalendarId" onclick="DeleteCalendar(this)">
+                                    <span class="small" aria-hidden="true">🗑️</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 }
-            </ul>
+            </div>
+            @*Check DOB dates and and maybe add a birthday card, img
+        @foreach (Employee employee in ViewBag.Birthday)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                @{
+                    var birthDay = employee.DOB ?? DateTime.Today;
+                    birthDay = new DateTime(DateTime.Today.Year, birthDay.Month, birthDay.Day);
+                }
+                <a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.EmployeeID" class="text-dark p-0">
+                    @employee.FullName:
+                </a>
+                @(birthDay.ToString("d")) -
+                <span class="badge badge-pill badge-warning">@((birthDay - DateTime.Today).Days) day(s) left.</span>
+            </li>
+        }*@
+            @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+            {
+                <hr class="m-0 mb-2" />
+                <button class="btn btn-primary m-2" type="button" data-toggle="collapse" data-target="#calendarCollapse" aria-expanded="false" aria-controls="calendarCollapse">
+                    Create new Event
+                </button>
+                <div class="collapse" id="calendarCollapse">
+                    <div class="card-body">
+                        <form id="postCalendar" onsubmit="return PostCalendar(this)">
+                            <div class="form-group">
+                                <label for="calendarTitle">Title</label>
+                                <input class="form-control" id="calendarTitle" minlength="4" maxlength="64" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="calendarDescription">Description</label>
+                                <textarea class="form-control" id="calendarDescription" rows="3" minlength="16" maxlength="256" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="calendarDate">Date</label>
+                                <input class="form-control" id="calendarDate" type="date" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="calendarCompany">Company</label>
+                                <select class="form-control" id="calendarCompany" required>
+                                    @foreach (Company company in ViewBag.Company)
+                                    {
+                                        <option value="@company.CompanyID">@company.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Event</button>
+                        </form>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -172,6 +230,38 @@
             //     let $frm = $(target).parent();
             //     $.post();
             // }
+
+            //Event Calendar Query
+            function PostCalendar(target) {
+                let $frm = $(target);
+                let body = {
+                    title: $frm.find("#calendarTitle").val(),
+                    description: $frm.find("#calendarDescription").val(),
+                    companyid: $frm.find("#calendarCompany").val(),
+                    date: $frm.find("#calendarDate").val(),
+                };
+
+                $.post("Calendar/PostCalendar", body, function () {
+                    target.reset();
+                    alert("Posted Successfully!");
+                    $("#events").load(location.href + " #events");
+                })
+                    .fail(function (result) {
+                        alert("Something went wrong");
+                        console.log(result);
+                    });
+                return false;
+            }
+
+            function DeleteCalendar(target) {
+                $.post("Calendar/DeleteCalendar", { id: $(target).data('id') }, function () {
+                    alert("Deleted Successfully!");
+                    $("#events").load(location.href + " #events");
+                })
+                    .fail(function () {
+                        alert("Something went wrong");
+                    });
+            }
         </script>
     }
 }
