@@ -83,6 +83,31 @@ namespace hager_crm.Data.HIMigrations
                     b.ToTable("BillingTerms");
                 });
 
+            modelBuilder.Entity("hager_crm.Models.Calendar", b =>
+                {
+                    b.Property<int>("CalendarId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CalendarId");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Calendars");
+                });
+
             modelBuilder.Entity("hager_crm.Models.Categories", b =>
                 {
                     b.Property<int>("ID")
@@ -586,6 +611,15 @@ namespace hager_crm.Data.HIMigrations
                     b.HasOne("hager_crm.Models.Employee", "Employee")
                         .WithMany("UnreadAnnouncements")
                         .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("hager_crm.Models.Calendar", b =>
+                {
+                    b.HasOne("hager_crm.Models.Company", "Company")
+                        .WithMany("Calendars")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

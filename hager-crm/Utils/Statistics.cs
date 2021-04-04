@@ -32,5 +32,20 @@ namespace hager_crm.Utils
             return birthday;
         }
 
+        public static List<Calendar> Event(List<Calendar> calendars)
+        {
+            DateTime today = DateTime.Today;
+            List<Calendar> evtdate = new List<Calendar>();
+            DateTime range = today.AddDays(60);
+            foreach (Calendar calendar in calendars)
+            {
+                if (calendar.Date.Month == today.Month && calendar.Date.Day >= today.Day || calendar.Date.Month == range.Month && calendar.Date.Day <= range.Day)
+                {
+                    evtdate.Add(calendar);
+                }
+            }
+            return evtdate;
+        }
+
     }
 }

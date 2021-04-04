@@ -13,6 +13,7 @@ namespace hager_crm.Models
         public Company()
         {
             Contacts = new HashSet<Contact>();
+            Calendars = new HashSet<Calendar>();
             CompanyCustomers = new HashSet<CompanyCustomer>();
             CompanyContractors = new HashSet<CompanyContractor>();
             CompanyVendors = new HashSet<CompanyVendor>();
@@ -94,6 +95,7 @@ namespace hager_crm.Models
         [StringLength(200)]
         public string Notes { get; set; }
         public ICollection<Contact> Contacts { get; set; }
+        public ICollection<Calendar> Calendars { get; set; }
 
         // For multiselect list
         public ICollection<CompanyCustomer> CompanyCustomers { get; set; }
