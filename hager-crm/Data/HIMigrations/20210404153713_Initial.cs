@@ -341,6 +341,28 @@ namespace hager_crm.Data.HIMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Calendars",
+                columns: table => new
+                {
+                    CalendarId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    CompanyId = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Calendars", x => x.CalendarId);
+                    table.ForeignKey(
+                        name: "FK_Calendars_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "CompanyID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CompanyContractors",
                 columns: table => new
                 {
@@ -474,6 +496,11 @@ namespace hager_crm.Data.HIMigrations
                 column: "EmployeeID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Calendars_CompanyId",
+                table: "Calendars",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Companies_BillingCountryID",
                 table: "Companies",
                 column: "BillingCountryID");
@@ -574,6 +601,9 @@ namespace hager_crm.Data.HIMigrations
         {
             migrationBuilder.DropTable(
                 name: "AnnouncementEmployees");
+
+            migrationBuilder.DropTable(
+                name: "Calendars");
 
             migrationBuilder.DropTable(
                 name: "CompanyContractors");

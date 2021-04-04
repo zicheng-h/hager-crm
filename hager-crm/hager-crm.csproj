@@ -36,4 +36,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\templates\Companies_Import_Template_V4.xlsx" />
+    <None Include="wwwroot\templates\Employee_Import_Template_V8.xlsx" />
+  </ItemGroup>
+
 </Project>

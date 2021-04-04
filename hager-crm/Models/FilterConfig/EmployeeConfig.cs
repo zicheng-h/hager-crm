@@ -120,7 +120,7 @@ namespace hager_crm.Models.FilterConfig
                         OnSort = (p, q) => q,
                         OnFilter = (p, q) =>
                             q.Where(i => ((string) p == "off") ||
-                                ((string) p == "false" ? !i.IsUser : i.IsUser))
+                                ((string) p == "false" ? i.UserId == null : i.UserId != null))
                     }
                 },
                 {
