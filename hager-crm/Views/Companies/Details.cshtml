@@ -98,7 +98,7 @@
                 <dt class="col-sm-3 mt-0 mb-2">
                 </dt>
                 <dd class="col-sm-9 mt-0 mb-2">
-                    @Html.DisplayFor(model => model.BillingProvince.ProvinceName)@if (!String.IsNullOrEmpty(Model.BillingCountry.CountryName))
+                    @Html.DisplayFor(model => model.BillingProvince.ProvinceName)@if (!String.IsNullOrEmpty(Model.BillingCountry?.CountryName))
                     {
                         @:, @Html.DisplayFor(model => model.BillingCountry.CountryName)
                     }
@@ -115,7 +115,7 @@
                 <dt class="col-sm-3 mt-0 mb-2">
                 </dt>
                 <dd class="col-sm-9 mt-0 mb-2">
-                    @Html.DisplayFor(model => model.ShippingProvince.ProvinceName)@if (!String.IsNullOrEmpty(Model.ShippingCountry.CountryName))
+                    @Html.DisplayFor(model => model.ShippingProvince.ProvinceName)@if (!String.IsNullOrEmpty(Model.ShippingCountry?.CountryName))
                     {
                         @:, @Html.DisplayFor(model => model.ShippingCountry.CountryName)
                     }
