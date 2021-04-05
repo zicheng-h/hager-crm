@@ -377,7 +377,7 @@ namespace hager_crm.Data.HIMigrations
                         column: x => x.CompanyID,
                         principalTable: "Companies",
                         principalColumn: "CompanyID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CompanyContractors_ContractorTypes_ContractorTypeID",
                         column: x => x.ContractorTypeID,
@@ -401,7 +401,7 @@ namespace hager_crm.Data.HIMigrations
                         column: x => x.CompanyID,
                         principalTable: "Companies",
                         principalColumn: "CompanyID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CompanyCustomers_CustomerTypes_CustomerTypeID",
                         column: x => x.CustomerTypeID,
@@ -425,7 +425,7 @@ namespace hager_crm.Data.HIMigrations
                         column: x => x.CompanyID,
                         principalTable: "Companies",
                         principalColumn: "CompanyID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CompanyVendors_VendorTypes_VendorTypeID",
                         column: x => x.VendorTypeID,

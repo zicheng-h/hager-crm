@@ -373,12 +373,7 @@ namespace hager_crm.Controllers
                 return NotFound();
             }
 
-            GetTypesIn(id, out var customerTypes, out var contractorTypes, out var vendorTypes);
-            var dict = new Dictionary<string, List<CompanyTypesDto>>();
-            if (customerTypes.Count > 0) dict.Add("customer", customerTypes);
-            if (contractorTypes.Count > 0) dict.Add("contractor", contractorTypes);
-            if (vendorTypes.Count > 0) dict.Add("vendor", vendorTypes);
-            ViewData["CompanyTypes"] = dict;
+            ViewData["CompanyTypes"] = GetTypesViewData(id.Value);
 
             return View(company);
         }
@@ -391,6 +386,8 @@ namespace hager_crm.Controllers
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Companies");
+
+            ViewData["CompanyTypes"] = GetTypesViewData(id);
 
             //ViewData["returnURL"] = returnURL;
             var company = await _context.Companies.FindAsync(id);
@@ -921,6 +918,16 @@ namespace hager_crm.Controllers
                      DisplayName = cv.VendorType.DisplayName
                  })
                  .ToList();
+        }
+
+        private Dictionary<string, List<CompanyTypesDto>> GetTypesViewData(int id)
+        {
+            GetTypesIn(id, out var customerTypes, out var contractorTypes, out var vendorTypes);
+            var dict = new Dictionary<string, List<CompanyTypesDto>>();
+            if (customerTypes.Count > 0) dict.Add("customer", customerTypes);
+            if (contractorTypes.Count > 0) dict.Add("contractor", contractorTypes);
+            if (vendorTypes.Count > 0) dict.Add("vendor", vendorTypes);
+            return dict;
         }
     }
 }

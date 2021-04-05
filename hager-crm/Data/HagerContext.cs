@@ -162,7 +162,7 @@ namespace hager_crm.Data
                 .HasMany<CompanyCustomer>(c => c.CompanyCustomers)
                 .WithOne(c => c.Company)
                 .HasForeignKey(c => c.CompanyID)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Cascade Delete Contractor Type
             modelBuilder.Entity<ContractorType>()
@@ -174,7 +174,7 @@ namespace hager_crm.Data
                 .HasMany<CompanyContractor>(c => c.CompanyContractors)
                 .WithOne(c => c.Company)
                 .HasForeignKey(c => c.CompanyID)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Cascade Delete Vendor Type
             modelBuilder.Entity<VendorType>()
@@ -186,7 +186,7 @@ namespace hager_crm.Data
                 .HasMany<CompanyVendor>(c => c.CompanyVendors)
                 .WithOne(c => c.Company)
                 .HasForeignKey(c => c.CompanyID)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -671,7 +671,7 @@ namespace hager_crm.Data.HIMigrations
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyContractors")
                         .HasForeignKey("CompanyID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("hager_crm.Models.ContractorType", "ContractorType")
@@ -686,7 +686,7 @@ namespace hager_crm.Data.HIMigrations
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyCustomers")
                         .HasForeignKey("CompanyID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("hager_crm.Models.CustomerType", "CustomerType")
@@ -701,7 +701,7 @@ namespace hager_crm.Data.HIMigrations
                     b.HasOne("hager_crm.Models.Company", "Company")
                         .WithMany("CompanyVendors")
                         .HasForeignKey("CompanyID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("hager_crm.Models.VendorType", "VendorType")
