@@ -12,6 +12,7 @@ namespace hager_crm.Models
     {
         public Company()
         {
+            CreatedAt = DateTime.Now;
             Contacts = new HashSet<Contact>();
             Calendars = new HashSet<Calendar>();
             CompanyCustomers = new HashSet<CompanyCustomer>();
@@ -94,6 +95,9 @@ namespace hager_crm.Models
         public bool Active { get; set; }
         [StringLength(200)]
         public string Notes { get; set; }
+        
+        public DateTime CreatedAt { get; set; }
+
         public ICollection<Contact> Contacts { get; set; }
         public ICollection<Calendar> Calendars { get; set; }
 

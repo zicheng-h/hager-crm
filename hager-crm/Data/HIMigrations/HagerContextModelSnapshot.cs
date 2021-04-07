@@ -162,6 +162,9 @@ namespace hager_crm.Data.HIMigrations
                     b.Property<int?>("ContractorTypeID")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("CreditCheck")
                         .HasColumnType("INTEGER");
 
@@ -247,6 +250,9 @@ namespace hager_crm.Data.HIMigrations
 
                     b.Property<int>("ContractorTypeID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("CompanyID", "ContractorTypeID");
 

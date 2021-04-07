@@ -9,7 +9,7 @@ using hager_crm.Data;
 namespace hager_crm.Data.HIMigrations
 {
     [DbContext(typeof(HagerContext))]
-    [Migration("20210405170029_Initial")]
+    [Migration("20210407044045_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -164,6 +164,9 @@ namespace hager_crm.Data.HIMigrations
                     b.Property<int?>("ContractorTypeID")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("CreditCheck")
                         .HasColumnType("INTEGER");
 
@@ -249,6 +252,9 @@ namespace hager_crm.Data.HIMigrations
 
                     b.Property<int>("ContractorTypeID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("CompanyID", "ContractorTypeID");
 

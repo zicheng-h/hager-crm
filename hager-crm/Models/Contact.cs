@@ -60,13 +60,6 @@ namespace hager_crm.Models
         public Company Company { get; set; }
 
         [Display(Name = "Contact")]
-        public string FullName
-        {
-            get
-            {
-                return FirstName + " " + LastName;
-            }
-        }
-
+        public string FullName => FirstName + " " + LastName;
     }
 }

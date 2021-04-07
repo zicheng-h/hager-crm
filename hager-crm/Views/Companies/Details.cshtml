@@ -140,6 +140,12 @@
                                          data-item-id="@item.TypeID"
                                          href="#">
                                         <div class="display-name d-flex m-auto">@item.DisplayName</div>
+                                        @if (cat.Key == "contractor" && item.SecondaryInfo.Length > 1)
+                                        {
+                                            <div class="display-name d-flex m-auto badge badge-warning badge-pill">
+                                                Expires on: @item.SecondaryInfo.Substring(1)
+                                            </div>
+                                        }
                                     </div>
                                 }
                             </div>

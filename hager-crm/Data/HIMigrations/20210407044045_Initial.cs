@@ -251,6 +251,7 @@ namespace hager_crm.Data.HIMigrations
                     ShippingCountryID = table.Column<int>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
                     Notes = table.Column<string>(maxLength: 200, nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     ContractorTypeID = table.Column<int>(nullable: true),
                     CustomerTypeID = table.Column<int>(nullable: true),
                     VendorTypeID = table.Column<int>(nullable: true)
@@ -367,7 +368,8 @@ namespace hager_crm.Data.HIMigrations
                 columns: table => new
                 {
                     CompanyID = table.Column<int>(nullable: false),
-                    ContractorTypeID = table.Column<int>(nullable: false)
+                    ContractorTypeID = table.Column<int>(nullable: false),
+                    ExpiryDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

@@ -709,7 +709,7 @@ namespace hager_crm.Controllers
                             .ForEach(c => {
                                 if (rightCompany.CompanyContractors.All(rc => rc.ContractorTypeID != c.ContractorTypeID))
                                     rightCompany.CompanyContractors.Add(new CompanyContractor
-                                        {CompanyID = rightCompany.CompanyID, ContractorTypeID = c.ContractorTypeID});
+                                        {CompanyID = rightCompany.CompanyID, ExpiryDate = c.ExpiryDate, ContractorTypeID = c.ContractorTypeID});
                             });
                         break;
                     case "Active":
@@ -789,26 +789,33 @@ namespace hager_crm.Controllers
             }
 
             //Contractor Types
-            var selectedContractorHS = new HashSet<string>(selectedOptions[1].Split(','));
-            var currentContractorHS = new HashSet<int>(companyToUpdate.CompanyContractors.Select(s => s.ContractorTypeID));
+            var selectedContractorHS = selectedOptions[1].Split(',')
+                .ToDictionary(k => k.Split('|').First(), v => v.Split('|').Last());
+            var currentContractors = companyToUpdate.CompanyContractors;
             foreach (var s in _context.ContractorTypes)
             {
-                if (selectedContractorHS.Contains(s.ContractorTypeID.ToString()))
+                
+                if (selectedContractorHS.TryGetValue(s.ContractorTypeID.ToString(), out var expiryDate))
                 {
-                    if (!currentContractorHS.Contains(s.ContractorTypeID))
+                    var companyContractor = currentContractors.FirstOrDefault(c => c.ContractorTypeID == s.ContractorTypeID);
+                    if (companyContractor == null)
                     {
-                        companyToUpdate.CompanyContractors.Add(new CompanyContractor
+                        companyContractor = new CompanyContractor
                         {
                             ContractorTypeID = s.ContractorTypeID,
                             CompanyID = companyToUpdate.CompanyID
-                        });
+                        };
+                        companyToUpdate.CompanyContractors.Add(companyContractor);
                     }
+
+                    if (DateTime.TryParse(expiryDate, out var expDate))
+                        companyContractor.ExpiryDate = expDate;
                 }
                 else
                 {
-                    if (currentContractorHS.Contains(s.ContractorTypeID))
+                    if (currentContractors.Any(c => c.ContractorTypeID == s.ContractorTypeID))
                     {
-                        CompanyContractor specToRemove = companyToUpdate.CompanyContractors.SingleOrDefault(c => c.ContractorTypeID == s.ContractorTypeID);
+                        var specToRemove = companyToUpdate.CompanyContractors.SingleOrDefault(c => c.ContractorTypeID == s.ContractorTypeID);
                         _context.Remove(specToRemove);
                     }
                 }
@@ -906,6 +913,7 @@ namespace hager_crm.Controllers
                  .Select(cc => new CompanyTypesDto
                  {
                      TypeID = cc.ContractorTypeID,
+                     SecondaryInfo = "|" + (cc.ExpiryDate.HasValue ? cc.ExpiryDate.Value.ToString("yyyy-MM-dd") : ""),
                      DisplayName = cc.ContractorType.DisplayName
                  })
                  .ToList();

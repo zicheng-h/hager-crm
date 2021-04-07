@@ -64,10 +64,20 @@ namespace hager_crm.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["Company"] = await _context.Companies.OrderBy(c => c.Name).ToListAsync();
-
+            var expireDate = DateTime.Now + TimeSpan.FromDays(14);
+            ViewData["ContractsToExpire"] = await _context.CompanyContractors
+                .CountAsync(cc => 
+                    cc.ExpiryDate != null 
+                    && cc.ExpiryDate <  expireDate
+                    && cc.ExpiryDate > DateTime.Now
+                    );
+            ViewData["ContractsExpired"] = await _context.CompanyContractors
+                .CountAsync(cc => cc.ExpiryDate != null && cc.ExpiryDate < DateTime.Now);
             ViewData["DuplicationCompany"] = GetSimillarCompaniesCount(await _context.Companies.OrderBy(c => c.CompanyID).Take(20).ToListAsync());
             ViewData["ActiveEmployee"] = GetActiveEmployee(await _context.Employees.Where(e => e.Active == true).ToListAsync(), await _context.Employees.ToListAsync());
             ViewData["ActiveCompany"] = GetActiveCompany(await _context.Companies.Where(e => e.Active == true).ToListAsync(), await _context.Companies.ToListAsync());
+            var newDate = DateTime.Now - TimeSpan.FromDays(30);
+            ViewData["NewCompanies"] = await _context.Companies.CountAsync(c => c.CreatedAt > newDate);
             ViewData["Birthday"] = Statistics.Birthdays(await _context.Employees.OrderByDescending(e => e.DOB).ToListAsync());
             ViewData["Event"] = Statistics.Event(await _context.Calendars.OrderBy(e => e.Date).ToListAsync());
             return View();
@@ -75,7 +85,6 @@ namespace hager_crm.Controllers
 
         public IActionResult Privacy()
         {
-            // return View();
             return NotFound();
         }
 

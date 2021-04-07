@@ -41,4 +41,8 @@
     <None Include="wwwroot\templates\Employee_Import_Template_V8.xlsx" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\HIMigrations" />
+  </ItemGroup>
+
 </Project>

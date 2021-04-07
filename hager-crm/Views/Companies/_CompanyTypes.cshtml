@@ -34,13 +34,15 @@
                          style="overflow-y: auto; height: 155px">
                         @foreach (var item in cat.TypesIn)
                         {
-                            <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
-                                 data-item-id="@item.TypeID"
+                            <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2 flex-column"
+                                 data-item-id="@item.TypeID@item.SecondaryInfo"
                                  href="#">
-                                <div name="@cat.Category-handle" class="btn-group handle" role="group" aria-label="List Sort Handle">
-                                    <a class="btn btn-sm btn-outline-secondary disabled">⥯</a>
+                                <div class="row mx-0">
+                                    <div name="@cat.Category-handle" class="btn-group handle" role="group" aria-label="List Sort Handle">
+                                        <a class="btn btn-sm btn-outline-secondary disabled">⥯</a>
+                                    </div>
+                                    <div class="display-name d-flex m-auto">@item.DisplayName</div>
                                 </div>
-                                <div class="display-name d-flex m-auto">@item.DisplayName</div>
                             </div>
                         }
                     </div>
@@ -50,13 +52,15 @@
                          style="overflow-y: auto; height: 155px">
                         @foreach (var item in cat.TypesAvailable)
                         {
-                            <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2"
+                            <div class="lookup-list-item list-group-item d-flex justify-content-between pr-2 flex-column"
                                  data-item-id="@item.TypeID"
                                  href="#">
-                                <div name="@cat.Category-handle" class="btn-group handle" role="group" aria-label="List Sort Handle">
-                                    <a class="btn btn-sm btn-outline-secondary disabled">⥯</a>
+                                <div class="row mx-0">
+                                    <div name="@cat.Category-handle" class="btn-group handle" role="group" aria-label="List Sort Handle">
+                                        <a class="btn btn-sm btn-outline-secondary disabled">⥯</a>
+                                    </div>
+                                    <div class="display-name d-flex m-auto">@item.DisplayName</div>
                                 </div>
-                                <div class="display-name d-flex m-auto">@item.DisplayName</div>
                             </div>
                         }
                     </div>
@@ -75,16 +79,50 @@
                 $('.vendor').sortable('toArray', { attribute: "data-item-id" }).join(',')
             );
         }
+        
+        function reassignEvents() {
+            $('.add-datetime input').change(function () {
+                let $type = $(this).parents('.lookup-list-item');
+                $type.attr('data-item-id', $type.attr('data-item-id').toString().split('|')[0] + '|' +  $(this).val());
+                saveTypes();
+            });
+        }
+        
+        function addDatetimeToContractors() {
+            $('#contractor-types').find('.lookup-list-item').each(function () {
+                let datetimeValue = $(this).attr('data-item-id').toString().split('|');
+                datetimeValue = datetimeValue.length === 2 ? datetimeValue[1] : "";
 
+                if (!$(this).find('.add-datetime').length)
+                    $(this).append($(`
+                        <div class="btn-group add-datetime input-group-sm align-items-baseline mt-2" role="group" aria-label="Datetime Picker">
+                            <label class="mr-2">Expiry date:</label>
+                            <input class="form-control" style="max-width: 175px" type="date" value="${datetimeValue}">
+                        </div>
+                    `));
+            });
+        }
+        
+        function clearDatetimeFromContractors() {
+            $('#contractor-available').find('.lookup-list-item .add-datetime').remove();
+        }
+        
         function updateForm() {
             var cnt = 0;
             if ($('#customer-types')[0].children.length > 0) cnt++;
             if ($('#contractor-types')[0].children.length > 0) cnt++;
             if ($('#vendor-types')[0].children.length > 0) cnt++;
             $('#typeBadge').html(cnt);
+            addDatetimeToContractors();
+            clearDatetimeFromContractors();
+            reassignEvents();
             saveTypes();
         }
 
+        addDatetimeToContractors();
+        reassignEvents();
+        
+        
         $('.customer').sortable({
             connectWith: ".connectedSortable",
             handle: '[name="customer-handle"]',

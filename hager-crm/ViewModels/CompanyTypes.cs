@@ -5,8 +5,10 @@ namespace hager_crm.ViewModels
     public class CompanyTypesDto
     {
         public int TypeID { get; set; }
+        public string SecondaryInfo = "";
         public string DisplayName { get; set; }
     }
+    
     public class CompanyTypesVM
     {
         public CompanyTypesVM()
