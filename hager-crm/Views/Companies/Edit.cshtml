@@ -1,11 +1,11 @@
 ﻿@model hager_crm.Models.Company
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Company";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit Company</h1>
+<h1>Edit @Model.Name</h1>
 <hr />
 <form asp-action="Edit">
     <div class="row justify-content-center">
@@ -148,18 +148,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <input type="submit" id="btnSubmit" value="Save" class="btn btn-primary" />
-                    </div>
-                    <div>
-                        @*@if (String.IsNullOrEmpty(ViewData["returnURL"].ToString()))
-                        {
-                            <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
-                        }
-                        else
-                        {
-                            <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
-                        }*@
-
-                        <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
+                        <a class="btn btn-secondary" href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
                     </div>
                 </div>
             </div>

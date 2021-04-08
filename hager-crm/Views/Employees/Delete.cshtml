@@ -1,28 +1,21 @@
 ﻿@model hager_crm.Models.Employee
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Employee";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete employee? @Model.FullName</h3>
+<h1>Delete @Model.FullName (@(Model.Active ? "Active" : "Inactive"),@(Model.IsUser ? " " : " Not ")User)?</h1>
+<hr />
 <div>
-    <h4>Employee</h4>
-    <hr />
     <div>
         <ul class="nav nav-pills" id="myTabs" role="tablist">
             <li class="nav-item">
                 <a href="#basic" aria-controls="basic" role="tab" class="nav-link active" name="basic" data-toggle="tab" aria-selected="false">Basic Information</a>
             </li>
-            @if (this.User.IsInRole("Admin"))
-            {
-                <li class="nav-item">
-                    <a href="#moreinfo" aria-controls="moreinfo" role="tab" class="nav-link" name="moreinfo" data-toggle="tab" aria-selected="false">More Information</a>
-                </li>
-            }
-
+            <li class="nav-item">
+                <a href="#moreinfo" aria-controls="moreinfo" role="tab" class="nav-link" name="moreinfo" data-toggle="tab" aria-selected="false">More Information</a>
+            </li>
             <li class="nav-item">
                 <a href="#emergencycontact" aria-controls="emergencycontact" role="tab" class="nav-link" name="emergencycontact" data-toggle="tab" aria-selected="false">Emergency Contact</a>
             </li>
@@ -32,144 +25,106 @@
             <div role="tabpanel" class="tab-pane fade ml-3 show active" id="basic">
                 <br />
                 <dl class="row">
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.FirstName)
+                    <dt class="col-sm-3 my-2">
+                        Name
                     </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.FirstName)
+                    <dd class="col-sm-9 my-2">
+                        @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
                     </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.LastName)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.LastName)
-                    </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.JobPosition)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.JobPosition.Position)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.EmploymentType)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.EmploymentType.Type)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.CellPhone)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.CellPhone)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.WorkPhone)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.WorkPhone)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.Email)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.Email)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.DateJoined)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.DateJoined)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-3 my-2">
                         @Html.DisplayNameFor(model => model.Notes)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.Notes)
                     </dd>
                 </dl>
             </div>
 
-            @if (this.User.IsInRole("Admin"))
-            {
-                <div role="tabpanel" class="tab-pane fade ml-3" id="moreinfo" aria-labelledby="moreinfo-tab">
-                    <br />
-                    <dl class="row">
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.EmployeeAddress1)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.EmployeeAddress1)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.EmployeeAddress2)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.EmployeeAddress2)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.EmployeeCity)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.EmployeeCity)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.EmployeeProvince)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.EmployeeProvince.ProvinceName)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.EmployeePostalCode)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.EmployeePostalCode)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.EmployeeCountry)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.EmployeeCountry.CountryName)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.DOB)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.DOB)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Wage)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.Wage)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Expense)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.Expense)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.KeyFob)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.KeyFob)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Active)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.Active)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.IsUser)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.IsUser)
-                        </dd>
-                    </dl>
-                </div>
-            }
-
+            <div role="tabpanel" class="tab-pane fade ml-3" id="moreinfo" aria-labelledby="moreinfo-tab">
+                <br />
+                <dl class="row">
+                    <dt class="col-sm-3 mt-2 mb-0">
+                        Address
+                    </dt>
+                    <dd class="col-sm-9 mt-2 mb-0">
+                        @Html.DisplayFor(model => model.EmployeeAddress1)@if (!String.IsNullOrEmpty(Model.EmployeeAddress2))
+                        {
+                            @:, @Html.DisplayFor(model => model.EmployeeAddress2)
+                        }@if (!String.IsNullOrEmpty(Model.EmployeeCity))
+                        {
+                            @:, @Html.DisplayFor(model => model.EmployeeCity)
+                        }@if (!String.IsNullOrEmpty(Model.EmployeePostalCode))
+                        {
+                            @:, @Html.DisplayFor(model => model.EmployeePostalCode)
+                        }
+                    </dd>
+                    <dt class="col-sm-3 mt-0 mb-2">
+                    </dt>
+                    <dd class="col-sm-9 mt-0 mb-2">
+                        @Html.DisplayFor(model => model.EmployeeProvince.ProvinceName), @Html.DisplayFor(model => model.EmployeeCountry.CountryName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.DOB)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.DOB)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Wage)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Wage)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Expense)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Expense)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.KeyFob)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.KeyFob)
+                    </dd>
+                </dl>
+            </div>
 
             <div role="tabpanel" class="tab-pane fade ml-3" id="emergencycontact" aria-labelledby="moreinfo-tab">
                 <br />
@@ -190,13 +145,11 @@
             </div>
 
         </div>
-
     </div>
-    <hr />
     <form asp-action="Delete">
         <input type="hidden" asp-for="EmployeeID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a href='@ViewData["returnURL"]'>Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a class="btn btn-secondary" href='@ViewData["returnURL"]'>Back to List of Employees</a>
     </form>
 </div>
 

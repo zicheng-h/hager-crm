@@ -56,6 +56,7 @@ namespace hager_crm.Models
         public string Notes { get; set; }
 
         [Display(Name = "Company")]
+        [Required(ErrorMessage = "Please select a Company.")]
         public int CompanyID { get; set; }
         public Company Company { get; set; }
 

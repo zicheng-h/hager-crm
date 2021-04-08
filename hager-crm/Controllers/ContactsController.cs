@@ -62,7 +62,7 @@ namespace hager_crm.Controllers
         }
 
         // GET: Contacts/Details/5
-        public async Task<IActionResult> Details(int? id, string returnURL)
+        public async Task<IActionResult> Details(int? id)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
@@ -92,7 +92,7 @@ namespace hager_crm.Controllers
 
         // GET: Contacts/Create
         [Authorize(Roles = "Admin, Supervisor")]
-        public IActionResult Create(string returnURL)
+        public IActionResult Create()
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
@@ -119,7 +119,7 @@ namespace hager_crm.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Create([Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
-            string[] selectedOptions, string CType, string returnURL)
+            string[] selectedOptions)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
@@ -168,7 +168,7 @@ namespace hager_crm.Controllers
 
         // GET: Contacts/Edit/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Edit(int? id, string returnURL)
+        public async Task<IActionResult> Edit(int? id)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
@@ -204,7 +204,7 @@ namespace hager_crm.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
         public async Task<IActionResult> Edit(int id, [Bind("ContactID,FirstName,LastName,JobTitle,CellPhone,WorkPhone,Email,Active,Notes,CompanyID")] Contact contact,
-            string[] selectedOptions, string CType, string returnURL)
+            string[] selectedOptions)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
@@ -263,7 +263,7 @@ namespace hager_crm.Controllers
 
         // GET: Contacts/Delete/5
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> Delete(int? id, string returnURL)
+        public async Task<IActionResult> Delete(int? id)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");
@@ -295,7 +295,7 @@ namespace hager_crm.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Supervisor")]
-        public async Task<IActionResult> DeleteConfirmed(int id, string CType, string returnURL)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             //Get the URL with the last filter, sort and page parameters
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Contacts");

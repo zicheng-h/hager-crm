@@ -170,6 +170,7 @@
                             <div class="form-group">
                                 <label for="calendarCompany">Company</label>
                                 <select class="form-control" id="calendarCompany" required>
+                                    <option>Select a Company</option>
                                     @foreach (Company company in ViewBag.Company)
                                     {
                                         <option value="@company.CompanyID">@company.Name</option>

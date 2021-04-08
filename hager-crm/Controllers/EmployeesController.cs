@@ -259,7 +259,6 @@ namespace hager_crm.Controllers
             return View(employee);
         }
 
-        [Authorize(Roles ="Admin")]
         // GET: Employees/Delete/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
@@ -288,7 +287,6 @@ namespace hager_crm.Controllers
 
         // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)

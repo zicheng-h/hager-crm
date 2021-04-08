@@ -6,9 +6,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Compare</h1>
-
-<h4>Company</h4>
+<h1>Compare Companies</h1>
+<h4>@Model[0].Name to @Model[1].Name</h4>
 <button class="btn btn-primary" onclick="$('form.compare input[type=\'checkbox\'][name=\'fieldsToMerge\']').attr('checked', true);">Select All</button>
 <button class="btn btn-secondary ml-2" onclick="$('form.compare input[type=\'checkbox\'][name=\'fieldsToMerge\']').attr('checked', false);">Unselect All</button>
 <hr />
@@ -458,9 +457,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <input type="submit" value="Merge" class="btn btn-primary" />
-                    </div>
-                    <div>
-                        <a asp-action="Index" asp-route-CType="All">Back to All Company List</a>
+                        <a class="btn btn-secondary" asp-action="Index" asp-route-CType="All">Back to All Company List</a>
                     </div>
                 </div>
 

@@ -1,13 +1,11 @@
 ﻿@model hager_crm.Models.Employee
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Employee";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>Employee: @Model.FullName</h4>
+<h1>Edit @Model.FullName</h1>
 <hr />
 <div class="row justify-content-center">
     <div class="col-lg-10 col-12">
@@ -145,9 +143,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-primary" />
-                    </div>
-                    <div>
-                        <a href='@ViewData["returnURL"]'>Back to List</a>
+                        <a class="btn btn-secondary" href='@ViewData["returnURL"]'>Back to List of Employees</a>
                     </div>
                 </div>
             </div>

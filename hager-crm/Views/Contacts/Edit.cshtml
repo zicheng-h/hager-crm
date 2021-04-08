@@ -1,12 +1,11 @@
 ﻿@model hager_crm.Models.Contact
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Contact";
 }
 
-<h1>Edit Contact: @Model.FullName</h1>
+<h1>Edit @Model.FullName</h1>
 <hr />
-
 <form asp-action="Edit">
     <div asp-validation-summary="All" class="text-danger"></div>
     <input type="hidden" name="CType" id="CType" value="@Context.Request.Query["CType"]" />
@@ -92,16 +91,7 @@
     </form>
 
 <div>
-    @*@if (String.IsNullOrEmpty(ViewData["returnURL"].ToString()))
-    {
-        <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Contact List</a>
-    }
-    else
-    {
-        <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Contact List</a>
-    }*@
-
-    <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Contact List</a>
+    <a class="btn btn-secondary" href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Contact List</a>
 </div>
 
 @section Scripts {

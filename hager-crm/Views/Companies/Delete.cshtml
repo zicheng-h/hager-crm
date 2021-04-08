@@ -2,19 +2,16 @@
 @using static hager_crm.Utils.Capitalizator
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Company";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete compay? @Model.Name</h3>
+<h1>Delete @Model.Name? (@(Model.Active ? "Active" : "Inactive"))</h1>
+<hr />
 <div>
-    <h4>Company</h4>
     <form asp-action="Delete">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" name="returnURL" value="@ViewData["returnURL"]" />
-        <hr />
         <ul class="nav nav-pills" id="myTabs" role="tablist">
             <li class="nav-item">
                 <a href="#basic" aria-controls="basic-tab" role="tab" class="nav-link active" name="basic" data-toggle="tab" aria-selected="false">Basic Information</a>
@@ -159,18 +156,8 @@
 
         <input type="hidden" asp-for="CompanyID" />
         <input type="hidden" name="CType" id="CType" value="@Context.Request.Query["CType"]" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        @*@if (String.IsNullOrEmpty(ViewData["returnURL"].ToString()))
-        {
-            <a asp-action="Index" asp-route-CType="@Context.Request.Query["CType"]">Back to @Context.Request.Query["CType"] Company List</a>
-        }
-        else
-        {
-            <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
-        }*@
-
-        <a href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
-
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a class="btn btn-secondary" href='@ViewData["returnURL"]'>Back to @Context.Request.Query["CType"] Company List</a>
     </form>
 </div>
 

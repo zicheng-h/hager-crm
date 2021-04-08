@@ -1,16 +1,12 @@
 ﻿@model hager_crm.Models.Employee
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Employee Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
-<div>
-    <h4>Employee: @Model.FullName</h4>
-    <hr />
-</div>
-
+<h1>@Model.FullName (@(Model.Active ? "Active" : "Inactive"),@(Model.IsUser ? " " : " Not ")User)</h1>
+<hr />
 <div>
     <ul class="nav nav-pills" id="myTabs" role="tablist">
         <li class="nav-item">
@@ -94,8 +90,14 @@
                     <dd class="col-sm-9 mt-2 mb-0">
                         @Html.DisplayFor(model => model.EmployeeAddress1)@if (!String.IsNullOrEmpty(Model.EmployeeAddress2))
                         {
-                            Html.DisplayFor(model => model.EmployeeAddress2);
-                        }, @Html.DisplayFor(model => model.EmployeePostalCode)
+                            @:, @Html.DisplayFor(model => model.EmployeeAddress2)
+                        }@if (!String.IsNullOrEmpty(Model.EmployeeCity))
+                        {
+                            @:, @Html.DisplayFor(model => model.EmployeeCity)
+                        }@if (!String.IsNullOrEmpty(Model.EmployeePostalCode))
+                        {
+                            @:, @Html.DisplayFor(model => model.EmployeePostalCode)
+                        }
                     </dd>
                     <dt class="col-sm-3 mt-0 mb-2">
                     </dt>
@@ -126,18 +128,6 @@
                     <dd class="col-sm-9 my-2">
                         @Html.DisplayFor(model => model.KeyFob)
                     </dd>
-                    <dt class="col-sm-3 my-2">
-                        @Html.DisplayNameFor(model => model.Active)
-                    </dt>
-                    <dd class="col-sm-9 my-2">
-                        @Html.DisplayFor(model => model.Active)
-                    </dd>
-                    <dt class="col-sm-3 my-2">
-                        @Html.DisplayNameFor(model => model.IsUser)
-                    </dt>
-                    <dd class="col-sm-9 my-2">
-                        @Html.DisplayFor(model => model.IsUser)
-                    </dd>
                 </dl>
             </div>
         }
@@ -160,15 +150,13 @@
                 </dd>
             </dl>
         </div>
-
     </div>
-    <hr />
     <div>
         @if (this.User.IsInRole("Admin"))
         {
-            <a asp-action="Edit" asp-route-id="@Model.EmployeeID">Edit</a> @:|
+            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.EmployeeID">Edit</a>
         }
-        <a href='@ViewData["returnURL"]'>Back to List</a>
+        <a class="btn btn-secondary" href='@ViewData["returnURL"]'>Back to List of Employees</a>
     </div>
 </div>
 
