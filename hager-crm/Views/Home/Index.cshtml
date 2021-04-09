@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-12 col-lg-7">
-        <div class="card h-100 p-4"> 
+        <div class="card h-100 p-4">
             <h4 class="card-title">Announcements 📢</h4>
             <div class="card h-100">
                 <div class="card-header">
@@ -41,15 +41,15 @@
                 @*Check Active employees(Admin), active companies, maybe leave the contracts ending soon as example to stats(Admin, Supervisor).*@
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Contracts to end soon
-                    <span class="badge badge-warning badge-pill">@ViewBag.ContractsToExpire</span> 
-                    @* We hardcoded number here because we don't have too much contact to show. 
-                    This section is a proof of concept *@
+                    <span class="badge badge-warning badge-pill">@ViewBag.ContractsToExpire</span>
+                    @* We hardcoded number here because we don't have too much contact to show.
+                        This section is a proof of concept *@
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Contracts Expired
-                    <span class="badge badge-danger badge-pill">@ViewBag.ContractsExpired</span> 
-                    @* We hardcoded number here because we don't have too much contact to show. 
-                    This section is a proof of concept *@
+                    <span class="badge badge-danger badge-pill">@ViewBag.ContractsExpired</span>
+                    @* We hardcoded number here because we don't have too much contact to show.
+                        This section is a proof of concept *@
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <a asp-controller="Companies" asp-action="Index" asp-route-Active="true" class="text-dark nav-link" style="padding:0">
@@ -121,31 +121,31 @@
                 }
             </div>
             @*Check DOB dates and and maybe add a birthday card, img
-            @foreach (Employee employee in ViewBag.Birthday)
-            {
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    @{
-                        var birthDay = employee.DOB ?? DateTime.Today;
-                        birthDay = new DateTime(DateTime.Today.Year, birthDay.Month, birthDay.Day);
-                        var d = (birthDay - DateTime.Today).Days;
-                    }
-                    <a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.EmployeeID" class="text-dark p-0">
-                        @employee.FullName:
-                    </a>
-                    @(birthDay.ToString("MMM d"))
-                    <span class="badge badge-pill badge-warning">
-                        in @d
-                        @if (d > 1)
-                        {
-                            @: days
+                @foreach (Employee employee in ViewBag.Birthday)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @{
+                            var birthDay = employee.DOB ?? DateTime.Today;
+                            birthDay = new DateTime(DateTime.Today.Year, birthDay.Month, birthDay.Day);
+                            var d = (birthDay - DateTime.Today).Days;
                         }
-                        else
-                        {
-                            @: day
-                        }
-                    </span>
-                </li>
-            }*@
+                        <a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.EmployeeID" class="text-dark p-0">
+                            @employee.FullName:
+                        </a>
+                        @(birthDay.ToString("MMM d"))
+                        <span class="badge badge-pill badge-warning">
+                            in @d
+                            @if (d > 1)
+                            {
+                                @: days
+                            }
+                            else
+                            {
+                                @: day
+                            }
+                        </span>
+                    </li>
+                }*@
             @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
             {
                 <hr class="m-0 mb-2" />
@@ -188,13 +188,13 @@
 
 @section Scripts {
     <script type="text/javascript">
-        function ReadAnnouncement(target){
-            $.post( "Announcement/ReadAnnouncement", { id: $(target).data('id')}, function() {
-              refreshTab('news-unread-tab');
+        function ReadAnnouncement(target) {
+            $.post("Announcement/ReadAnnouncement", { id: $(target).data('id') }, function () {
+                refreshTab('news-unread-tab');
             })
-            .fail(function() {
-                alert( "Something went wrong" );
-            });
+                .fail(function () {
+                    alert("Something went wrong");
+                });
         }
 
         function refreshTab(activeTab) {
@@ -220,34 +220,34 @@
     @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
     {
         <script type="text/javascript">
-            
-            function PostAnnouncement(target){
+
+            function PostAnnouncement(target) {
                 let $frm = $(target);
-                let body = { 
-                   title: $frm.find("#announcementTitle").val(),
-                   message: $frm.find("#announcementMessage").val(),
-                   severity: $frm.find("#announcementSeverity").val(),
+                let body = {
+                    title: $frm.find("#announcementTitle").val(),
+                    message: $frm.find("#announcementMessage").val(),
+                    severity: $frm.find("#announcementSeverity").val(),
                 };
-                
-                $.post( "Announcement/PostAnnouncement", body, function() {
-                  target.reset();
-                  alert("Posted Successfully!");
-                  refreshTab('news-all-tab');
+
+                $.post("Announcement/PostAnnouncement", body, function () {
+                    target.reset();
+                    alert("Posted Successfully!");
+                    refreshTab('news-all-tab');
                 })
-                .fail(function(result) {
-                    alert( "Something went wrong" );
-                    console.log(result);
-                });
+                    .fail(function (result) {
+                        alert("Something went wrong");
+                        console.log(result);
+                    });
                 return false;
             }
-            function DeleteAnnouncement(target){
-                $.post( "Announcement/DeleteAnnouncement", { id: $(target).data('id')}, function() {
-                  alert("Deleted Successfully!");
-                  refreshTab('news-all-tab');
+            function DeleteAnnouncement(target) {
+                $.post("Announcement/DeleteAnnouncement", { id: $(target).data('id') }, function () {
+                    alert("Deleted Successfully!");
+                    refreshTab('news-all-tab');
                 })
-                .fail(function() {
-                    alert( "Something went wrong" );
-                });
+                    .fail(function () {
+                        alert("Something went wrong");
+                    });
             }
             // function UpdateAnnouncement(target){
             //     alert("update");
@@ -288,4 +288,17 @@
             }
         </script>
     }
+    <script>
+        //Register the service worker.
+        //Note is is still not "installable" without the manifest
+        if (navigator.serviceWorker.controller) {
+            console.log('Active service worker found, no need to register');
+        } else {
+            navigator.serviceWorker.register('sw.js', {
+                scope: './'
+            }).then(function (reg) {
+                console.log('Service worker has been registered for scope:' + reg.scope);
+            });
+        }
+    </script>
 }
