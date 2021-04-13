@@ -49,16 +49,14 @@ namespace hager_crm.Controllers
             return duplicates;
         }
 
-        private string GetActiveEmployee(List<Employee> active, List<Employee> all)
+        private string GetEmployee(List<Employee> emp)
         {
-            double percent = Statistics.Active(active.Count, all.Count);
-            return String.Format("{0:P2}", percent);
+            return emp.Count.ToString();
         }
 
-        private string GetActiveCompany(List<Company> active, List<Company> all)
+        private string GetCompany(List<Company> comp)
         {
-            double percent = Statistics.Active(active.Count, all.Count);
-            return String.Format("{0:P2}", percent);
+            return comp.Count.ToString();
         }
 
         public async Task<IActionResult> Index()
@@ -74,8 +72,10 @@ namespace hager_crm.Controllers
             ViewData["ContractsExpired"] = await _context.CompanyContractors
                 .CountAsync(cc => cc.ExpiryDate != null && cc.ExpiryDate < DateTime.Now);
             ViewData["DuplicationCompany"] = GetSimillarCompaniesCount(await _context.Companies.OrderBy(c => c.CompanyID).Take(20).ToListAsync());
-            ViewData["ActiveEmployee"] = GetActiveEmployee(await _context.Employees.Where(e => e.Active == true).ToListAsync(), await _context.Employees.ToListAsync());
-            ViewData["ActiveCompany"] = GetActiveCompany(await _context.Companies.Where(e => e.Active == true).ToListAsync(), await _context.Companies.ToListAsync());
+            ViewData["ActiveEmployee"] = GetEmployee(await _context.Employees.Where(e => e.Active == true).ToListAsync());
+            ViewData["ActiveCompany"] = GetCompany(await _context.Companies.Where(e => e.Active == true).ToListAsync());
+            ViewData["AllEmployees"] = GetEmployee(await _context.Employees.ToListAsync());
+            ViewData["AllCompanies"] = GetCompany(await _context.Companies.ToListAsync());
             var newDate = DateTime.Now - TimeSpan.FromDays(30);
             ViewData["NewCompanies"] = await _context.Companies.CountAsync(c => c.CreatedAt > newDate);
             ViewData["Birthday"] = Statistics.Birthdays(await _context.Employees.OrderByDescending(e => e.DOB).ToListAsync());

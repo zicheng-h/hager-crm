@@ -42,20 +42,16 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Contracts to end soon
                     <span class="badge badge-warning badge-pill">@ViewBag.ContractsToExpire</span>
-                    @* We hardcoded number here because we don't have too much contact to show.
-                        This section is a proof of concept *@
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Contracts Expired
                     <span class="badge badge-danger badge-pill">@ViewBag.ContractsExpired</span>
-                    @* We hardcoded number here because we don't have too much contact to show.
-                        This section is a proof of concept *@
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <a asp-controller="Companies" asp-action="Index" asp-route-Active="true" class="text-dark nav-link" style="padding:0">
                         Active Companies
                     </a>
-                    <span class="badge badge-info badge-pill">@ViewBag.ActiveCompany</span>
+                    <span class="badge badge-info badge-pill">@ViewBag.ActiveCompany/@ViewBag.AllCompanies</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <a asp-controller="Companies" asp-action="Index" asp-route-Active="true" class="text-dark nav-link" style="padding:0">
@@ -69,7 +65,7 @@
                         <a asp-controller="Employees" asp-action="Index" asp-route-Active="true" class="text-dark nav-link" style="padding:0">
                             Active Employees
                         </a>
-                        <span class="badge badge-success badge-pill">@ViewBag.ActiveEmployee</span>
+                        <span class="badge badge-success badge-pill">@ViewBag.ActiveEmployee/@ViewBag.AllEmployees</span>
                     </li>
                 }
                 @if (User.IsInRole("Admin"))
