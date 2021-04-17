@@ -115,11 +115,15 @@ else {
                     </td>
                     <td class="align-middle">
                         <div class="row w-100">
-                            <a class="btn btn-sm btn-light btn-outline-primary col-12 col-xl-6" asp-action="Details" asp-route-id="@item.EmployeeID">Details</a>
                             @if (User.IsInRole("Admin"))
                             {
+                                <a class="btn btn-sm btn-outline-primary col-12 col-xl-6" asp-action="Details" asp-route-id="@item.EmployeeID">Details</a>
                                 <a class="btn btn-sm btn-outline-info col-12 col-xl-6" asp-action="Edit" asp-route-id="@item.EmployeeID">Edit</a>
                                 <a class="btn btn-sm btn-outline-danger col-12" asp-action="Delete" asp-route-id="@item.EmployeeID">Delete</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-sm btn-outline-dark px-3" asp-action="Details" asp-route-id="@item.EmployeeID">Details</a>
                             }
                         </div>
                     </td>
